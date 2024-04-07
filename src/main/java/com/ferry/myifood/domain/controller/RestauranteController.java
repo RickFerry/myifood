@@ -4,11 +4,10 @@ import com.ferry.myifood.domain.model.Restaurante;
 import com.ferry.myifood.domain.service.RestauranteService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @RestController
@@ -28,6 +27,33 @@ public class RestauranteController {
             return ResponseEntity.ok(restauranteService.buscar(id));
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PostMapping
+    public ResponseEntity<?> salvar(
+            @RequestBody Restaurante restaurante, UriComponentsBuilder uriComponentsBuilder) {
+        try {
+            Restaurante novo = restauranteService.salvar(restaurante);
+            return ResponseEntity.created(
+                    uriComponentsBuilder
+                            .path("/restaurantes/{id}")
+                            .buildAndExpand(novo.getId())
+                            .toUri()
+            ).body(novo);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody Restaurante restaurante) {
+        try {
+            return ResponseEntity.ok(restauranteService.atualizar(id, restaurante));
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 }
