@@ -18,10 +18,12 @@ public class RestauranteService {
     private final RestauranteRepository restauranteRepository;
     private final CozinhaRepository cozinhaRepository;
 
+    @Transactional(readOnly = true)
     public List<Restaurante> listar() {
         return restauranteRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
     public Restaurante buscar(Long id) {
         return restauranteRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Restaurante não encontrado"));

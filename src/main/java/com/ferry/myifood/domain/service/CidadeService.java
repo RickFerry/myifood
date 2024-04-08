@@ -17,10 +17,12 @@ public class CidadeService {
     private final CidadeRepository cidadeRepository;
     private final EstadoRepository estadoRepository;
 
+    @Transactional(readOnly = true)
     public List<Cidade> listar() {
         return cidadeRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
     public Cidade buscar(Long id) {
         return cidadeRepository.findById(id).orElseThrow(() -> new RuntimeException("Cidade não encontrada"));
     }

@@ -16,10 +16,12 @@ public class CozinhaService {
     private final CozinhaRepository cozinhaRepository;
     private static final String NOT_FOUND = "Cozinha não encontrada";
 
+    @Transactional(readOnly = true)
     public List<Cozinha> listar() {
         return cozinhaRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
     public Cozinha pegar(Long id) {
         return cozinhaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException(NOT_FOUND));

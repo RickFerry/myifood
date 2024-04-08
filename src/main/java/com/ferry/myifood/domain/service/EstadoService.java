@@ -15,10 +15,12 @@ import java.util.List;
 public class EstadoService {
     private final EstadoRepository estadoRepository;
 
+    @Transactional(readOnly = true)
     public List<Estado> listar() {
         return estadoRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
     public Estado buscar(Long id) {
         return estadoRepository.findById(id).orElseThrow(() -> new RuntimeException("Estado não encontrado"));
     }
