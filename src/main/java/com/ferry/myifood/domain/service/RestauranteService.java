@@ -43,7 +43,9 @@ public class RestauranteService {
                 .map(r -> {
                     Cozinha cozinha = cozinhaRepository.findById(restaurante.getCozinha().getId())
                             .orElseThrow(() -> new RuntimeException("Não existe cozinha com o id informado"));
-                    BeanUtils.copyProperties(restaurante, r, "id", "formasPagamento", "endereco");
+                    BeanUtils.copyProperties(
+                            restaurante, r, "id", "formasPagamento", "endereco", "dataCadastro"
+                    );
                     r.setCozinha(cozinha);
                     return restauranteRepository.save(r);
                 })

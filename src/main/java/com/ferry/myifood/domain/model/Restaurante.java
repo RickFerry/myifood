@@ -5,10 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.proxy.HibernateProxy;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -24,6 +27,15 @@ public class Restaurante {
     private Long id;
     private String nome;
     private BigDecimal taxaFrete;
+
+    @JsonIgnore
+    @CreationTimestamp
+    @Column(nullable = false, columnDefinition = "datetime")
+    private LocalDateTime dataCadastro;
+    @JsonIgnore
+    @UpdateTimestamp
+    @Column(nullable = false, columnDefinition = "datetime")
+    private LocalDateTime dataAtualizacao;
 
     @ManyToOne
     private Cozinha cozinha;
