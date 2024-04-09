@@ -8,7 +8,9 @@ import org.hibernate.proxy.HibernateProxy;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -24,6 +26,12 @@ public class Restaurante {
 
     @ManyToOne
     private Cozinha cozinha;
+
+    @ManyToMany
+    @JoinTable(name = "restaurante_formas_pagamento",
+            joinColumns = @JoinColumn(name = "restaurante_id"),
+            inverseJoinColumns = @JoinColumn(name = "formas_pagamento_id"))
+    private Set<FormaPagamento> formasPagamento = new LinkedHashSet<>();
 
     @Override
     public final boolean equals(Object o) {
