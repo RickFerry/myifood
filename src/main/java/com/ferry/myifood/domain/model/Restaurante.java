@@ -1,5 +1,6 @@
 package com.ferry.myifood.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,6 +27,10 @@ public class Restaurante {
 
     @ManyToOne
     private Cozinha cozinha;
+
+    @Embedded
+    @JsonIgnore
+    private Endereco endereco;
 
     @ManyToMany
     @JoinTable(name = "restaurante_formas_pagamento",
