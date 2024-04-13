@@ -1,5 +1,6 @@
 package com.ferry.myifood.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,5 +24,6 @@ public class Produto {
     private Boolean ativo;
 
     @ManyToOne
+    @JsonIgnore
     private Restaurante restaurante;
 }

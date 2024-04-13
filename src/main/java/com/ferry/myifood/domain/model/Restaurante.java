@@ -37,12 +37,15 @@ public class Restaurante {
     @Column(nullable = false, columnDefinition = "datetime")
     private LocalDateTime dataAtualizacao;
 
-    @ManyToOne
-    private Cozinha cozinha;
-
     @Embedded
     @JsonIgnore
     private Endereco endereco;
+
+    @ManyToOne
+    private Cozinha cozinha;
+
+    @OneToMany(mappedBy = "restaurante", orphanRemoval = true)
+    private Set<Produto> produtos = new LinkedHashSet<>();
 
     @ManyToMany
     @JoinTable(name = "restaurante_formas_pagamento",
