@@ -24,3 +24,10 @@ INSERT INTO FORMA_PAGAMENTO (ID, DESCRICAO) VALUES (3, 'Cartão de débito');
 
 INSERT INTO RESTAURANTE_FORMAS_PAGAMENTO (RESTAURANTE_ID, FORMAS_PAGAMENTO_ID)
 VALUES (1, 1), (1, 2), (1, 3), (2, 1), (2, 2), (3, 1), (3, 2);
+
+INSERT INTO PRODUTO (ATIVO, DESCRICAO, NOME, PRECO, RESTAURANTE_ID)
+VALUES (1, 'Hamburguer de carne suína, queijo, alface, tomate, cebola, picles e maionese', 'Hamburguer', 12.00, 1);
+INSERT INTO PRODUTO (ATIVO, DESCRICAO, NOME, PRECO, RESTAURANTE_ID)
+VALUES (1, 'Hamburguer de carne aviaria, queijo, alface, tomate, cebola, e maionese', 'Hamburguer', 11.00, 2);
+INSERT INTO PRODUTO (ATIVO, DESCRICAO, NOME, PRECO, RESTAURANTE_ID)
+VALUES (1, 'Hamburguer de carne bovina, queijo, alface, tomate, cebola e maionese', 'Hamburguer', 15.00, 3);
