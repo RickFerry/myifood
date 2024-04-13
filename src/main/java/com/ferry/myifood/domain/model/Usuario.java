@@ -1,11 +1,14 @@
 package com.ferry.myifood.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -22,6 +25,11 @@ public class Usuario {
     private String nome;
     private String email;
     private String senha;
+
+    @JsonIgnore
+    @CreationTimestamp
+    @Column(nullable = false, columnDefinition = "datetime")
+    private LocalDateTime dataCadastro;
 
     @ManyToMany
     @JoinTable(name = "Usuario_grupos",
