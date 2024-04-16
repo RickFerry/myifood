@@ -3,11 +3,12 @@ package com.ferry.myifood.domain.controller;
 import com.ferry.myifood.domain.model.Cidade;
 import com.ferry.myifood.domain.service.CidadeService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -16,8 +17,8 @@ public class CidadeController {
     private final CidadeService cidadeService;
 
     @GetMapping
-    public ResponseEntity<List<Cidade>> listar() {
-        return ResponseEntity.ok(cidadeService.listar());
+    public ResponseEntity<Page<Cidade>> listar(Pageable page) {
+        return ResponseEntity.ok(cidadeService.listar(page));
     }
 
     @GetMapping("/{id}")

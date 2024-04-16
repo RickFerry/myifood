@@ -7,11 +7,12 @@ import com.ferry.myifood.domain.repository.CidadeRepository;
 import com.ferry.myifood.domain.repository.EstadoRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.List;
 
 import static com.ferry.myifood.domain.utils.ContantsUtil.NAO_EXISTE_CIDADE_COM_O_ID_INFORMADO;
 import static com.ferry.myifood.domain.utils.ContantsUtil.NAO_EXISTE_ESTADO_COM_O_ID_INFORMADO;
@@ -23,8 +24,8 @@ public class CidadeService {
     private final EstadoRepository estadoRepository;
 
     @Transactional(readOnly = true)
-    public List<Cidade> listar() {
-        return cidadeRepository.findAll();
+    public Page<Cidade> listar(Pageable page) {
+        return cidadeRepository.findAll(page);
     }
 
     @Transactional(readOnly = true)
