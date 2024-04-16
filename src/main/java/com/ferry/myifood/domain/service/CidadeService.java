@@ -14,8 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 
-import static com.ferry.myifood.domain.utils.ContantsUtil.NAO_EXISTE_CIDADE_COM_O_ID_INFORMADO;
-import static com.ferry.myifood.domain.utils.ContantsUtil.NAO_EXISTE_ESTADO_COM_O_ID_INFORMADO;
+import static com.ferry.myifood.domain.utils.ConstantsUtil.NAO_EXISTE_CIDADE_COM_O_ID_INFORMADO;
+import static com.ferry.myifood.domain.utils.ConstantsUtil.NAO_EXISTE_ESTADO_COM_O_ID_INFORMADO;
 
 @Service
 @AllArgsConstructor
