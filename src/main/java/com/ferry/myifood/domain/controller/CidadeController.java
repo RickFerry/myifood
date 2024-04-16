@@ -30,8 +30,12 @@ public class CidadeController {
     }
 
     @PostMapping
-    public ResponseEntity<Cidade> salvar(@RequestBody Cidade cidade) {
-        return ResponseEntity.ok(cidadeService.salvar(cidade));
+    public ResponseEntity<?> salvar(@RequestBody Cidade cidade) {
+        try {
+            return ResponseEntity.ok(cidadeService.salvar(cidade));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PutMapping("/{id}")

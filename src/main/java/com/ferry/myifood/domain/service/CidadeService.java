@@ -1,5 +1,7 @@
 package com.ferry.myifood.domain.service;
 
+import com.ferry.myifood.domain.exception.CidadeNaoEncontradaException;
+import com.ferry.myifood.domain.exception.EstadoNaoEncontradoException;
 import com.ferry.myifood.domain.model.Cidade;
 import com.ferry.myifood.domain.repository.CidadeRepository;
 import com.ferry.myifood.domain.repository.EstadoRepository;
@@ -10,6 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+
+import static com.ferry.myifood.domain.utils.ContantsUtil.NAO_EXISTE_CIDADE_COM_O_ID_INFORMADO;
+import static com.ferry.myifood.domain.utils.ContantsUtil.NAO_EXISTE_ESTADO_COM_O_ID_INFORMADO;
 
 @Service
 @AllArgsConstructor
@@ -24,11 +29,15 @@ public class CidadeService {
 
     @Transactional(readOnly = true)
     public Cidade buscar(Long id) {
-        return cidadeRepository.findById(id).orElseThrow(() -> new RuntimeException("Cidade não encontrada"));
+        return cidadeRepository.findById(id).orElseThrow(
+                () -> new CidadeNaoEncontradaException(NAO_EXISTE_CIDADE_COM_O_ID_INFORMADO));
     }
 
     @Transactional
     public Cidade salvar(Cidade cidade) {
+        cidade.setEstado(estadoRepository.findById(cidade.getEstado().getId())
+                .orElseThrow(
+                        () -> new EstadoNaoEncontradoException(NAO_EXISTE_ESTADO_COM_O_ID_INFORMADO)));
         return cidadeRepository.save(cidade);
     }
 
@@ -37,11 +46,12 @@ public class CidadeService {
         return cidadeRepository.findById(id)
                 .map(c -> {
                     c.setEstado(estadoRepository.findById(cidade.getEstado().getId())
-                            .orElseThrow(() -> new RuntimeException("Não existe estado com o id informado")));
+                            .orElseThrow(
+                                    () -> new EstadoNaoEncontradoException(NAO_EXISTE_ESTADO_COM_O_ID_INFORMADO)));
                     BeanUtils.copyProperties(cidade, c, "id");
                     return cidadeRepository.save(c);
                 })
-                .orElseThrow(() -> new EntityNotFoundException("Não existe cidade com o id informado"));
+                .orElseThrow(() -> new EntityNotFoundException(NAO_EXISTE_CIDADE_COM_O_ID_INFORMADO));
     }
 
     @Transactional
@@ -49,7 +59,7 @@ public class CidadeService {
         cidadeRepository.findById(id)
                 .ifPresentOrElse(cidadeRepository::delete,
                         () -> {
-                            throw new EntityNotFoundException("Não existe cidade com o id informado");
+                            throw new EntityNotFoundException(NAO_EXISTE_CIDADE_COM_O_ID_INFORMADO);
                         });
     }
 }
