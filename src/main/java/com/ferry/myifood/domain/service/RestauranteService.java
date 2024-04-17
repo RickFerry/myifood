@@ -52,4 +52,12 @@ public class RestauranteService {
                 })
                 .orElseThrow(() -> new EntityNotFoundException("Não existe restaurante com o id informado"));
     }
+
+    @Transactional
+    public void deletar(Long id) {
+        restauranteRepository.findById(id)
+                .ifPresentOrElse(restauranteRepository::delete, () -> {
+                    throw new EntityNotFoundException("Não existe restaurante com o id informado");
+                });
+    }
 }
