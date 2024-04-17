@@ -3,12 +3,14 @@ package com.ferry.myifood.domain.controller;
 import com.ferry.myifood.domain.model.Restaurante;
 import com.ferry.myifood.domain.service.RestauranteService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.List;
+import java.net.URI;
 
 @RestController
 @AllArgsConstructor
@@ -17,8 +19,8 @@ public class RestauranteController {
     private final RestauranteService restauranteService;
 
     @GetMapping
-    public ResponseEntity<List<Restaurante>> listar() {
-        return ResponseEntity.ok(restauranteService.listar());
+    public ResponseEntity<Page<Restaurante>> listar(Pageable page) {
+        return ResponseEntity.ok(restauranteService.listar(page));
     }
 
     @GetMapping("/{id}")
@@ -35,12 +37,8 @@ public class RestauranteController {
             @RequestBody Restaurante restaurante, UriComponentsBuilder uriComponentsBuilder) {
         try {
             Restaurante novo = restauranteService.salvar(restaurante);
-            return ResponseEntity.created(
-                    uriComponentsBuilder
-                            .path("/restaurantes/{id}")
-                            .buildAndExpand(novo.getId())
-                            .toUri()
-            ).body(novo);
+            URI uri = uriComponentsBuilder.path("/restaurantes/{id}").buildAndExpand(novo.getId()).toUri();
+            return ResponseEntity.created(uri).body(novo);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

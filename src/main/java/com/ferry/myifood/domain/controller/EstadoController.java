@@ -3,10 +3,13 @@ package com.ferry.myifood.domain.controller;
 import com.ferry.myifood.domain.model.Estado;
 import com.ferry.myifood.domain.service.EstadoService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.List;
+import java.net.URI;
 
 @RestController
 @AllArgsConstructor
@@ -15,8 +18,8 @@ public class EstadoController {
     private final EstadoService estadoService;
 
     @GetMapping
-    public ResponseEntity<List<Estado>> listar() {
-        return ResponseEntity.ok(estadoService.listar());
+    public ResponseEntity<Page<Estado>> listar(Pageable page) {
+        return ResponseEntity.ok(estadoService.listar(page));
     }
 
     @GetMapping("/{id}")
@@ -29,8 +32,10 @@ public class EstadoController {
     }
 
     @PostMapping
-    public ResponseEntity<Estado> salvar(@RequestBody Estado estado) {
-        return ResponseEntity.ok(estadoService.salvar(estado));
+    public ResponseEntity<Estado> salvar(@RequestBody Estado estado, UriComponentsBuilder uriComponentsBuilder) {
+        Estado novo = estadoService.salvar(estado);
+        URI uri = uriComponentsBuilder.path("/estados/{id}").buildAndExpand(novo.getId()).toUri();
+        return ResponseEntity.created(uri).body(novo);
     }
 
     @PutMapping("/{id}")

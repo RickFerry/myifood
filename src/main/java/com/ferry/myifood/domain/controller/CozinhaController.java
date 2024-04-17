@@ -3,13 +3,14 @@ package com.ferry.myifood.domain.controller;
 import com.ferry.myifood.domain.model.Cozinha;
 import com.ferry.myifood.domain.service.CozinhaService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.persistence.EntityNotFoundException;
 import java.net.URI;
-import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -18,8 +19,8 @@ public class CozinhaController {
     private final CozinhaService cozinhaService;
 
     @GetMapping
-    public ResponseEntity<List<Cozinha>> listar() {
-        return ResponseEntity.ok(cozinhaService.listar());
+    public ResponseEntity<Page<Cozinha>> listar(Pageable page) {
+    return ResponseEntity.ok(cozinhaService.listar(page));
     }
 
     @GetMapping("/{id}")
@@ -32,8 +33,8 @@ public class CozinhaController {
     }
 
     @PostMapping
-    public ResponseEntity<Cozinha> criar(@RequestBody Cozinha cozinha, UriComponentsBuilder uriComponentsBuilder) {
-        Cozinha nova = cozinhaService.criar(cozinha);
+    public ResponseEntity<Cozinha> salvar(@RequestBody Cozinha cozinha, UriComponentsBuilder uriComponentsBuilder) {
+        Cozinha nova = cozinhaService.salvar(cozinha);
         URI uri = uriComponentsBuilder.path("/cozinhas/{id}").buildAndExpand(nova.getId()).toUri();
         return ResponseEntity.created(uri).body(nova);
     }

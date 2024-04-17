@@ -6,11 +6,12 @@ import com.ferry.myifood.domain.repository.CozinhaRepository;
 import com.ferry.myifood.domain.repository.RestauranteRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -19,8 +20,8 @@ public class RestauranteService {
     private final CozinhaRepository cozinhaRepository;
 
     @Transactional(readOnly = true)
-    public List<Restaurante> listar() {
-        return restauranteRepository.findAll();
+    public Page<Restaurante> listar(Pageable page) {
+        return restauranteRepository.findAll(page);
     }
 
     @Transactional(readOnly = true)

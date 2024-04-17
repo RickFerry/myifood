@@ -7,8 +7,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.persistence.EntityNotFoundException;
+import java.net.URI;
 
 @RestController
 @AllArgsConstructor
@@ -31,9 +33,11 @@ public class CidadeController {
     }
 
     @PostMapping
-    public ResponseEntity<?> salvar(@RequestBody Cidade cidade) {
+    public ResponseEntity<?> salvar(@RequestBody Cidade cidade, UriComponentsBuilder uriComponentsBuilder) {
         try {
-            return ResponseEntity.ok(cidadeService.salvar(cidade));
+            Cidade nova = cidadeService.salvar(cidade);
+            URI uri = uriComponentsBuilder.path("/cidades/{id}").buildAndExpand(nova.getId()).toUri();
+            return ResponseEntity.created(uri).body(nova);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

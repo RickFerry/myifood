@@ -4,11 +4,12 @@ import com.ferry.myifood.domain.model.Cozinha;
 import com.ferry.myifood.domain.repository.CozinhaRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -17,8 +18,8 @@ public class CozinhaService {
     private static final String NOT_FOUND = "Cozinha não encontrada";
 
     @Transactional(readOnly = true)
-    public List<Cozinha> listar() {
-        return cozinhaRepository.findAll();
+    public Page<Cozinha> listar(Pageable page) {
+        return cozinhaRepository.findAll(page);
     }
 
     @Transactional(readOnly = true)
@@ -28,7 +29,7 @@ public class CozinhaService {
     }
 
     @Transactional
-    public Cozinha criar(Cozinha cozinha) {
+    public Cozinha salvar(Cozinha cozinha) {
         return cozinhaRepository.save(cozinha);
     }
 

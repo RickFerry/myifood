@@ -4,11 +4,12 @@ import com.ferry.myifood.domain.model.Estado;
 import com.ferry.myifood.domain.repository.EstadoRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -16,8 +17,8 @@ public class EstadoService {
     private final EstadoRepository estadoRepository;
 
     @Transactional(readOnly = true)
-    public List<Estado> listar() {
-        return estadoRepository.findAll();
+    public Page<Estado> listar(Pageable page) {
+        return estadoRepository.findAll(page);
     }
 
     @Transactional(readOnly = true)
