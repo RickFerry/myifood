@@ -1,6 +1,7 @@
 package com.ferry.myifood.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ferry.myifood.domain.model.group.Groups;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,11 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.proxy.HibernateProxy;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
+import javax.validation.groups.ConvertGroup;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
@@ -28,6 +33,7 @@ public class Restaurante {
     private Long id;
     @NotBlank
     private String nome;
+    @PositiveOrZero
     private BigDecimal taxaFrete;
 
     @JsonIgnore
@@ -43,7 +49,10 @@ public class Restaurante {
     @JsonIgnore
     private Endereco endereco;
 
+    @Valid
+    @NotNull
     @ManyToOne
+    @ConvertGroup(to = Groups.CozinhaId.class)
     private Cozinha cozinha;
 
     @OneToMany(mappedBy = "restaurante", orphanRemoval = true)
