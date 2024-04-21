@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.persistence.EntityNotFoundException;
+import javax.validation.Valid;
 import java.net.URI;
 
 @RestController
@@ -33,7 +34,7 @@ public class CidadeController {
     }
 
     @PostMapping
-    public ResponseEntity<?> salvar(@RequestBody Cidade cidade, UriComponentsBuilder uriComponentsBuilder) {
+    public ResponseEntity<?> salvar(@RequestBody @Valid Cidade cidade, UriComponentsBuilder uriComponentsBuilder) {
         try {
             Cidade nova = cidadeService.salvar(cidade);
             URI uri = uriComponentsBuilder.path("/cidades/{id}").buildAndExpand(nova.getId()).toUri();
