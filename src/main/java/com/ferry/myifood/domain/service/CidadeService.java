@@ -2,6 +2,7 @@ package com.ferry.myifood.domain.service;
 
 import com.ferry.myifood.domain.exception.CidadeNaoEncontradaException;
 import com.ferry.myifood.domain.exception.EstadoNaoEncontradoException;
+import com.ferry.myifood.domain.mapper.CidadeMapper;
 import com.ferry.myifood.domain.model.Cidade;
 import com.ferry.myifood.domain.model.dtos.CidadeDto;
 import com.ferry.myifood.domain.repository.CidadeRepository;
@@ -23,15 +24,16 @@ import static com.ferry.myifood.domain.utils.ConstantsUtil.NAO_EXISTE_ESTADO_COM
 public class CidadeService {
     private final CidadeRepository cidadeRepository;
     private final EstadoRepository estadoRepository;
+    private final CidadeMapper cidadeMapper;
 
     @Transactional(readOnly = true)
     public Page<CidadeDto> listar(Pageable page) {
-        return cidadeRepository.findAll(page).map(CidadeDto::new);
+        return cidadeRepository.findAll(page).map(cidadeMapper::toDto);
     }
 
     @Transactional(readOnly = true)
     public CidadeDto buscar(Long id) {
-        return cidadeRepository.findById(id).map(CidadeDto::new).orElseThrow(
+        return cidadeRepository.findById(id).map(cidadeMapper::toDto).orElseThrow(
                 () -> new CidadeNaoEncontradaException(NAO_EXISTE_CIDADE_COM_O_ID_INFORMADO));
     }
 
@@ -40,7 +42,7 @@ public class CidadeService {
         cidade.setEstado(estadoRepository.findById(cidade.getEstado().getId())
                 .orElseThrow(
                         () -> new EstadoNaoEncontradoException(NAO_EXISTE_ESTADO_COM_O_ID_INFORMADO)));
-        return new CidadeDto(cidadeRepository.save(cidade));
+        return cidadeMapper.toDto(cidadeRepository.save(cidade));
     }
 
     @Transactional
@@ -51,7 +53,7 @@ public class CidadeService {
                             .orElseThrow(
                                     () -> new EstadoNaoEncontradoException(NAO_EXISTE_ESTADO_COM_O_ID_INFORMADO)));
                     BeanUtils.copyProperties(cidade, c, "id");
-                    return new CidadeDto(cidadeRepository.save(c));
+                    return cidadeMapper.toDto(cidadeRepository.save(c));
                 })
                 .orElseThrow(() -> new EntityNotFoundException(NAO_EXISTE_CIDADE_COM_O_ID_INFORMADO));
     }

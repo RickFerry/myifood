@@ -1,6 +1,8 @@
 package com.ferry.myifood.domain.service;
 
+import com.ferry.myifood.domain.mapper.CozinhaMapper;
 import com.ferry.myifood.domain.model.Cozinha;
+import com.ferry.myifood.domain.model.dtos.CozinhaDto;
 import com.ferry.myifood.domain.repository.CozinhaRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -15,30 +17,31 @@ import javax.persistence.EntityNotFoundException;
 @AllArgsConstructor
 public class CozinhaService {
     private final CozinhaRepository cozinhaRepository;
+    private final CozinhaMapper cozinhaMapper;
     private static final String NOT_FOUND = "Cozinha não encontrada";
 
     @Transactional(readOnly = true)
-    public Page<Cozinha> listar(Pageable page) {
-        return cozinhaRepository.findAll(page);
+    public Page<CozinhaDto> listar(Pageable page) {
+        return cozinhaRepository.findAll(page).map(cozinhaMapper::toDto);
     }
 
     @Transactional(readOnly = true)
-    public Cozinha pegar(Long id) {
-        return cozinhaRepository.findById(id)
+    public CozinhaDto pegar(Long id) {
+        return cozinhaRepository.findById(id).map(cozinhaMapper::toDto)
                 .orElseThrow(() -> new RuntimeException(NOT_FOUND));
     }
 
     @Transactional
-    public Cozinha salvar(Cozinha cozinha) {
-        return cozinhaRepository.save(cozinha);
+    public CozinhaDto salvar(Cozinha cozinha) {
+        return cozinhaMapper.toDto(cozinhaRepository.save(cozinha));
     }
 
     @Transactional
-    public Cozinha atualizar(Long id, Cozinha cozinha) {
+    public CozinhaDto atualizar(Long id, Cozinha cozinha) {
         return cozinhaRepository.findById(id)
                 .map(c -> {
                     BeanUtils.copyProperties(cozinha, c, "id");
-                    return cozinhaRepository.save(c);
+                    return cozinhaMapper.toDto(cozinhaRepository.save(c));
                 })
                 .orElseThrow(() -> new RuntimeException(NOT_FOUND));
     }

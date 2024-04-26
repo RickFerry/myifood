@@ -19,10 +19,4 @@ public class CidadeDto implements Serializable {
     String nome;
     @NotNull
     EstadoDto estado;
-
-    public CidadeDto(Cidade cidade) {
-        this.id = cidade.getId();
-        this.nome = cidade.getNome();
-        this.estado = new EstadoDto(cidade.getEstado());
-    }
 }
