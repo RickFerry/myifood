@@ -3,6 +3,7 @@ package com.ferry.myifood.domain.service;
 import com.ferry.myifood.domain.exception.CidadeNaoEncontradaException;
 import com.ferry.myifood.domain.exception.EstadoNaoEncontradoException;
 import com.ferry.myifood.domain.model.Cidade;
+import com.ferry.myifood.domain.model.dtos.CidadeDto;
 import com.ferry.myifood.domain.repository.CidadeRepository;
 import com.ferry.myifood.domain.repository.EstadoRepository;
 import lombok.AllArgsConstructor;
@@ -14,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 
+import java.util.stream.Collectors;
+
 import static com.ferry.myifood.domain.utils.ConstantsUtil.NAO_EXISTE_CIDADE_COM_O_ID_INFORMADO;
 import static com.ferry.myifood.domain.utils.ConstantsUtil.NAO_EXISTE_ESTADO_COM_O_ID_INFORMADO;
 
@@ -24,8 +27,8 @@ public class CidadeService {
     private final EstadoRepository estadoRepository;
 
     @Transactional(readOnly = true)
-    public Page<Cidade> listar(Pageable page) {
-        return cidadeRepository.findAll(page);
+    public Page<CidadeDto> listar(Pageable page) {
+        return cidadeRepository.findAll(page).map(CidadeDto::new);
     }
 
     @Transactional(readOnly = true)

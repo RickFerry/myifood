@@ -1,6 +1,7 @@
 package com.ferry.myifood.domain.controller;
 
 import com.ferry.myifood.domain.model.Cidade;
+import com.ferry.myifood.domain.model.dtos.CidadeDto;
 import com.ferry.myifood.domain.service.CidadeService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -20,7 +21,7 @@ public class CidadeController {
     private final CidadeService cidadeService;
 
     @GetMapping
-    public ResponseEntity<Page<Cidade>> listar(Pageable page) {
+    public ResponseEntity<Page<CidadeDto>> listar(Pageable page) {
         return ResponseEntity.ok(cidadeService.listar(page));
     }
 
