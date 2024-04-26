@@ -15,8 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 
-import java.util.stream.Collectors;
-
 import static com.ferry.myifood.domain.utils.ConstantsUtil.NAO_EXISTE_CIDADE_COM_O_ID_INFORMADO;
 import static com.ferry.myifood.domain.utils.ConstantsUtil.NAO_EXISTE_ESTADO_COM_O_ID_INFORMADO;
 
@@ -32,28 +30,28 @@ public class CidadeService {
     }
 
     @Transactional(readOnly = true)
-    public Cidade buscar(Long id) {
-        return cidadeRepository.findById(id).orElseThrow(
+    public CidadeDto buscar(Long id) {
+        return cidadeRepository.findById(id).map(CidadeDto::new).orElseThrow(
                 () -> new CidadeNaoEncontradaException(NAO_EXISTE_CIDADE_COM_O_ID_INFORMADO));
     }
 
     @Transactional
-    public Cidade salvar(Cidade cidade) {
+    public CidadeDto salvar(Cidade cidade) {
         cidade.setEstado(estadoRepository.findById(cidade.getEstado().getId())
                 .orElseThrow(
                         () -> new EstadoNaoEncontradoException(NAO_EXISTE_ESTADO_COM_O_ID_INFORMADO)));
-        return cidadeRepository.save(cidade);
+        return new CidadeDto(cidadeRepository.save(cidade));
     }
 
     @Transactional
-    public Cidade atualizar(Long id, Cidade cidade) {
+    public CidadeDto atualizar(Long id, Cidade cidade) {
         return cidadeRepository.findById(id)
                 .map(c -> {
                     c.setEstado(estadoRepository.findById(cidade.getEstado().getId())
                             .orElseThrow(
                                     () -> new EstadoNaoEncontradoException(NAO_EXISTE_ESTADO_COM_O_ID_INFORMADO)));
                     BeanUtils.copyProperties(cidade, c, "id");
-                    return cidadeRepository.save(c);
+                    return new CidadeDto(cidadeRepository.save(c));
                 })
                 .orElseThrow(() -> new EntityNotFoundException(NAO_EXISTE_CIDADE_COM_O_ID_INFORMADO));
     }

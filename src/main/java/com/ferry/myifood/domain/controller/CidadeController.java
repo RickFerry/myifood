@@ -26,7 +26,7 @@ public class CidadeController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Cidade> buscar(@PathVariable Long id) {
+    public ResponseEntity<CidadeDto> buscar(@PathVariable Long id) {
         try {
             return ResponseEntity.ok(cidadeService.buscar(id));
         } catch (RuntimeException e) {
@@ -37,7 +37,7 @@ public class CidadeController {
     @PostMapping
     public ResponseEntity<?> salvar(@RequestBody @Valid Cidade cidade, UriComponentsBuilder uriComponentsBuilder) {
         try {
-            Cidade nova = cidadeService.salvar(cidade);
+            CidadeDto nova = cidadeService.salvar(cidade);
             URI uri = uriComponentsBuilder.path("/cidades/{id}").buildAndExpand(nova.getId()).toUri();
             return ResponseEntity.created(uri).body(nova);
         } catch (RuntimeException e) {
