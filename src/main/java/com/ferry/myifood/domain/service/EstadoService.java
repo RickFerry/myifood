@@ -1,6 +1,8 @@
 package com.ferry.myifood.domain.service;
 
+import com.ferry.myifood.domain.mapper.EstadoMapper;
 import com.ferry.myifood.domain.model.Estado;
+import com.ferry.myifood.domain.model.dtos.EstadoDto;
 import com.ferry.myifood.domain.repository.EstadoRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -15,28 +17,30 @@ import javax.persistence.EntityNotFoundException;
 @AllArgsConstructor
 public class EstadoService {
     private final EstadoRepository estadoRepository;
+    private final EstadoMapper estadoMapper;
 
     @Transactional(readOnly = true)
-    public Page<Estado> listar(Pageable page) {
-        return estadoRepository.findAll(page);
+    public Page<EstadoDto> listar(Pageable page) {
+        return estadoRepository.findAll(page).map(estadoMapper::toDto);
     }
 
     @Transactional(readOnly = true)
-    public Estado buscar(Long id) {
-        return estadoRepository.findById(id).orElseThrow(() -> new RuntimeException("Estado não encontrado"));
+    public EstadoDto buscar(Long id) {
+        return estadoRepository.findById(id).map(estadoMapper::toDto)
+                .orElseThrow(() -> new RuntimeException("Estado não encontrado"));
     }
 
     @Transactional
-    public Estado salvar(Estado estado) {
-        return estadoRepository.save(estado);
+    public EstadoDto salvar(Estado estado) {
+        return estadoMapper.toDto(estadoRepository.save(estado));
     }
 
     @Transactional
-    public Estado atualizar(Long id, Estado estado) {
+    public EstadoDto atualizar(Long id, Estado estado) {
         return estadoRepository.findById(id)
                 .map(e -> {
                     BeanUtils.copyProperties(estado, e, "id");
-                    return estadoRepository.save(e);
+                    return estadoMapper.toDto(estadoRepository.save(e));
                 })
                 .orElseThrow(() -> new RuntimeException("Não existe um estado com o id informado"));
     }

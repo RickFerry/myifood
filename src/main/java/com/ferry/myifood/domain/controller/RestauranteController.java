@@ -1,6 +1,7 @@
 package com.ferry.myifood.domain.controller;
 
 import com.ferry.myifood.domain.model.Restaurante;
+import com.ferry.myifood.domain.model.dtos.RestauranteDto;
 import com.ferry.myifood.domain.service.RestauranteService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -20,12 +21,12 @@ public class RestauranteController {
     private final RestauranteService restauranteService;
 
     @GetMapping
-    public ResponseEntity<Page<Restaurante>> listar(Pageable page) {
+    public ResponseEntity<Page<RestauranteDto>> listar(Pageable page) {
         return ResponseEntity.ok(restauranteService.listar(page));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Restaurante> buscar(@PathVariable Long id) {
+    public ResponseEntity<RestauranteDto> buscar(@PathVariable Long id) {
         try {
             return ResponseEntity.ok(restauranteService.buscar(id));
         } catch (RuntimeException e) {
@@ -37,7 +38,7 @@ public class RestauranteController {
     public ResponseEntity<?> salvar(
             @RequestBody @Valid Restaurante restaurante, UriComponentsBuilder uriComponentsBuilder) {
         try {
-            Restaurante novo = restauranteService.salvar(restaurante);
+            RestauranteDto novo = restauranteService.salvar(restaurante);
             URI uri = uriComponentsBuilder.path("/restaurantes/{id}").buildAndExpand(novo.getId()).toUri();
             return ResponseEntity.created(uri).body(novo);
         } catch (RuntimeException e) {
@@ -46,9 +47,9 @@ public class RestauranteController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody Restaurante restaurante) {
+    public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody RestauranteDto dto) {
         try {
-            return ResponseEntity.ok(restauranteService.atualizar(id, restaurante));
+            return ResponseEntity.ok(restauranteService.atualizar(id, dto));
         } catch (EntityNotFoundException e) {
             return ResponseEntity.notFound().build();
         } catch (RuntimeException e) {

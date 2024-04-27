@@ -16,9 +16,4 @@ public class EstadoDto implements Serializable {
     Long id;
     @NotBlank
     String nome;
-
-    public EstadoDto(Estado estado) {
-        this.id = estado.getId();
-        this.nome = estado.getNome();
-    }
 }

@@ -1,6 +1,7 @@
 package com.ferry.myifood.domain.controller;
 
 import com.ferry.myifood.domain.model.Estado;
+import com.ferry.myifood.domain.model.dtos.EstadoDto;
 import com.ferry.myifood.domain.service.EstadoService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -18,12 +19,12 @@ public class EstadoController {
     private final EstadoService estadoService;
 
     @GetMapping
-    public ResponseEntity<Page<Estado>> listar(Pageable page) {
+    public ResponseEntity<Page<EstadoDto>> listar(Pageable page) {
         return ResponseEntity.ok(estadoService.listar(page));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Estado> buscar(@PathVariable Long id) {
+    public ResponseEntity<EstadoDto> buscar(@PathVariable Long id) {
         try {
             return ResponseEntity.ok(estadoService.buscar(id));
         } catch (RuntimeException e) {
@@ -32,14 +33,14 @@ public class EstadoController {
     }
 
     @PostMapping
-    public ResponseEntity<Estado> salvar(@RequestBody Estado estado, UriComponentsBuilder uriComponentsBuilder) {
-        Estado novo = estadoService.salvar(estado);
+    public ResponseEntity<EstadoDto> salvar(@RequestBody Estado estado, UriComponentsBuilder uriComponentsBuilder) {
+        EstadoDto novo = estadoService.salvar(estado);
         URI uri = uriComponentsBuilder.path("/estados/{id}").buildAndExpand(novo.getId()).toUri();
         return ResponseEntity.created(uri).body(novo);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Estado> atualizar(@PathVariable Long id, @RequestBody Estado estado) {
+    public ResponseEntity<EstadoDto> atualizar(@PathVariable Long id, @RequestBody Estado estado) {
         try {
             return ResponseEntity.ok(estadoService.atualizar(id, estado));
         } catch (RuntimeException e) {
