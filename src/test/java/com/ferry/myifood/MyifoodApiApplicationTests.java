@@ -8,6 +8,6 @@ public class MyifoodApiApplicationTests {
 
     @Test
     public void contextLoads() {
+        MyifoodApiApplication.main(new String[] {});
     }
-
 }
