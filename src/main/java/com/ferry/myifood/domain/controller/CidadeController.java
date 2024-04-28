@@ -1,7 +1,8 @@
 package com.ferry.myifood.domain.controller;
 
-import com.ferry.myifood.domain.model.Cidade;
-import com.ferry.myifood.domain.model.dtos.CidadeDto;
+import com.ferry.myifood.domain.model.dtos.output.CidadeOUT;
+import com.ferry.myifood.domain.model.dtos.input.CidadeIN;
+import com.ferry.myifood.domain.model.dtos.update.CidadeUP;
 import com.ferry.myifood.domain.service.CidadeService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,12 +22,12 @@ public class CidadeController {
     private final CidadeService cidadeService;
 
     @GetMapping
-    public ResponseEntity<Page<CidadeDto>> listar(Pageable page) {
+    public ResponseEntity<Page<CidadeOUT>> listar(Pageable page) {
         return ResponseEntity.ok(cidadeService.listar(page));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CidadeDto> buscar(@PathVariable Long id) {
+    public ResponseEntity<CidadeOUT> buscar(@PathVariable Long id) {
         try {
             return ResponseEntity.ok(cidadeService.buscar(id));
         } catch (RuntimeException e) {
@@ -35,9 +36,9 @@ public class CidadeController {
     }
 
     @PostMapping
-    public ResponseEntity<?> salvar(@RequestBody @Valid Cidade cidade, UriComponentsBuilder uriComponentsBuilder) {
+    public ResponseEntity<?> salvar(@RequestBody @Valid CidadeIN in, UriComponentsBuilder uriComponentsBuilder) {
         try {
-            CidadeDto nova = cidadeService.salvar(cidade);
+            CidadeOUT nova = cidadeService.salvar(in);
             URI uri = uriComponentsBuilder.path("/cidades/{id}").buildAndExpand(nova.getId()).toUri();
             return ResponseEntity.created(uri).body(nova);
         } catch (RuntimeException e) {
@@ -46,9 +47,9 @@ public class CidadeController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody Cidade cidade) {
+    public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody CidadeUP up) {
         try {
-            return ResponseEntity.ok(cidadeService.atualizar(id, cidade));
+            return ResponseEntity.ok(cidadeService.atualizar(id, up));
         } catch (EntityNotFoundException e) {
             return ResponseEntity.notFound().build();
         } catch (RuntimeException e) {

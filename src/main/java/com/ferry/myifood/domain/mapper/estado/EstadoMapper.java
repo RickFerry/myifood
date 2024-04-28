@@ -1,5 +1,6 @@
-package com.ferry.myifood.domain.mapper;
+package com.ferry.myifood.domain.mapper.estado;
 
+import com.ferry.myifood.domain.mapper.EntityMapper;
 import com.ferry.myifood.domain.model.Estado;
 import com.ferry.myifood.domain.model.dtos.EstadoDto;
 import org.mapstruct.*;

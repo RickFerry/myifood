@@ -1,6 +1,6 @@
 package com.ferry.myifood.domain.service;
 
-import com.ferry.myifood.domain.mapper.EstadoMapper;
+import com.ferry.myifood.domain.mapper.estado.EstadoMapper;
 import com.ferry.myifood.domain.model.Estado;
 import com.ferry.myifood.domain.model.dtos.EstadoDto;
 import com.ferry.myifood.domain.repository.EstadoRepository;
