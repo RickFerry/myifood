@@ -1,8 +1,10 @@
 package com.ferry.myifood.domain.service;
 
-import com.ferry.myifood.domain.mapper.CozinhaMapper;
+import com.ferry.myifood.domain.mapper.cozinha.CozinhaOUTMapper;
+import com.ferry.myifood.domain.mapper.cozinha.CozinhaINMapper;
 import com.ferry.myifood.domain.model.Cozinha;
-import com.ferry.myifood.domain.model.dtos.CozinhaDto;
+import com.ferry.myifood.domain.model.dtos.output.CozinhaOUT;
+import com.ferry.myifood.domain.model.dtos.input.CozinhaIN;
 import com.ferry.myifood.domain.repository.CozinhaRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -16,28 +18,29 @@ import javax.persistence.EntityNotFoundException;
 @Service
 @AllArgsConstructor
 public class CozinhaService {
-    private final CozinhaRepository cozinhaRepository;
-    private final CozinhaMapper cozinhaMapper;
     private static final String NOT_FOUND = "Cozinha não encontrada";
+    private final CozinhaRepository cozinhaRepository;
+    private final CozinhaOUTMapper cozinhaMapper;
+    private final CozinhaINMapper cozinhaINMapper;
 
     @Transactional(readOnly = true)
-    public Page<CozinhaDto> listar(Pageable page) {
+    public Page<CozinhaOUT> listar(Pageable page) {
         return cozinhaRepository.findAll(page).map(cozinhaMapper::toDto);
     }
 
     @Transactional(readOnly = true)
-    public CozinhaDto pegar(Long id) {
+    public CozinhaOUT pegar(Long id) {
         return cozinhaRepository.findById(id).map(cozinhaMapper::toDto)
                 .orElseThrow(() -> new RuntimeException(NOT_FOUND));
     }
 
     @Transactional
-    public CozinhaDto salvar(Cozinha cozinha) {
-        return cozinhaMapper.toDto(cozinhaRepository.save(cozinha));
+    public CozinhaOUT salvar(CozinhaIN in) {
+        return cozinhaMapper.toDto(cozinhaRepository.save(cozinhaINMapper.toEntity(in)));
     }
 
     @Transactional
-    public CozinhaDto atualizar(Long id, Cozinha cozinha) {
+    public CozinhaOUT atualizar(Long id, Cozinha cozinha) {
         return cozinhaRepository.findById(id)
                 .map(c -> {
                     BeanUtils.copyProperties(cozinha, c, "id");

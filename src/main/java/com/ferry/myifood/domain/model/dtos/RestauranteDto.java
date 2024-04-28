@@ -1,10 +1,8 @@
 package com.ferry.myifood.domain.model.dtos;
 
+import com.ferry.myifood.domain.model.dtos.output.CozinhaOUT;
 import lombok.Value;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PositiveOrZero;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Set;
@@ -22,7 +20,7 @@ public class RestauranteDto implements Serializable {
     String numeroEndereco;
     String complementoEndereco;
     String bairroEndereco;
-    CozinhaDto cozinha;
+    CozinhaOUT cozinha;
     Set<ProdutoDto> produtos;
     Set<FormaPagamentoDto> formasPagamento;
 }

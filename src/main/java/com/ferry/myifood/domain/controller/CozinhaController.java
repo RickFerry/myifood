@@ -1,7 +1,8 @@
 package com.ferry.myifood.domain.controller;
 
 import com.ferry.myifood.domain.model.Cozinha;
-import com.ferry.myifood.domain.model.dtos.CozinhaDto;
+import com.ferry.myifood.domain.model.dtos.output.CozinhaOUT;
+import com.ferry.myifood.domain.model.dtos.input.CozinhaIN;
 import com.ferry.myifood.domain.service.CozinhaService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,12 +22,12 @@ public class CozinhaController {
     private final CozinhaService cozinhaService;
 
     @GetMapping
-    public ResponseEntity<Page<CozinhaDto>> listar(Pageable page) {
+    public ResponseEntity<Page<CozinhaOUT>> listar(Pageable page) {
     return ResponseEntity.ok(cozinhaService.listar(page));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CozinhaDto> pegar(@PathVariable Long id) {
+    public ResponseEntity<CozinhaOUT> pegar(@PathVariable Long id) {
         try {
             return ResponseEntity.ok(cozinhaService.pegar(id));
         } catch (RuntimeException e) {
@@ -35,15 +36,15 @@ public class CozinhaController {
     }
 
     @PostMapping
-    public ResponseEntity<CozinhaDto> salvar(
-            @RequestBody @Valid Cozinha cozinha, UriComponentsBuilder uriComponentsBuilder) {
-        CozinhaDto nova = cozinhaService.salvar(cozinha);
+    public ResponseEntity<CozinhaOUT> salvar(
+            @RequestBody @Valid CozinhaIN cozinhaIN, UriComponentsBuilder uriComponentsBuilder) {
+        CozinhaOUT nova = cozinhaService.salvar(cozinhaIN);
         URI uri = uriComponentsBuilder.path("/cozinhas/{id}").buildAndExpand(nova.getId()).toUri();
         return ResponseEntity.created(uri).body(nova);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CozinhaDto> atualizar(@PathVariable Long id, @RequestBody Cozinha cozinha) {
+    public ResponseEntity<CozinhaOUT> atualizar(@PathVariable Long id, @RequestBody Cozinha cozinha) {
         try {
             return ResponseEntity.ok(cozinhaService.atualizar(id, cozinha));
         } catch (RuntimeException e) {
