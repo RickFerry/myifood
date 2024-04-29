@@ -15,7 +15,8 @@
     <description>myifood-api</description>
     <properties>
         <java.version>11</java.version>
-        <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
+        <org.projectlombok.version>1.18.30</org.projectlombok.version>
+        <org.mapstruct.version>1.6.0.Beta1</org.mapstruct.version>
     </properties>
     <dependencies>
         <dependency>
@@ -43,6 +44,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <version>${org.projectlombok.version}</version>
             <optional>true</optional>
         </dependency>
         <dependency>
@@ -85,7 +87,7 @@
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
-                            <version>${lombok.version}</version>
+                            <version>${org.projectlombok.version}</version>
                         </path>
                         <dependency>
                             <groupId>org.projectlombok</groupId>
@@ -102,5 +104,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

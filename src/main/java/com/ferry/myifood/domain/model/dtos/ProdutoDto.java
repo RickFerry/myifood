@@ -1,17 +1,21 @@
 package com.ferry.myifood.domain.model.dtos;
 
-import lombok.Value;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
  * DTO for {@link com.ferry.myifood.domain.model.Produto}
  */
-@Value
-public class ProdutoDto implements Serializable {
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class ProdutoDto {
     @NotBlank
     Long id;
     @NotBlank

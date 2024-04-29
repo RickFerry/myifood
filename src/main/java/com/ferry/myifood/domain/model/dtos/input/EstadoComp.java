@@ -4,19 +4,18 @@ import com.ferry.myifood.domain.model.group.Groups;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Value;
+import lombok.Setter;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 
 /**
  * DTO for {@link com.ferry.myifood.domain.model.Estado}
  */
 @Getter
-@AllArgsConstructor
+@Setter
 @NoArgsConstructor
-public class EstadoComp implements Serializable {
+@AllArgsConstructor
+public class EstadoComp {
     @NotNull(groups = Groups.EstadoId.class)
     Long id;
 }

@@ -3,18 +3,18 @@ package com.ferry.myifood.domain.model.dtos.update;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Value;
+import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
-import java.io.Serializable;
 
 /**
  * DTO for {@link com.ferry.myifood.domain.model.Cidade}
  */
 @Getter
-@AllArgsConstructor
+@Setter
 @NoArgsConstructor
-public class CidadeUP implements Serializable {
+@AllArgsConstructor
+public class CidadeUP {
     @NotBlank
     String nome;
 }

@@ -2,7 +2,7 @@ package com.ferry.myifood.domain.service;
 
 import com.ferry.myifood.domain.mapper.estado.EstadoMapper;
 import com.ferry.myifood.domain.model.Estado;
-import com.ferry.myifood.domain.model.dtos.EstadoDto;
+import com.ferry.myifood.domain.model.dtos.output.EstadoOUT;
 import com.ferry.myifood.domain.repository.EstadoRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -20,23 +20,23 @@ public class EstadoService {
     private final EstadoMapper estadoMapper;
 
     @Transactional(readOnly = true)
-    public Page<EstadoDto> listar(Pageable page) {
+    public Page<EstadoOUT> listar(Pageable page) {
         return estadoRepository.findAll(page).map(estadoMapper::toDto);
     }
 
     @Transactional(readOnly = true)
-    public EstadoDto buscar(Long id) {
+    public EstadoOUT buscar(Long id) {
         return estadoRepository.findById(id).map(estadoMapper::toDto)
                 .orElseThrow(() -> new RuntimeException("Estado não encontrado"));
     }
 
     @Transactional
-    public EstadoDto salvar(Estado estado) {
+    public EstadoOUT salvar(Estado estado) {
         return estadoMapper.toDto(estadoRepository.save(estado));
     }
 
     @Transactional
-    public EstadoDto atualizar(Long id, Estado estado) {
+    public EstadoOUT atualizar(Long id, Estado estado) {
         return estadoRepository.findById(id)
                 .map(e -> {
                     BeanUtils.copyProperties(estado, e, "id");
