@@ -1,8 +1,12 @@
 package com.ferry.myifood.domain.service;
 
-import com.ferry.myifood.domain.mapper.estado.EstadoMapper;
+import com.ferry.myifood.domain.mapper.estado.EstadoINMapper;
+import com.ferry.myifood.domain.mapper.estado.EstadoOUTMapper;
+import com.ferry.myifood.domain.mapper.estado.EstadoUPMapper;
 import com.ferry.myifood.domain.model.Estado;
+import com.ferry.myifood.domain.model.dtos.input.EstadoIN;
 import com.ferry.myifood.domain.model.dtos.output.EstadoOUT;
+import com.ferry.myifood.domain.model.dtos.update.EstadoUP;
 import com.ferry.myifood.domain.repository.EstadoRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -17,32 +21,30 @@ import javax.persistence.EntityNotFoundException;
 @AllArgsConstructor
 public class EstadoService {
     private final EstadoRepository estadoRepository;
-    private final EstadoMapper estadoMapper;
+    private final EstadoOUTMapper estadoOUTMapper;
+    private final EstadoINMapper estadoINMapper;
+    private final EstadoUPMapper estadoUPMapper;
 
     @Transactional(readOnly = true)
     public Page<EstadoOUT> listar(Pageable page) {
-        return estadoRepository.findAll(page).map(estadoMapper::toDto);
+        return estadoRepository.findAll(page).map(estadoOUTMapper::toDto);
     }
 
     @Transactional(readOnly = true)
     public EstadoOUT buscar(Long id) {
-        return estadoRepository.findById(id).map(estadoMapper::toDto)
+        return estadoRepository.findById(id).map(estadoOUTMapper::toDto)
                 .orElseThrow(() -> new RuntimeException("Estado não encontrado"));
     }
 
     @Transactional
-    public EstadoOUT salvar(Estado estado) {
-        return estadoMapper.toDto(estadoRepository.save(estado));
+    public EstadoOUT salvar(EstadoIN in) {
+        return estadoOUTMapper.toDto(estadoRepository.save(estadoINMapper.toEntity(in)));
     }
 
     @Transactional
-    public EstadoOUT atualizar(Long id, Estado estado) {
-        return estadoRepository.findById(id)
-                .map(e -> {
-                    BeanUtils.copyProperties(estado, e, "id");
-                    return estadoMapper.toDto(estadoRepository.save(e));
-                })
-                .orElseThrow(() -> new RuntimeException("Não existe um estado com o id informado"));
+    public EstadoOUT atualizar(Long id, EstadoUP up) {
+        return estadoOUTMapper.toDto(estadoUPMapper.partialUpdate(up, estadoRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Não existe um estado com o id informado"))));
     }
 
     @Transactional
