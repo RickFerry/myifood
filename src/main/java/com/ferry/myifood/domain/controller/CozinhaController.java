@@ -3,6 +3,7 @@ package com.ferry.myifood.domain.controller;
 import com.ferry.myifood.domain.model.Cozinha;
 import com.ferry.myifood.domain.model.dtos.output.CozinhaOUT;
 import com.ferry.myifood.domain.model.dtos.input.CozinhaIN;
+import com.ferry.myifood.domain.model.dtos.update.CozinhaUP;
 import com.ferry.myifood.domain.service.CozinhaService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -44,9 +45,9 @@ public class CozinhaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CozinhaOUT> atualizar(@PathVariable Long id, @RequestBody Cozinha cozinha) {
+    public ResponseEntity<CozinhaOUT> atualizar(@PathVariable Long id, @RequestBody @Valid CozinhaUP up) {
         try {
-            return ResponseEntity.ok(cozinhaService.atualizar(id, cozinha));
+            return ResponseEntity.ok(cozinhaService.atualizar(id, up));
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }

@@ -1,4 +1,4 @@
-package com.ferry.myifood.domain.model.dtos.output;
+package com.ferry.myifood.domain.model.dtos.update;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 /**
  * DTO for {@link com.ferry.myifood.domain.model.Cozinha}
@@ -15,7 +14,7 @@ import javax.validation.constraints.NotNull;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CozinhaOUT {
-    Long id;
+public class CozinhaUP {
+    @NotBlank
     String nome;
 }
