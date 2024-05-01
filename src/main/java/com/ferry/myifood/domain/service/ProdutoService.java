@@ -20,7 +20,7 @@ public class ProdutoService {
      * @return List<Produto>
      */
     @Transactional(readOnly = true)
-    public final List<Produto> listar() {
+    public List<Produto> listar() {
         return produtoRepository.findAll();
     }
 
@@ -29,7 +29,7 @@ public class ProdutoService {
      * @return Produto
      */
     @Transactional(readOnly = true)
-    public final Produto buscar(final Long id) {
+    public Produto buscar(final Long id) {
         return produtoRepository.findById(id).orElseThrow(
                 () -> new RuntimeException(
                     "Não existe produto com o id informado"));

@@ -40,7 +40,7 @@ public class EstadoService {
      * @return Page<EstadoOUT>
      */
     @Transactional(readOnly = true)
-    public final Page<EstadoOUT> listar(final Pageable page) {
+    public Page<EstadoOUT> listar(final Pageable page) {
         return estadoRepository.findAll(page).map(estadoOUTMapper::toDto);
     }
 
@@ -49,7 +49,7 @@ public class EstadoService {
      * @return EstadoOUT
      */
     @Transactional(readOnly = true)
-    public final EstadoOUT buscar(final Long id) {
+    public EstadoOUT buscar(final Long id) {
         return estadoRepository.findById(id).map(estadoOUTMapper::toDto)
                 .orElseThrow(() ->
                 new RuntimeException("Estado não encontrado"));
@@ -60,7 +60,7 @@ public class EstadoService {
      * @return EstadoOUT
      */
     @Transactional
-    public final EstadoOUT salvar(final EstadoIN in) {
+    public EstadoOUT salvar(final EstadoIN in) {
         return estadoOUTMapper
                 .toDto(estadoRepository.save(estadoINMapper.toEntity(in)));
     }
@@ -71,7 +71,7 @@ public class EstadoService {
      * @return EstadoOUT
      */
     @Transactional
-    public final EstadoOUT atualizar(final Long id, final EstadoUP up) {
+    public EstadoOUT atualizar(final Long id, final EstadoUP up) {
         return estadoOUTMapper
                 .toDto(estadoUPMapper
                 .partialUpdate(up, estadoRepository.findById(id)
@@ -83,7 +83,7 @@ public class EstadoService {
      * @param id
      */
     @Transactional
-    public final void deletar(final Long id) {
+    public void deletar(final Long id) {
         estadoRepository.findById(id)
                 .ifPresentOrElse(estadoRepository::delete,
                         () -> {

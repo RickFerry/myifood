@@ -35,7 +35,7 @@ public class RestauranteService {
      * @return Page<RestauranteDto>
      */
     @Transactional(readOnly = true)
-    public final Page<RestauranteDto> listar(final Pageable page) {
+    public Page<RestauranteDto> listar(final Pageable page) {
         return restauranteRepository
                     .findAll(page).map(restauranteMapper::toDto);
     }
@@ -45,7 +45,7 @@ public class RestauranteService {
          * @return RestauranteDto
          */
         @Transactional(readOnly = true)
-    public final RestauranteDto buscar(final Long id) {
+    public RestauranteDto buscar(final Long id) {
         return restauranteRepository.findById(id).map(restauranteMapper::toDto)
                 .orElseThrow(() -> new RuntimeException(
                     "Restaurante não encontrado"));
@@ -56,7 +56,7 @@ public class RestauranteService {
      * @return RestauranteDto
      */
     @Transactional
-    public final RestauranteDto salvar(final Restaurante restaurante) {
+    public RestauranteDto salvar(final Restaurante restaurante) {
         Cozinha cozinha = cozinhaRepository
                             .findById(restaurante.getCozinha().getId())
                 .orElseThrow(() ->
@@ -71,8 +71,8 @@ public class RestauranteService {
      * @return RestauranteDto
      */
     @Transactional
-    public final RestauranteDto atualizar(
-                final Long id, final RestauranteDto dto) {
+    public RestauranteDto atualizar(
+            final Long id, final RestauranteDto dto) {
         return restauranteMapper
                 .toDto(restauranteMapper
                 .partialUpdate(dto, restauranteRepository.findById(id)
@@ -84,7 +84,7 @@ public class RestauranteService {
      * @param id
      */
     @Transactional
-    public final void deletar(final Long id) {
+    public void deletar(final Long id) {
         restauranteRepository.findById(id)
                 .ifPresentOrElse(restauranteRepository::delete, () -> {
                     throw new EntityNotFoundException(

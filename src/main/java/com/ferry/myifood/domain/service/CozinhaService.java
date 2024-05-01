@@ -44,7 +44,7 @@ public class CozinhaService {
      * @return Page<CozinhaOUT>
      */
     @Transactional(readOnly = true)
-    public final Page<CozinhaOUT> listar(final Pageable page) {
+    public Page<CozinhaOUT> listar(final Pageable page) {
         return cozinhaRepository.findAll(page).map(cozinhaOUTMapper::toDto);
     }
 
@@ -53,7 +53,7 @@ public class CozinhaService {
      * @return CozinhaOUT
      */
     @Transactional(readOnly = true)
-    public final CozinhaOUT pegar(final Long id) {
+    public CozinhaOUT pegar(final Long id) {
         return cozinhaRepository.findById(id).map(cozinhaOUTMapper::toDto)
                 .orElseThrow(() -> new RuntimeException(NOT_FOUND));
     }
@@ -63,7 +63,7 @@ public class CozinhaService {
      * @return CozinhaOUT
      */
     @Transactional
-    public final CozinhaOUT salvar(final CozinhaIN in) {
+    public CozinhaOUT salvar(final CozinhaIN in) {
         return cozinhaOUTMapper
                 .toDto(cozinhaRepository.save(cozinhaINMapper.toEntity(in)));
     }
@@ -74,7 +74,7 @@ public class CozinhaService {
      * @return CozinhaOUT
      */
     @Transactional
-    public final CozinhaOUT atualizar(final Long id, final CozinhaUP up) {
+    public CozinhaOUT atualizar(final Long id, final CozinhaUP up) {
         return cozinhaOUTMapper
                 .toDto(cozinhaUPMapper
                 .partialUpdate(up, cozinhaRepository.findById(id)
@@ -85,7 +85,7 @@ public class CozinhaService {
      * @param id
      */
     @Transactional
-    public final void remover(final Long id) {
+    public void remover(final Long id) {
         cozinhaRepository.findById(id)
                 .ifPresentOrElse(cozinhaRepository::delete,
                         () -> {

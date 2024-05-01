@@ -51,7 +51,7 @@ public class CidadeService {
      * @return Page<CidadeOUT>
      */
     @Transactional(readOnly = true)
-    public final Page<CidadeOUT> listar(final Pageable page) {
+    public Page<CidadeOUT> listar(final Pageable page) {
         return cidadeRepository.findAll(page).map(cidadeOUTMapper::toDto);
     }
 
@@ -60,7 +60,7 @@ public class CidadeService {
      * @return CidadeOUT
      */
     @Transactional(readOnly = true)
-    public final CidadeOUT buscar(final Long id) {
+    public CidadeOUT buscar(final Long id) {
         return cidadeRepository
                     .findById(id).map(cidadeOUTMapper::toDto).orElseThrow(
                         () -> new CidadeNaoEncontradaException(
@@ -72,7 +72,7 @@ public class CidadeService {
      * @return CidadeOUT
      */
     @Transactional
-    public final CidadeOUT salvar(final CidadeIN in) {
+    public CidadeOUT salvar(final CidadeIN in) {
         Cidade cidade = cidadeINMapper.toEntity(in);
         cidade.setEstado(estadoRepository.findById(in.getEstado().getId())
                 .orElseThrow(
@@ -87,7 +87,7 @@ public class CidadeService {
      * @return CidadeOUT
      */
     @Transactional
-    public final CidadeOUT atualizar(final Long id, final CidadeUP up) {
+    public CidadeOUT atualizar(final Long id, final CidadeUP up) {
         return cidadeOUTMapper
                     .toDto(cidadeUPMapper
                     .partialUpdate(up, cidadeRepository.findById(id)
@@ -99,7 +99,7 @@ public class CidadeService {
      * @param id
      */
     @Transactional
-    public final void remover(final Long id) {
+    public void remover(final Long id) {
         cidadeRepository.findById(id)
                 .ifPresentOrElse(cidadeRepository::delete,
                         () -> {
