@@ -1,17 +1,23 @@
 package com.ferry.myifood.domain.model;
 
-import com.ferry.myifood.domain.model.group.Groups;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.util.Objects;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.groups.ConvertGroup;
-import java.util.Objects;
+
+import com.ferry.myifood.domain.model.group.Groups;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
@@ -19,13 +25,22 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Cidade {
+    /**
+     *
+     */
     @Id
     @NotNull(groups = Groups.CidadeId.class)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    /**
+     *
+     */
     @NotBlank
     private String nome;
 
+    /**
+     *
+     */
     @Valid
     @NotNull
     @ManyToOne
@@ -33,15 +48,19 @@ public class Cidade {
     private Estado estado;
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public final boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Cidade cidade = (Cidade) o;
         return Objects.equals(id, cidade.id);
     }
 
     @Override
-    public int hashCode() {
+    public final int hashCode() {
         return Objects.hashCode(id);
     }
 }
