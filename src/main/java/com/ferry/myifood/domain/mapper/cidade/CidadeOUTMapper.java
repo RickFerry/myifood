@@ -20,6 +20,6 @@ public interface CidadeOUTMapper extends EntityMapper<CidadeOUT, Cidade> {
      * @return Cidade
      */
     @BeanMapping(nullValuePropertyMappingStrategy =
-                    NullValuePropertyMappingStrategy.IGNORE)
+            NullValuePropertyMappingStrategy.IGNORE)
     Cidade partialUpdate(CidadeOUT cidadeDto, @MappingTarget Cidade cidade);
 }
