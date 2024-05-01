@@ -26,6 +26,10 @@ public interface RestauranteMapper extends
     Restaurante partialUpdate(RestauranteDto restauranteDto,
             @MappingTarget Restaurante restaurante);
 
+    /**
+    * @param entity
+    * @return RestauranteDto
+    */
     @Mapping(source = "endereco.cep", target = "cepEndereco")
     @Mapping(source = "endereco.logradouro", target = "logradouroEndereco")
     @Mapping(source = "endereco.numero", target = "numeroEndereco")
