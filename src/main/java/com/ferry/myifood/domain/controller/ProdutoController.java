@@ -15,15 +15,25 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/produtos")
 public class ProdutoController {
+    /**
+     *
+     */
     private final ProdutoService produtoService;
 
+    /**
+     * @return ResponseEntity<List<Produto>>
+     */
     @GetMapping
-    public ResponseEntity<List<Produto>> listar() {
+    public final ResponseEntity<List<Produto>> listar() {
         return ResponseEntity.ok(produtoService.listar());
     }
 
+    /**
+     * @param id
+     * @return ResponseEntity<Produto>
+     */
     @GetMapping("/{id}")
-    public ResponseEntity<Produto> buscar(@PathVariable Long id) {
+    public final ResponseEntity<Produto> buscar(@PathVariable final Long id) {
         try {
             return ResponseEntity.ok(produtoService.buscar(id));
         } catch (RuntimeException e) {

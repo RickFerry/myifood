@@ -5,17 +5,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-
-/**
- * DTO for {@link com.ferry.myifood.domain.model.Cozinha}
- */
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class CozinhaOUT {
-    Long id;
-    String nome;
+    /**
+     *
+     */
+    private Long id;
+    /**
+     *
+     */
+    private String nome;
 }

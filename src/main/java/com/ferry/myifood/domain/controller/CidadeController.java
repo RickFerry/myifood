@@ -1,33 +1,52 @@
 package com.ferry.myifood.domain.controller;
 
-import com.ferry.myifood.domain.model.dtos.output.CidadeOUT;
-import com.ferry.myifood.domain.model.dtos.input.CidadeIN;
-import com.ferry.myifood.domain.model.dtos.update.CidadeUP;
-import com.ferry.myifood.domain.service.CidadeService;
-import lombok.AllArgsConstructor;
+import javax.persistence.EntityNotFoundException;
+import javax.validation.Valid;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.persistence.EntityNotFoundException;
-import javax.validation.Valid;
-import java.net.URI;
+import com.ferry.myifood.domain.model.dtos.input.CidadeIN;
+import com.ferry.myifood.domain.model.dtos.output.CidadeOUT;
+import com.ferry.myifood.domain.model.dtos.update.CidadeUP;
+import com.ferry.myifood.domain.service.CidadeService;
+
+import lombok.AllArgsConstructor;
 
 @RestController
 @AllArgsConstructor
 @RequestMapping("/cidades")
 public class CidadeController {
+    /**
+     *
+     */
     private final CidadeService cidadeService;
 
+    /**
+     * @param page
+     * @return ResponseEntity<Page<CidadeOUT>>
+     */
     @GetMapping
-    public ResponseEntity<Page<CidadeOUT>> listar(Pageable page) {
+    public final ResponseEntity<Page<CidadeOUT>> listar(final Pageable page) {
         return ResponseEntity.ok(cidadeService.listar(page));
     }
 
+    /**
+     * @param id
+     * @return ResponseEntity<CidadeOUT>
+     */
     @GetMapping("/{id}")
-    public ResponseEntity<CidadeOUT> buscar(@PathVariable Long id) {
+    public final ResponseEntity<CidadeOUT> buscar(@PathVariable final Long id) {
         try {
             return ResponseEntity.ok(cidadeService.buscar(id));
         } catch (RuntimeException e) {
@@ -35,19 +54,34 @@ public class CidadeController {
         }
     }
 
+    /**
+     * @param in
+     * @param uriComponentsBuilder
+     * @return ResponseEntity<CidadeOUT>
+     */
     @PostMapping
-    public ResponseEntity<?> salvar(@RequestBody @Valid CidadeIN in, UriComponentsBuilder uriComponentsBuilder) {
+    public final ResponseEntity<?> salvar(@RequestBody @Valid final CidadeIN in,
+            final UriComponentsBuilder uriComponentsBuilder) {
         try {
             CidadeOUT nova = cidadeService.salvar(in);
-            URI uri = uriComponentsBuilder.path("/cidades/{id}").buildAndExpand(nova.getId()).toUri();
+            var uri = uriComponentsBuilder
+                .path("/cidades/{id}")
+                .buildAndExpand(nova.getId())
+                .toUri();
             return ResponseEntity.created(uri).body(nova);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
+    /**
+     * @param id
+     * @param up
+     * @return ResponseEntity<CidadeOUT>
+     */
     @PutMapping("/{id}")
-    public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody CidadeUP up) {
+    public final ResponseEntity<?> atualizar(
+            @PathVariable final Long id, @RequestBody final CidadeUP up) {
         try {
             return ResponseEntity.ok(cidadeService.atualizar(id, up));
         } catch (EntityNotFoundException e) {
@@ -57,8 +91,12 @@ public class CidadeController {
         }
     }
 
+    /**
+     * @param id
+     * @return ResponseEntity<Void>
+     */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> remover(@PathVariable Long id) {
+    public final ResponseEntity<Void> remover(@PathVariable final Long id) {
         try {
             cidadeService.remover(id);
             return ResponseEntity.noContent().build();

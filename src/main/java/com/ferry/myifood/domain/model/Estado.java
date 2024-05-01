@@ -20,23 +20,33 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Estado {
+    /**
+     *
+     */
     @Id
     @NotNull(groups = Groups.EstadoId.class)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    /**
+     *
+     */
     @NotBlank
     private String nome;
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public final boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Estado estado = (Estado) o;
         return Objects.equals(id, estado.id);
     }
 
     @Override
-    public int hashCode() {
+    public final int hashCode() {
         return Objects.hashCode(id);
     }
 }
