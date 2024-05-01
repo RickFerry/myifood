@@ -7,15 +7,18 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 
-/**
- * DTO for {@link com.ferry.myifood.domain.model.FormaPagamento}
- */
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class FormaPagamentoDto {
-    Long id;
+    /**
+     *
+     */
+    private Long id;
+    /**
+     *
+     */
     @NotBlank
-    String descricao;
+    private String descricao;
 }

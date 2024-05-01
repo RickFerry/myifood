@@ -8,7 +8,6 @@ import com.ferry.myifood.domain.model.dtos.input.CozinhaIN;
 import com.ferry.myifood.domain.model.dtos.update.CozinhaUP;
 import com.ferry.myifood.domain.repository.CozinhaRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -19,36 +18,74 @@ import javax.persistence.EntityNotFoundException;
 @Service
 @AllArgsConstructor
 public class CozinhaService {
+    /**
+     *
+     */
     private static final String NOT_FOUND = "Cozinha não encontrada";
+    /**
+     *
+     */
     private final CozinhaRepository cozinhaRepository;
+    /**
+     *
+     */
     private final CozinhaOUTMapper cozinhaOUTMapper;
+    /**
+     *
+     */
     private final CozinhaINMapper cozinhaINMapper;
+    /**
+     *
+     */
     private final CozinhaUPMapper cozinhaUPMapper;
 
+    /**
+     * @param page
+     * @return Page<CozinhaOUT>
+     */
     @Transactional(readOnly = true)
-    public Page<CozinhaOUT> listar(Pageable page) {
+    public final Page<CozinhaOUT> listar(final Pageable page) {
         return cozinhaRepository.findAll(page).map(cozinhaOUTMapper::toDto);
     }
 
+    /**
+     * @param id
+     * @return CozinhaOUT
+     */
     @Transactional(readOnly = true)
-    public CozinhaOUT pegar(Long id) {
+    public final CozinhaOUT pegar(final Long id) {
         return cozinhaRepository.findById(id).map(cozinhaOUTMapper::toDto)
                 .orElseThrow(() -> new RuntimeException(NOT_FOUND));
     }
 
+    /**
+     * @param in
+     * @return CozinhaOUT
+     */
     @Transactional
-    public CozinhaOUT salvar(CozinhaIN in) {
-        return cozinhaOUTMapper.toDto(cozinhaRepository.save(cozinhaINMapper.toEntity(in)));
+    public final CozinhaOUT salvar(final CozinhaIN in) {
+        return cozinhaOUTMapper
+                .toDto(cozinhaRepository.save(cozinhaINMapper.toEntity(in)));
     }
 
+    /**
+     * @param id
+     * @param up
+     * @return CozinhaOUT
+     */
     @Transactional
-    public CozinhaOUT atualizar(Long id, CozinhaUP up) {
-        return cozinhaOUTMapper.toDto(cozinhaUPMapper.partialUpdate(up, cozinhaRepository.findById(id)
+    public final CozinhaOUT atualizar(final Long id, final CozinhaUP up) {
+        return cozinhaOUTMapper
+                .toDto(cozinhaUPMapper
+                .partialUpdate(up, cozinhaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException(NOT_FOUND))));
     }
 
+    /**
+     * @param id
+     */
     @Transactional
-    public void remover(Long id) {
+    public final void remover(final Long id) {
         cozinhaRepository.findById(id)
                 .ifPresentOrElse(cozinhaRepository::delete,
                         () -> {

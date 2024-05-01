@@ -7,14 +7,14 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 
-/**
- * DTO for {@link com.ferry.myifood.domain.model.Cozinha}
- */
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class CozinhaIN {
+    /**
+     *
+     */
     @NotBlank
-    String nome;
+    private String nome;
 }

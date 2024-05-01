@@ -9,23 +9,53 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.util.Set;
 
-/**
- * DTO for {@link com.ferry.myifood.domain.model.Restaurante}
- */
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class RestauranteDto {
-    Long id;
-    String nome;
-    BigDecimal taxaFrete;
-    String cepEndereco;
-    String logradouroEndereco;
-    String numeroEndereco;
-    String complementoEndereco;
-    String bairroEndereco;
-    CozinhaOUT cozinha;
-    Set<ProdutoDto> produtos;
-    Set<FormaPagamentoDto> formasPagamento;
+    /**
+     *
+     */
+    private Long id;
+    /**
+     *
+     */
+    private String nome;
+    /**
+     *
+     */
+    private BigDecimal taxaFrete;
+    /**
+     *
+     */
+    private String cepEndereco;
+    /**
+     *
+     */
+    private String logradouroEndereco;
+    /**
+     *
+     */
+    private String numeroEndereco;
+    /**
+     *
+     */
+    private String complementoEndereco;
+    /**
+     *
+     */
+    private String bairroEndereco;
+    /**
+     *
+     */
+    private CozinhaOUT cozinha;
+    /**
+     *
+     */
+    private Set<ProdutoDto> produtos;
+    /**
+     *
+     */
+    private Set<FormaPagamentoDto> formasPagamento;
 }

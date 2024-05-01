@@ -13,32 +13,64 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class ErrorsHandler {
-    private final MessageSource messageSource;
+    /**
+     *
+     */
+    private MessageSource messageSource;
 
-    public ErrorsHandler(MessageSource messageSource) {
+    /**
+     * @param messageSource
+     */
+    public ErrorsHandler(final MessageSource messageSource) {
         this.messageSource = messageSource;
     }
 
+    /**
+     * @param e
+     * @return ResponseEntity<Throwable>
+     */
     @ExceptionHandler(EstadoNaoEncontradoException.class)
-    public ResponseEntity<Throwable> handleEstadoNaoEncontradoException(EstadoNaoEncontradoException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ExceptionUtils.getRootCause(e));
+    public final ResponseEntity<Throwable> handleEstadoNaoEncontradoException(
+            final EstadoNaoEncontradoException e) {
+        return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(ExceptionUtils
+                    .getRootCause(e));
     }
 
+    /**
+     * @param e
+     * @return ResponseEntity<Throwable>
+     */
     @ExceptionHandler(CidadeNaoEncontradaException.class)
-    public ResponseEntity<Throwable> handleCidadeNaoEncontradaException(CidadeNaoEncontradaException e) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ExceptionUtils.getRootCause(e));
+    public final ResponseEntity<Throwable> handleCidadeNaoEncontradaException(
+            final CidadeNaoEncontradaException e) {
+        return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(ExceptionUtils.getRootCause(e));
     }
 
+    /**
+     * @param e
+     * @return ResponseEntity<Throwable>
+     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<List<Error>> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-        return ResponseEntity.badRequest().body(e.getBindingResult().getFieldErrors().stream().map(error ->
-                new Error(
-                        error.getField(), messageSource.getMessage(error, LocaleContextHolder.getLocale())
+    public final ResponseEntity<List<Error>>
+            handleMethodArgumentNotValidException(
+                final MethodArgumentNotValidException e) {
+        return ResponseEntity
+                    .badRequest()
+                    .body(e.getBindingResult()
+                    .getFieldErrors()
+                    .stream()
+                    .map(error ->
+                            new Error(
+                                error.getField(), messageSource.getMessage(
+                                    error, LocaleContextHolder.getLocale())
                 )).collect(Collectors.toList()));
     }
 
@@ -46,7 +78,13 @@ public class ErrorsHandler {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class Error {
+        /**
+         *
+         */
         private String field;
+        /**
+         *
+         */
         private String message;
     }
 }

@@ -25,44 +25,86 @@ import static com.ferry.myifood.domain.utils.ConstantsUtil.NAO_EXISTE_ESTADO_COM
 @Service
 @AllArgsConstructor
 public class CidadeService {
+    /**
+     *
+     */
     private final CidadeRepository cidadeRepository;
+    /**
+     *
+     */
     private final EstadoRepository estadoRepository;
+    /**
+     *
+     */
     private final CidadeOUTMapper cidadeOUTMapper;
+    /**
+     *
+     */
     private final CidadeINMapper cidadeINMapper;
+    /**
+     *
+     */
     private final CidadeUPMapper cidadeUPMapper;
 
+    /**
+     * @param page
+     * @return Page<CidadeOUT>
+     */
     @Transactional(readOnly = true)
-    public Page<CidadeOUT> listar(Pageable page) {
+    public final Page<CidadeOUT> listar(final Pageable page) {
         return cidadeRepository.findAll(page).map(cidadeOUTMapper::toDto);
     }
 
+    /**
+     * @param id
+     * @return CidadeOUT
+     */
     @Transactional(readOnly = true)
-    public CidadeOUT buscar(Long id) {
-        return cidadeRepository.findById(id).map(cidadeOUTMapper::toDto).orElseThrow(
-                () -> new CidadeNaoEncontradaException(NAO_EXISTE_CIDADE_COM_O_ID_INFORMADO));
+    public final CidadeOUT buscar(final Long id) {
+        return cidadeRepository
+                    .findById(id).map(cidadeOUTMapper::toDto).orElseThrow(
+                        () -> new CidadeNaoEncontradaException(
+                            NAO_EXISTE_CIDADE_COM_O_ID_INFORMADO));
     }
 
+    /**
+     * @param in
+     * @return CidadeOUT
+     */
     @Transactional
-    public CidadeOUT salvar(CidadeIN in) {
+    public final CidadeOUT salvar(final CidadeIN in) {
         Cidade cidade = cidadeINMapper.toEntity(in);
         cidade.setEstado(estadoRepository.findById(in.getEstado().getId())
                 .orElseThrow(
-                        () -> new EstadoNaoEncontradoException(NAO_EXISTE_ESTADO_COM_O_ID_INFORMADO)));
+                        () -> new EstadoNaoEncontradoException(
+                            NAO_EXISTE_ESTADO_COM_O_ID_INFORMADO)));
         return cidadeOUTMapper.toDto(cidadeRepository.save(cidade));
     }
 
+    /**
+     * @param id
+     * @param up
+     * @return CidadeOUT
+     */
     @Transactional
-    public CidadeOUT atualizar(Long id, CidadeUP up) {
-        return cidadeOUTMapper.toDto(cidadeUPMapper.partialUpdate(up, cidadeRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(NAO_EXISTE_CIDADE_COM_O_ID_INFORMADO))));
+    public final CidadeOUT atualizar(final Long id, final CidadeUP up) {
+        return cidadeOUTMapper
+                    .toDto(cidadeUPMapper
+                    .partialUpdate(up, cidadeRepository.findById(id)
+                    .orElseThrow(() -> new EntityNotFoundException(
+                        NAO_EXISTE_CIDADE_COM_O_ID_INFORMADO))));
     }
 
+    /**
+     * @param id
+     */
     @Transactional
-    public void remover(Long id) {
+    public final void remover(final Long id) {
         cidadeRepository.findById(id)
                 .ifPresentOrElse(cidadeRepository::delete,
                         () -> {
-                            throw new EntityNotFoundException(NAO_EXISTE_CIDADE_COM_O_ID_INFORMADO);
+                            throw new EntityNotFoundException(
+                                NAO_EXISTE_CIDADE_COM_O_ID_INFORMADO);
                         });
     }
 }
