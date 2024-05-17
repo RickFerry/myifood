@@ -1,23 +1,19 @@
 package com.ferry.myifood.domain.service;
 
 import com.ferry.myifood.domain.mapper.RestauranteMapper;
-import com.ferry.myifood.domain.mapper.cidade.CidadeCompMapper;
-import com.ferry.myifood.domain.mapper.cozinha.CozinhaCompMapper;
-import com.ferry.myifood.domain.mapper.formapagamento.FormaPagamentoCompMapper;
 import com.ferry.myifood.domain.mapper.restaurante.RestauranteINMapper;
 import com.ferry.myifood.domain.mapper.restaurante.RestauranteOUTMapper;
-import com.ferry.myifood.domain.model.Cozinha;
-import com.ferry.myifood.domain.model.FormaPagamento;
+import com.ferry.myifood.domain.mapper.restaurante.RestauranteUPMapper;
 import com.ferry.myifood.domain.model.Restaurante;
-import com.ferry.myifood.domain.model.dtos.RestauranteDto;
-import com.ferry.myifood.domain.model.dtos.input.CidadeComp;
 import com.ferry.myifood.domain.model.dtos.input.RestauranteIN;
 import com.ferry.myifood.domain.model.dtos.output.RestauranteOUT;
+import com.ferry.myifood.domain.model.dtos.update.RestauranteUP;
 import com.ferry.myifood.domain.repository.CidadeRepository;
 import com.ferry.myifood.domain.repository.CozinhaRepository;
 import com.ferry.myifood.domain.repository.FormaPagamentoRepository;
 import com.ferry.myifood.domain.repository.RestauranteRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -25,8 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
-import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -60,6 +54,10 @@ public class RestauranteService {
      *
      */
     private final RestauranteOUTMapper restauranteOUTMapper;
+    /**
+     *
+     */
+    private final RestauranteUPMapper restauranteUPMapper;
 
     /**
      * @param page
@@ -90,7 +88,7 @@ public class RestauranteService {
 
         restaurante.setCozinha(cozinhaRepository.findById(in.getCozinhaComp().getId()).orElseThrow(() -> new EntityNotFoundException("Não existe cozinha com o id informado")));
 
-        restaurante.getEndereco().setCidade(cidadeRepository.findById(in.getEndereco().getCidadeComp().getId()).orElseThrow(() -> new EntityNotFoundException("Não existe cidade com o id informado")));
+        restaurante.getEndereco().setCidade(cidadeRepository.findById(in.getEndereco().getCidade().getId()).orElseThrow(() -> new EntityNotFoundException("Não existe cidade com o id informado")));
 
         restaurante.getFormasPagamento().addAll(in.getFormasPagamentoComp().stream().map(formaPagamentoComp -> formaPagamentoRepository.findById(formaPagamentoComp.getId()).orElseThrow(() -> new EntityNotFoundException("Não existe forma de pagamento com o id informado"))).collect(Collectors.toSet()));
         return restauranteOUTMapper.toDto(restauranteRepository.save(restaurante));
@@ -98,12 +96,13 @@ public class RestauranteService {
 
     /**
      * @param id
-     * @param dto
+     * @param up
      * @return RestauranteDto
      */
     @Transactional
-    public RestauranteDto atualizar(final Long id, final RestauranteDto dto) {
-        return restauranteMapper.toDto(restauranteMapper.partialUpdate(dto, restauranteRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Não existe restaurante com o id informado"))));
+    public RestauranteUP atualizar(final Long id, final @Valid RestauranteUP up) {
+        return restauranteUPMapper.toDto(restauranteUPMapper.partialUpdate(up, restauranteRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Não existe restaurante com o id informado"))));
     }
 
     /**

@@ -20,24 +20,17 @@ import javax.validation.groups.ConvertGroup;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Endereco {
-    @NotBlank
     @Column(name = "endereco_cep")
     private String cep;
-    @NotBlank
     @Column(name = "endereco_logradouro")
     private String logradouro;
-    @NotBlank
     @Column(name = "endereco_numero")
     private String numero;
     @Column(name = "endereco_complemento")
     private String complemento;
-    @NotBlank
     @Column(name = "endereco_bairro")
     private String bairro;
 
-    @Valid
-    @NotNull
     @ManyToOne
-    @ConvertGroup(to = Groups.CidadeId.class)
     private Cidade cidade;
 }

@@ -24,13 +24,11 @@ public class Estado {
      *
      */
     @Id
-    @NotNull(groups = Groups.EstadoId.class)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     /**
      *
      */
-    @NotBlank
     private String nome;
 
     @Override

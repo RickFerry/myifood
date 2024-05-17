@@ -8,7 +8,7 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.ReportingPolicy;
 
 import com.ferry.myifood.domain.mapper.EntityMapper;
-import com.ferry.myifood.domain.mapper.estado.EstadoCompMapper;
+import com.ferry.myifood.domain.mapper.complemento.EstadoCompMapper;
 import com.ferry.myifood.domain.model.Cidade;
 import com.ferry.myifood.domain.model.dtos.input.CidadeIN;
 

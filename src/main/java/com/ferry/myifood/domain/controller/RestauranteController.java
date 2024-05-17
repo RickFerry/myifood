@@ -5,6 +5,7 @@ import javax.validation.Valid;
 
 import com.ferry.myifood.domain.model.dtos.input.RestauranteIN;
 import com.ferry.myifood.domain.model.dtos.output.RestauranteOUT;
+import com.ferry.myifood.domain.model.dtos.update.RestauranteUP;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -72,13 +73,13 @@ public class RestauranteController {
 
     /**
      * @param id
-     * @param dto
+     * @param up
      * @return ResponseEntity<?>
      */
     @PutMapping("/{id}")
-    public final ResponseEntity<?> atualizar(@PathVariable final Long id, @RequestBody final RestauranteDto dto) {
+    public final ResponseEntity<?> atualizar(@PathVariable final Long id, @RequestBody @Valid final RestauranteUP up) {
         try {
-            return ResponseEntity.ok(restauranteService.atualizar(id, dto));
+            return ResponseEntity.ok(restauranteService.atualizar(id, up));
         } catch (EntityNotFoundException e) {
             return ResponseEntity.notFound().build();
         } catch (RuntimeException e) {

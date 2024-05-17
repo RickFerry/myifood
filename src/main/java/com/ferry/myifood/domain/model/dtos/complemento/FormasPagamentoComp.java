@@ -1,4 +1,4 @@
-package com.ferry.myifood.domain.model.dtos.input;
+package com.ferry.myifood.domain.model.dtos.complemento;
 
 import lombok.*;
 

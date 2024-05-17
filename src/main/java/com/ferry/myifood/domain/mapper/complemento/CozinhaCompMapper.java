@@ -1,8 +1,8 @@
-package com.ferry.myifood.domain.mapper.cozinha;
+package com.ferry.myifood.domain.mapper.complemento;
 
 import com.ferry.myifood.domain.mapper.EntityMapper;
 import com.ferry.myifood.domain.model.Cozinha;
-import com.ferry.myifood.domain.model.dtos.input.CozinhaComp;
+import com.ferry.myifood.domain.model.dtos.complemento.CozinhaComp;
 import org.mapstruct.*;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)

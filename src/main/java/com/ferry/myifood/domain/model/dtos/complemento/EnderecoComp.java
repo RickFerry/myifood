@@ -1,8 +1,9 @@
-package com.ferry.myifood.domain.model.dtos.input;
+package com.ferry.myifood.domain.model.dtos.complemento;
 
 import lombok.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Getter
@@ -13,32 +14,32 @@ public class EnderecoComp {
 	/**
 	 *
 	 */
-	@NotNull
+	@NotBlank
 	private String logradouro;
 	/**
 	 *
 	 */
-	@NotNull
+	@NotBlank
 	private String numero;
 	/**
 	 *
 	 */
-	@NotNull
+	@NotBlank
 	private String complemento;
 	/**
 	 *
 	 */
-	@NotNull
+	@NotBlank
 	private String bairro;
 	/**
 	 *
 	 */
-	@NotNull
+	@NotBlank
 	private String cep;
 	/**
 	 *
 	 */
 	@Valid
 	@NotNull
-	private CidadeComp cidadeComp;
+	private CidadeComp cidade;
 }

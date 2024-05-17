@@ -29,22 +29,17 @@ public class Cidade {
      *
      */
     @Id
-    @NotNull(groups = Groups.CidadeId.class)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     /**
      *
      */
-    @NotBlank
     private String nome;
 
     /**
      *
      */
-    @Valid
-    @NotNull
     @ManyToOne
-    @ConvertGroup(to = Groups.EstadoId.class)
     private Estado estado;
 
     @Override

@@ -1,8 +1,8 @@
-package com.ferry.myifood.domain.mapper.formapagamento;
+package com.ferry.myifood.domain.mapper.complemento;
 
 import com.ferry.myifood.domain.mapper.EntityMapper;
 import com.ferry.myifood.domain.model.FormaPagamento;
-import com.ferry.myifood.domain.model.dtos.input.FormasPagamentoComp;
+import com.ferry.myifood.domain.model.dtos.complemento.FormasPagamentoComp;
 import org.mapstruct.*;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)

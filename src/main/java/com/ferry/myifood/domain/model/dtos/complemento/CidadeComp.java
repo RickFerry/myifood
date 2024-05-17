@@ -1,9 +1,10 @@
-package com.ferry.myifood.domain.model.dtos.input;
+package com.ferry.myifood.domain.model.dtos.complemento;
 
 import lombok.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 
 @Getter
 @Setter
@@ -13,12 +14,12 @@ public class CidadeComp{
 	/**
 	 *
 	 */
-	@NotNull
+	@PositiveOrZero
 	private Long id;
 	/**
 	 *
 	 */
-	@NotNull
 	@Valid
-	private EstadoComp estadoComp;
+	@NotNull
+	private EstadoComp estado;
 }

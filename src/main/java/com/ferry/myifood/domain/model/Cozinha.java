@@ -25,13 +25,11 @@ public class Cozinha {
      *
      */
     @Id
-    @NotNull(groups = Groups.CozinhaId.class)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     /**
      *
      */
-    @NotBlank
     private String nome;
 
     @Override

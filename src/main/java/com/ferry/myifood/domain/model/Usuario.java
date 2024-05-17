@@ -26,7 +26,6 @@ public class Usuario {
     private String email;
     private String senha;
 
-    @JsonIgnore
     @CreationTimestamp
     @Column(nullable = false, columnDefinition = "datetime")
     private LocalDateTime dataCadastro;
