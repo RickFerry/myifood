@@ -11,15 +11,8 @@ import com.ferry.myifood.domain.mapper.EntityMapper;
 import com.ferry.myifood.domain.model.Cidade;
 import com.ferry.myifood.domain.model.dtos.update.CidadeUP;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel =
-        MappingConstants.ComponentModel.SPRING)
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
 public interface CidadeUPMapper extends EntityMapper<CidadeUP, Cidade> {
-    /**
-     * @param cidadeUP
-     * @param cidade
-     * @return Cidade
-     */
-    @BeanMapping(nullValuePropertyMappingStrategy =
-            NullValuePropertyMappingStrategy.IGNORE)
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     Cidade partialUpdate(CidadeUP cidadeUP, @MappingTarget Cidade cidade);
 }

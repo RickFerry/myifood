@@ -9,7 +9,11 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CozinhaOUT{
-	private Long id;
-	private String nome;
+public class EnderecoOUT{
+	private String logradouro;
+	private String complemento;
+	private String numero;
+	private String bairro;
+	private String cep;
+	private CidadeOUT cidade;
 }

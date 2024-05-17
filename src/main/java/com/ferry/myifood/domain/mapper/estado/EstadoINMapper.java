@@ -11,15 +11,8 @@ import com.ferry.myifood.domain.mapper.EntityMapper;
 import com.ferry.myifood.domain.model.Estado;
 import com.ferry.myifood.domain.model.dtos.input.EstadoIN;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE,
-        componentModel = MappingConstants.ComponentModel.SPRING)
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
 public interface EstadoINMapper extends EntityMapper<EstadoIN, Estado> {
-    /**
-     * @param estadoIN
-     * @param estado
-     * @return Estado
-     */
-    @BeanMapping(nullValuePropertyMappingStrategy =
-            NullValuePropertyMappingStrategy.IGNORE)
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     Estado partialUpdate(EstadoIN estadoIN, @MappingTarget Estado estado);
 }

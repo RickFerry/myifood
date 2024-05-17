@@ -1,5 +1,6 @@
 package com.ferry.myifood.domain.mapper.cidade;
 
+import com.ferry.myifood.domain.mapper.estado.EstadoOUTMapper;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
@@ -11,15 +12,8 @@ import com.ferry.myifood.domain.mapper.EntityMapper;
 import com.ferry.myifood.domain.model.Cidade;
 import com.ferry.myifood.domain.model.dtos.output.CidadeOUT;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel =
-        MappingConstants.ComponentModel.SPRING)
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING, uses = {EstadoOUTMapper.class})
 public interface CidadeOUTMapper extends EntityMapper<CidadeOUT, Cidade> {
-    /**
-     * @param cidadeDto
-     * @param cidade
-     * @return Cidade
-     */
-    @BeanMapping(nullValuePropertyMappingStrategy =
-            NullValuePropertyMappingStrategy.IGNORE)
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     Cidade partialUpdate(CidadeOUT cidadeDto, @MappingTarget Cidade cidade);
 }
