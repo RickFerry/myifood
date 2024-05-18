@@ -101,10 +101,10 @@ public class RestauranteService {
     @Transactional
     public RestauranteOUT atualizar(final Long id, final @Valid RestauranteUP up) {
         Restaurante restauranteAtual = restauranteRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Restaurante não encontrado"));
+                .orElseThrow(() -> new EntityNotFoundException("Restaurante com id informado não encontrado"));
 
         Cozinha novaCozinha = cozinhaRepository.findById(up.getCozinha().getId())
-                .orElseThrow(() -> new EntityNotFoundException("Cozinha não encontrada"));
+                .orElseThrow(() -> new EntityNotFoundException("Cozinha com id informado não encontrada"));
 
         restauranteAtual.setCozinha(novaCozinha);
 
