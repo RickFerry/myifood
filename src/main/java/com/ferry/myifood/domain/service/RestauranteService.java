@@ -81,13 +81,13 @@ public class RestauranteService {
     public RestauranteOUT salvar(final @Valid RestauranteIN in) {
         Restaurante restaurante = restauranteINMapper.toEntity(in);
 
-        restaurante.setCozinha(cozinhaRepository.findById(in.getCozinhaComp().getId()).orElseThrow(
+        restaurante.setCozinha(cozinhaRepository.findById(in.getCozinha().getId()).orElseThrow(
                 () -> new EntityNotFoundException("Não existe cozinha com o id informado")));
 
         restaurante.getEndereco().setCidade(cidadeRepository.findById(in.getEndereco().getCidade().getId()).orElseThrow(
                 () -> new EntityNotFoundException("Não existe cidade com o id informado")));
 
-        restaurante.getFormasPagamento().addAll(in.getFormasPagamentoComp().stream().map(
+        restaurante.getFormasPagamento().addAll(in.getFormasPagamento().stream().map(
                 formaPagamentoComp -> formaPagamentoRepository.findById(formaPagamentoComp.getId()).orElseThrow(
                         () -> new EntityNotFoundException("Não existe forma de pagamento com o id informado"))).collect(Collectors.toSet()));
         return restauranteOUTMapper.toDto(restauranteRepository.save(restaurante));

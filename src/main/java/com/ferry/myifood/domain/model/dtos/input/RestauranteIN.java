@@ -1,17 +1,19 @@
 package com.ferry.myifood.domain.model.dtos.input;
 
-import java.math.BigDecimal;
-import java.util.Set;
-
 import com.ferry.myifood.domain.model.dtos.complemento.CozinhaComp;
 import com.ferry.myifood.domain.model.dtos.complemento.EnderecoComp;
 import com.ferry.myifood.domain.model.dtos.complemento.FormasPagamentoComp;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
+import java.math.BigDecimal;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -39,11 +41,11 @@ public class RestauranteIN{
 	 */
 	@Valid
 	@NotNull
-	private CozinhaComp cozinhaComp;
+	private CozinhaComp cozinha;
 	/**
 	 *
 	 */
 	@Valid
 	@NotNull
-	private Set<FormasPagamentoComp> formasPagamentoComp;
+	private Set<FormasPagamentoComp> formasPagamento;
 }
