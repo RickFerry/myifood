@@ -20,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -83,13 +82,6 @@ public class RestauranteService {
 
         restaurante.setCozinha(cozinhaRepository.findById(in.getCozinha().getId()).orElseThrow(
                 () -> new EntityNotFoundException("Não existe cozinha com o id informado")));
-
-        restaurante.getEndereco().setCidade(cidadeRepository.findById(in.getEndereco().getCidade().getId()).orElseThrow(
-                () -> new EntityNotFoundException("Não existe cidade com o id informado")));
-
-        restaurante.getFormasPagamento().addAll(in.getFormasPagamento().stream().map(
-                formaPagamentoComp -> formaPagamentoRepository.findById(formaPagamentoComp.getId()).orElseThrow(
-                        () -> new EntityNotFoundException("Não existe forma de pagamento com o id informado"))).collect(Collectors.toSet()));
         return restauranteOUTMapper.toDto(restauranteRepository.save(restaurante));
     }
 
@@ -120,6 +112,26 @@ public class RestauranteService {
     @Transactional
     public void deletar(final Long id) {
         restauranteRepository.findById(id).ifPresentOrElse(restauranteRepository::delete, () -> {
+            throw new EntityNotFoundException("Não existe restaurante com o id informado");
+        });
+    }
+
+    /**
+     * @param id
+     */
+    @Transactional
+    public void ativar(final Long id) {
+        restauranteRepository.findById(id).ifPresentOrElse(Restaurante::ativar, () -> {
+            throw new EntityNotFoundException("Não existe restaurante com o id informado");
+        });
+    }
+
+    /**
+     * @param id
+     */
+    @Transactional
+    public void inativar(final Long id) {
+        restauranteRepository.findById(id).ifPresentOrElse(Restaurante::inativar, () -> {
             throw new EntityNotFoundException("Não existe restaurante com o id informado");
         });
     }

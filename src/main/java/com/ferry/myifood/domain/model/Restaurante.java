@@ -26,6 +26,7 @@ public class Restaurante {
     private Long id;
     private String nome;
     private BigDecimal taxaFrete;
+    private Boolean ativo = Boolean.TRUE;
 
     @CreationTimestamp
     @Column(nullable = false, columnDefinition = "datetime")
@@ -42,6 +43,14 @@ public class Restaurante {
 
     @OneToMany(mappedBy = "restaurante", orphanRemoval = true)
     private Set<Produto> produtos = new LinkedHashSet<>();
+
+    public void ativar() {
+        setAtivo(true);
+    }
+
+    public void inativar() {
+        setAtivo(false);
+    }
 
     @ManyToMany
     @JoinTable(name = "restaurante_formas_pagamento",
