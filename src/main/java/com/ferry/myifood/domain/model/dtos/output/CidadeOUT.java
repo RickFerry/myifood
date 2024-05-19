@@ -10,7 +10,16 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CidadeOUT{
+	/**
+	 *
+	 */
 	private Long id;
+	/**
+	 *
+	 */
 	private String nome;
+	/**
+	 *
+	 */
 	private EstadoOUT estado;
 }

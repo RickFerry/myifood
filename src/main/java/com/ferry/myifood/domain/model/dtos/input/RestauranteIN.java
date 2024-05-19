@@ -1,6 +1,7 @@
 package com.ferry.myifood.domain.model.dtos.input;
 
 import com.ferry.myifood.domain.model.dtos.complemento.CozinhaComp;
+import com.ferry.myifood.domain.model.dtos.complemento.EnderecoComp;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,6 +34,12 @@ public class RestauranteIN{
 	 */
 	@NotNull
 	private Boolean ativo;
+	/**
+	 *
+	 */
+	@Valid
+	@NotNull
+	private EnderecoComp endereco;
 	/**
 	 *
 	 */

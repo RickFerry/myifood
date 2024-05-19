@@ -10,6 +10,12 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CozinhaOUT{
+	/**
+	 *
+	 */
 	private Long id;
+	/**
+	 *
+	 */
 	private String nome;
 }

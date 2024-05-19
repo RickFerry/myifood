@@ -16,11 +16,9 @@ public class EstadoOUT{
 	/**
 	 *
 	 */
-	@PositiveOrZero
 	private Long id;
 	/**
 	 *
 	 */
-	@NotBlank
 	private String nome;
 }

@@ -12,9 +12,28 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RestauranteOUT{
+	/**
+	 *
+	 */
 	private Long id;
+	/**
+	 *
+	 */
 	private String nome;
+	/**
+	 *
+	 */
 	private BigDecimal taxaFrete;
+	/**
+	 *
+	 */
 	private Boolean ativo;
+	/**
+	 *
+	 */
+	private EnderecoOUT endereco;
+	/**
+	 *
+	 */
 	private CozinhaOUT cozinha;
 }

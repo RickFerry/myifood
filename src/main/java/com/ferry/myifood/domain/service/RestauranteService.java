@@ -3,15 +3,13 @@ package com.ferry.myifood.domain.service;
 import com.ferry.myifood.domain.mapper.restaurante.RestauranteINMapper;
 import com.ferry.myifood.domain.mapper.restaurante.RestauranteOUTMapper;
 import com.ferry.myifood.domain.mapper.restaurante.RestauranteUPMapper;
+import com.ferry.myifood.domain.model.Cidade;
 import com.ferry.myifood.domain.model.Cozinha;
 import com.ferry.myifood.domain.model.Restaurante;
 import com.ferry.myifood.domain.model.dtos.input.RestauranteIN;
 import com.ferry.myifood.domain.model.dtos.output.RestauranteOUT;
 import com.ferry.myifood.domain.model.dtos.update.RestauranteUP;
-import com.ferry.myifood.domain.repository.CidadeRepository;
-import com.ferry.myifood.domain.repository.CozinhaRepository;
-import com.ferry.myifood.domain.repository.FormaPagamentoRepository;
-import com.ferry.myifood.domain.repository.RestauranteRepository;
+import com.ferry.myifood.domain.repository.*;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,7 +33,7 @@ public class RestauranteService {
     /**
      *
      */
-    private final FormaPagamentoRepository formaPagamentoRepository;
+    private final EstadoRepository estadoRepository;
     /**
      *
      */
@@ -82,6 +80,13 @@ public class RestauranteService {
 
         restaurante.setCozinha(cozinhaRepository.findById(in.getCozinha().getId()).orElseThrow(
                 () -> new EntityNotFoundException("Não existe cozinha com o id informado")));
+
+        restaurante.getEndereco().setCidade(cidadeRepository.findById(restaurante.getEndereco().getCidade().getId()).orElseThrow(
+                () -> new EntityNotFoundException("Não existe cidade com o id informado")));
+
+        restaurante.getEndereco().getCidade().setEstado(estadoRepository.findById(restaurante.getEndereco().getCidade().getEstado().getId()).orElseThrow(
+                () -> new EntityNotFoundException("Não existe estado com o id informado")));
+
         return restauranteOUTMapper.toDto(restauranteRepository.save(restaurante));
     }
 
@@ -95,10 +100,13 @@ public class RestauranteService {
         Restaurante restauranteAtual = restauranteRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Restaurante com id informado não encontrado"));
 
-        Cozinha novaCozinha = cozinhaRepository.findById(up.getCozinha().getId())
-                .orElseThrow(() -> new EntityNotFoundException("Cozinha com id informado não encontrada"));
+        restauranteAtual.setCozinha(cozinhaRepository.findById(up.getCozinha().getId())
+                .orElseThrow(() -> new EntityNotFoundException("Cozinha com id informado não encontrada")));
 
-        restauranteAtual.setCozinha(novaCozinha);
+        Cidade novaCidade = cidadeRepository.findById(up.getEndereco().getCidade().getId())
+                .orElseThrow(() -> new EntityNotFoundException("Não existe cidade com o id informado"));
+
+        restauranteAtual.getEndereco().setCidade(novaCidade);
 
         restauranteUPMapper.partialUpdate(up, restauranteAtual);
         Restaurante restauranteSalvo = restauranteRepository.save(restauranteAtual);

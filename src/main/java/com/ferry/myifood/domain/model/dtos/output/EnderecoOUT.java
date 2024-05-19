@@ -10,10 +10,28 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EnderecoOUT{
+	/**
+	 *
+	 */
 	private String logradouro;
+	/**
+	 *
+	 */
 	private String complemento;
+	/**
+	 *
+	 */
 	private String numero;
+	/**
+	 *
+	 */
 	private String bairro;
+	/**
+	 *
+	 */
 	private String cep;
+	/**
+	 *
+	 */
 	private CidadeOUT cidade;
 }

@@ -19,10 +19,4 @@ public class CidadeComp{
 	 */
 	@PositiveOrZero
 	private Long id;
-	/**
-	 *
-	 */
-	@Valid
-	@NotNull
-	private EstadoComp estado;
 }
