@@ -2,11 +2,11 @@ package com.ferry.myifood.domain.mapper.formapagamento;
 
 import com.ferry.myifood.domain.mapper.EntityMapper;
 import com.ferry.myifood.domain.model.FormaPagamento;
-import com.ferry.myifood.domain.model.dtos.output.FormaPagamentoOUT;
+import com.ferry.myifood.domain.model.dtos.update.FormaPagamentoUP;
 import org.mapstruct.*;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
-public interface FormaPagamentoOUTMapper extends EntityMapper<FormaPagamentoOUT, FormaPagamento> {
+public interface FormaPagamentoUPMapper extends EntityMapper<FormaPagamentoUP, FormaPagamento> {
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    FormaPagamento partialUpdate(FormaPagamentoOUT formasPagamentoOUT, @MappingTarget FormaPagamento formaPagamento);
+    FormaPagamento partialUpdate(FormaPagamentoUP formaPagamentoUP, @MappingTarget FormaPagamento formaPagamento);
 }
