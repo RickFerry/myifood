@@ -44,6 +44,12 @@ public class Restaurante {
     @OneToMany(mappedBy = "restaurante", orphanRemoval = true)
     private Set<Produto> produtos = new LinkedHashSet<>();
 
+    @ManyToMany
+    @JoinTable(name = "restaurante_formas_pagamento",
+            joinColumns = @JoinColumn(name = "restaurante_id"),
+            inverseJoinColumns = @JoinColumn(name = "formas_pagamento_id"))
+    private Set<FormaPagamento> formasPagamento = new LinkedHashSet<>();
+
     public void ativar() {
         setAtivo(true);
     }
@@ -51,12 +57,6 @@ public class Restaurante {
     public void inativar() {
         setAtivo(false);
     }
-
-    @ManyToMany
-    @JoinTable(name = "restaurante_formas_pagamento",
-            joinColumns = @JoinColumn(name = "restaurante_id"),
-            inverseJoinColumns = @JoinColumn(name = "formas_pagamento_id"))
-    private Set<FormaPagamento> formasPagamento = new LinkedHashSet<>();
 
     @Override
     public final boolean equals(Object o) {

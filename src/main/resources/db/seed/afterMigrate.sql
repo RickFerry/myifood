@@ -62,3 +62,13 @@ INSERT INTO PRODUTO (ATIVO, DESCRICAO, NOME, PRECO, RESTAURANTE_ID)
 VALUES (1, 'Hamburguer de carne aviaria, queijo, alface, tomate, cebola, e maionese', 'Hamburguer', 11.00, 2);
 INSERT INTO PRODUTO (ATIVO, DESCRICAO, NOME, PRECO, RESTAURANTE_ID)
 VALUES (1, 'Hamburguer de carne bovina, queijo, alface, tomate, cebola e maionese', 'Hamburguer', 15.00, 3);
+
+INSERT INTO PERMISSAO (NOME, DESCRICAO) VALUES ('CONSULTAR_COZINHAS', 'Permite consultar cozinhas');
+INSERT INTO PERMISSAO (NOME, DESCRICAO) VALUES ('EDITAR_COZINHAS', 'Permite editar cozinhas');
+INSERT INTO PERMISSAO (NOME, DESCRICAO) VALUES ('CADASTRAR_COZINHAS', 'Permite cadastrar cozinhas');
+
+INSERT INTO GRUPO (NOME) VALUES ('ADMINISTRADOR');
+INSERT INTO GRUPO (NOME) VALUES ('USUARIO');
+
+insert into grupo_permissoes (grupo_id, PERMISSOES_ID) values (1, 1), (1, 2), (1, 3);
+insert into grupo_permissoes (grupo_id, PERMISSOES_ID) values (2, 1);

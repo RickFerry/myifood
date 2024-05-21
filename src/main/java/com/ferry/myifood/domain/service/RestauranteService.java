@@ -4,12 +4,14 @@ import com.ferry.myifood.domain.mapper.restaurante.RestauranteINMapper;
 import com.ferry.myifood.domain.mapper.restaurante.RestauranteOUTMapper;
 import com.ferry.myifood.domain.mapper.restaurante.RestauranteUPMapper;
 import com.ferry.myifood.domain.model.Cidade;
-import com.ferry.myifood.domain.model.Cozinha;
 import com.ferry.myifood.domain.model.Restaurante;
 import com.ferry.myifood.domain.model.dtos.input.RestauranteIN;
 import com.ferry.myifood.domain.model.dtos.output.RestauranteOUT;
 import com.ferry.myifood.domain.model.dtos.update.RestauranteUP;
-import com.ferry.myifood.domain.repository.*;
+import com.ferry.myifood.domain.repository.CidadeRepository;
+import com.ferry.myifood.domain.repository.CozinhaRepository;
+import com.ferry.myifood.domain.repository.EstadoRepository;
+import com.ferry.myifood.domain.repository.RestauranteRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +24,10 @@ import javax.validation.Valid;
 @Service
 @AllArgsConstructor
 public class RestauranteService {
+    /**
+     *
+     */
+    public static final String NAO_EXISTE_RESTAURANTE_COM_O_ID_INFORMADO = "Não existe restaurante com o id informado";
     /**
      *
      */
@@ -75,7 +81,7 @@ public class RestauranteService {
      * @return RestauranteDto
      */
     @Transactional
-    public RestauranteOUT salvar(final @Valid RestauranteIN in) {
+    public RestauranteOUT salvar(final RestauranteIN in) {
         Restaurante restaurante = restauranteINMapper.toEntity(in);
 
         restaurante.setCozinha(cozinhaRepository.findById(in.getCozinha().getId()).orElseThrow(
@@ -96,7 +102,7 @@ public class RestauranteService {
      * @return RestauranteDto
      */
     @Transactional
-    public RestauranteOUT atualizar(final Long id, final @Valid RestauranteUP up) {
+    public RestauranteOUT atualizar(final Long id, final RestauranteUP up) {
         Restaurante restauranteAtual = restauranteRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Restaurante com id informado não encontrado"));
 
@@ -120,7 +126,7 @@ public class RestauranteService {
     @Transactional
     public void deletar(final Long id) {
         restauranteRepository.findById(id).ifPresentOrElse(restauranteRepository::delete, () -> {
-            throw new EntityNotFoundException("Não existe restaurante com o id informado");
+            throw new EntityNotFoundException(NAO_EXISTE_RESTAURANTE_COM_O_ID_INFORMADO);
         });
     }
 
@@ -130,7 +136,7 @@ public class RestauranteService {
     @Transactional
     public void ativar(final Long id) {
         restauranteRepository.findById(id).ifPresentOrElse(Restaurante::ativar, () -> {
-            throw new EntityNotFoundException("Não existe restaurante com o id informado");
+            throw new EntityNotFoundException(NAO_EXISTE_RESTAURANTE_COM_O_ID_INFORMADO);
         });
     }
 
@@ -140,7 +146,7 @@ public class RestauranteService {
     @Transactional
     public void inativar(final Long id) {
         restauranteRepository.findById(id).ifPresentOrElse(Restaurante::inativar, () -> {
-            throw new EntityNotFoundException("Não existe restaurante com o id informado");
+            throw new EntityNotFoundException(NAO_EXISTE_RESTAURANTE_COM_O_ID_INFORMADO);
         });
     }
 }
