@@ -4,10 +4,10 @@ import com.ferry.myifood.domain.mapper.grupo.GrupoINMapper;
 import com.ferry.myifood.domain.mapper.grupo.GrupoOUTMapper;
 import com.ferry.myifood.domain.mapper.grupo.GrupoUPMapper;
 import com.ferry.myifood.domain.model.Grupo;
-import com.ferry.myifood.domain.model.dtos.input.GrupoIN;
-import com.ferry.myifood.domain.model.dtos.output.GrupoOUT;
-import com.ferry.myifood.domain.model.dtos.update.GrupoUP;
-import com.ferry.myifood.domain.repository.GruposRepository;
+import com.ferry.myifood.domain.model.dto.input.GrupoIN;
+import com.ferry.myifood.domain.model.dto.output.GrupoOUT;
+import com.ferry.myifood.domain.model.dto.update.GrupoUP;
+import com.ferry.myifood.domain.repository.GrupoRepository;
 import com.ferry.myifood.domain.repository.PermissaoRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,7 +26,7 @@ public class GruposService {
     /**
      *
      */
-    private final GruposRepository gruposRepository;
+    private final GrupoRepository gruposRepository;
     /**
      *
      */

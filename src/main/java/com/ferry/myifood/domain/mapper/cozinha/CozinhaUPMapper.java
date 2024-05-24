@@ -9,7 +9,7 @@ import org.mapstruct.ReportingPolicy;
 
 import com.ferry.myifood.domain.mapper.EntityMapper;
 import com.ferry.myifood.domain.model.Cozinha;
-import com.ferry.myifood.domain.model.dtos.update.CozinhaUP;
+import com.ferry.myifood.domain.model.dto.update.CozinhaUP;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
 public interface CozinhaUPMapper extends EntityMapper<CozinhaUP, Cozinha> {

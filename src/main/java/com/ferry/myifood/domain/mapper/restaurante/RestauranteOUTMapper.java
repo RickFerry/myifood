@@ -5,7 +5,7 @@ import com.ferry.myifood.domain.mapper.cozinha.CozinhaOUTMapper;
 import com.ferry.myifood.domain.mapper.endereco.EnderecoOUTMapper;
 import com.ferry.myifood.domain.mapper.estado.EstadoOUTMapper;
 import com.ferry.myifood.domain.model.Restaurante;
-import com.ferry.myifood.domain.model.dtos.output.RestauranteOUT;
+import com.ferry.myifood.domain.model.dto.output.RestauranteOUT;
 import org.mapstruct.*;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING,

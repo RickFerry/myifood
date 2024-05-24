@@ -1,8 +1,8 @@
 package com.ferry.myifood.domain.controller;
 
-import com.ferry.myifood.domain.model.dtos.input.EstadoIN;
-import com.ferry.myifood.domain.model.dtos.output.EstadoOUT;
-import com.ferry.myifood.domain.model.dtos.update.EstadoUP;
+import com.ferry.myifood.domain.model.dto.input.EstadoIN;
+import com.ferry.myifood.domain.model.dto.output.EstadoOUT;
+import com.ferry.myifood.domain.model.dto.update.EstadoUP;
 import com.ferry.myifood.domain.service.EstadoService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;

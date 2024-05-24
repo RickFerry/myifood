@@ -3,7 +3,7 @@ package com.ferry.myifood.domain.mapper.cozinha;
 import com.ferry.myifood.domain.mapper.EntityMapper;
 import com.ferry.myifood.domain.mapper.complemento.EstadoCompMapper;
 import com.ferry.myifood.domain.model.Cozinha;
-import com.ferry.myifood.domain.model.dtos.input.CozinhaIN;
+import com.ferry.myifood.domain.model.dto.input.CozinhaIN;
 import org.mapstruct.*;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING,

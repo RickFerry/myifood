@@ -5,9 +5,9 @@ import com.ferry.myifood.domain.mapper.restaurante.RestauranteOUTMapper;
 import com.ferry.myifood.domain.mapper.restaurante.RestauranteUPMapper;
 import com.ferry.myifood.domain.model.Cidade;
 import com.ferry.myifood.domain.model.Restaurante;
-import com.ferry.myifood.domain.model.dtos.input.RestauranteIN;
-import com.ferry.myifood.domain.model.dtos.output.RestauranteOUT;
-import com.ferry.myifood.domain.model.dtos.update.RestauranteUP;
+import com.ferry.myifood.domain.model.dto.input.RestauranteIN;
+import com.ferry.myifood.domain.model.dto.output.RestauranteOUT;
+import com.ferry.myifood.domain.model.dto.update.RestauranteUP;
 import com.ferry.myifood.domain.repository.CidadeRepository;
 import com.ferry.myifood.domain.repository.CozinhaRepository;
 import com.ferry.myifood.domain.repository.EstadoRepository;
@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import javax.validation.Valid;
 
 @Service
 @AllArgsConstructor
@@ -113,11 +112,9 @@ public class RestauranteService {
                 .orElseThrow(() -> new EntityNotFoundException("Não existe cidade com o id informado"));
 
         restauranteAtual.getEndereco().setCidade(novaCidade);
-
         restauranteUPMapper.partialUpdate(up, restauranteAtual);
-        Restaurante restauranteSalvo = restauranteRepository.save(restauranteAtual);
 
-        return restauranteOUTMapper.toDto(restauranteSalvo);
+        return restauranteOUTMapper.toDto(restauranteRepository.save(restauranteAtual));
     }
 
     /**

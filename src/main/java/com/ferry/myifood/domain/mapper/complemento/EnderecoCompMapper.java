@@ -2,7 +2,7 @@ package com.ferry.myifood.domain.mapper.complemento;
 
 import com.ferry.myifood.domain.mapper.EntityMapper;
 import com.ferry.myifood.domain.model.Endereco;
-import com.ferry.myifood.domain.model.dtos.complemento.EnderecoComp;
+import com.ferry.myifood.domain.model.dto.complemento.EnderecoComp;
 import org.mapstruct.*;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING,

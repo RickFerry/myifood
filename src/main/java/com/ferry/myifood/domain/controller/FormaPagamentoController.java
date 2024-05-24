@@ -1,8 +1,8 @@
 package com.ferry.myifood.domain.controller;
 
-import com.ferry.myifood.domain.model.dtos.input.FormaPagamentoIN;
-import com.ferry.myifood.domain.model.dtos.output.FormaPagamentoOUT;
-import com.ferry.myifood.domain.model.dtos.update.FormaPagamentoUP;
+import com.ferry.myifood.domain.model.dto.input.FormaPagamentoIN;
+import com.ferry.myifood.domain.model.dto.output.FormaPagamentoOUT;
+import com.ferry.myifood.domain.model.dto.update.FormaPagamentoUP;
 import com.ferry.myifood.domain.service.FormaPagamentoService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;

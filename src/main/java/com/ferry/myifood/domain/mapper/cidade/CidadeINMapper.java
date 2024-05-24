@@ -10,7 +10,7 @@ import org.mapstruct.ReportingPolicy;
 import com.ferry.myifood.domain.mapper.EntityMapper;
 import com.ferry.myifood.domain.mapper.complemento.EstadoCompMapper;
 import com.ferry.myifood.domain.model.Cidade;
-import com.ferry.myifood.domain.model.dtos.input.CidadeIN;
+import com.ferry.myifood.domain.model.dto.input.CidadeIN;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING, uses = {EstadoCompMapper.class})
 public interface CidadeINMapper extends EntityMapper<CidadeIN, Cidade> {

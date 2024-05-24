@@ -1,8 +1,8 @@
 package com.ferry.myifood.domain.controller;
 
-import com.ferry.myifood.domain.model.dtos.input.GrupoIN;
-import com.ferry.myifood.domain.model.dtos.output.GrupoOUT;
-import com.ferry.myifood.domain.model.dtos.update.GrupoUP;
+import com.ferry.myifood.domain.model.dto.input.GrupoIN;
+import com.ferry.myifood.domain.model.dto.output.GrupoOUT;
+import com.ferry.myifood.domain.model.dto.update.GrupoUP;
 import com.ferry.myifood.domain.service.GruposService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;

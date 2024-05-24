@@ -1,8 +1,8 @@
 package com.ferry.myifood.domain.controller;
 
-import com.ferry.myifood.domain.model.dtos.input.CozinhaIN;
-import com.ferry.myifood.domain.model.dtos.output.CozinhaOUT;
-import com.ferry.myifood.domain.model.dtos.update.CozinhaUP;
+import com.ferry.myifood.domain.model.dto.input.CozinhaIN;
+import com.ferry.myifood.domain.model.dto.output.CozinhaOUT;
+import com.ferry.myifood.domain.model.dto.update.CozinhaUP;
 import com.ferry.myifood.domain.service.CozinhaService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;

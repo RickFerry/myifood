@@ -2,7 +2,7 @@ package com.ferry.myifood.domain.mapper.permissao;
 
 import com.ferry.myifood.domain.mapper.EntityMapper;
 import com.ferry.myifood.domain.model.Permissao;
-import com.ferry.myifood.domain.model.dtos.output.PermissaoOUT;
+import com.ferry.myifood.domain.model.dto.output.PermissaoOUT;
 import org.mapstruct.*;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)

@@ -1,8 +1,8 @@
 package com.ferry.myifood.domain.controller;
 
-import com.ferry.myifood.domain.model.dtos.input.CidadeIN;
-import com.ferry.myifood.domain.model.dtos.output.CidadeOUT;
-import com.ferry.myifood.domain.model.dtos.update.CidadeUP;
+import com.ferry.myifood.domain.model.dto.input.CidadeIN;
+import com.ferry.myifood.domain.model.dto.output.CidadeOUT;
+import com.ferry.myifood.domain.model.dto.update.CidadeUP;
 import com.ferry.myifood.domain.service.CidadeService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;

@@ -33,7 +33,7 @@ public class Usuario {
     @JoinTable(name = "Usuario_grupos",
             joinColumns = @JoinColumn(name = "usuario_id"),
             inverseJoinColumns = @JoinColumn(name = "grupos_id"))
-    private Set<Grupo> grupoes = new LinkedHashSet<>();
+    private Set<Grupo> grupos = new LinkedHashSet<>();
 
     @Override
     public boolean equals(Object o) {

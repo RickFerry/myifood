@@ -72,3 +72,8 @@ INSERT INTO GRUPO (NOME) VALUES ('USUARIO');
 
 insert into grupo_permissoes (grupo_id, PERMISSOES_ID) values (1, 1), (1, 2), (1, 3);
 insert into grupo_permissoes (grupo_id, PERMISSOES_ID) values (2, 1);
+
+INSERT INTO USUARIO (NOME, EMAIL, SENHA, DATA_CADASTRO) VALUES ('Admin', 'eder@admin.com', '$2a$10$3', systimestamp);
+INSERT INTO USUARIO (NOME, EMAIL, SENHA, DATA_CADASTRO) VALUES ('Usuario', 'ghy@user.com', '$2a$10$3', systimestamp);
+
+INSERT INTO USUARIO_GRUPOS (USUARIO_ID, GRUPOS_ID) VALUES (1, 1), (2, 2);

@@ -1,12 +1,10 @@
 package com.ferry.myifood.domain.mapper.restaurante;
 
 import com.ferry.myifood.domain.mapper.EntityMapper;
-import com.ferry.myifood.domain.mapper.cidade.CidadeINMapper;
 import com.ferry.myifood.domain.mapper.complemento.CozinhaCompMapper;
 import com.ferry.myifood.domain.mapper.complemento.EnderecoCompMapper;
-import com.ferry.myifood.domain.mapper.endereco.EnderecoINMapper;
 import com.ferry.myifood.domain.model.Restaurante;
-import com.ferry.myifood.domain.model.dtos.input.RestauranteIN;
+import com.ferry.myifood.domain.model.dto.input.RestauranteIN;
 import org.mapstruct.*;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING,
