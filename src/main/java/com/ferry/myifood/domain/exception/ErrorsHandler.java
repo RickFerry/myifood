@@ -32,16 +32,14 @@ public class ErrorsHandler {
         this.messageSource = messageSource;
     }
 
-    /**
-     * @param e
-     * @return ResponseEntity<Throwable>
-     */
-    @ExceptionHandler(DataIntegrityViolationException.class)
-    public final ResponseEntity<List<Error>> handleDataIntegrityViolationException(
-            final DataIntegrityViolationException e) {
+    @ExceptionHandler(UniqueConstraintViolationException.class)
+    public final ResponseEntity<Error> handleUniqueConstraintViolationException(
+            final UniqueConstraintViolationException e) {
         return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body(List.of(new Error("constraint", getRootCauseMessage(e))));
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new Error(
+                        e.getFieldName(),
+                        e.getMessage()));
     }
 
     /**
