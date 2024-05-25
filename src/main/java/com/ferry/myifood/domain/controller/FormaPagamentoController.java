@@ -1,8 +1,8 @@
 package com.ferry.myifood.domain.controller;
 
-import com.ferry.myifood.domain.model.dto.input.FormaPagamentoIN;
-import com.ferry.myifood.domain.model.dto.output.FormaPagamentoOUT;
-import com.ferry.myifood.domain.model.dto.update.FormaPagamentoUP;
+import com.ferry.myifood.domain.model.dto.input.FormasPagamentoIN;
+import com.ferry.myifood.domain.model.dto.output.FormasPagamentoOUT;
+import com.ferry.myifood.domain.model.dto.update.FormasPagamentoUP;
 import com.ferry.myifood.domain.service.FormaPagamentoService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -14,17 +14,17 @@ import javax.validation.Valid;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/forma-pagamento")
+@RequestMapping("/formas-pagamento")
 public class FormaPagamentoController {
     private final FormaPagamentoService formaPagamentoService;
 
     @GetMapping
-    public ResponseEntity<Page<FormaPagamentoOUT>> findAll(Pageable pageable) {
+    public ResponseEntity<Page<FormasPagamentoOUT>> findAll(Pageable pageable) {
         return ResponseEntity.ok(formaPagamentoService.findAll(pageable));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<FormaPagamentoOUT> findById(@PathVariable Long id) {
+    public ResponseEntity<FormasPagamentoOUT> findById(@PathVariable Long id) {
         try {
             return ResponseEntity.ok(formaPagamentoService.findById(id));
         } catch (Exception e) {
@@ -33,12 +33,12 @@ public class FormaPagamentoController {
     }
 
     @PostMapping
-    public ResponseEntity<FormaPagamentoOUT> save(@RequestBody @Valid FormaPagamentoIN in) {
+    public ResponseEntity<FormasPagamentoOUT> save(@RequestBody @Valid FormasPagamentoIN in) {
         return ResponseEntity.ok(formaPagamentoService.save(in));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<FormaPagamentoOUT> update(@PathVariable Long id, @RequestBody @Valid FormaPagamentoUP up) {
+    public ResponseEntity<FormasPagamentoOUT> update(@PathVariable Long id, @RequestBody @Valid FormasPagamentoUP up) {
         try {
             return ResponseEntity.ok(formaPagamentoService.update(id, up));
         } catch (Exception e) {

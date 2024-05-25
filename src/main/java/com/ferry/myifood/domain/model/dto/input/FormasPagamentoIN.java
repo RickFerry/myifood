@@ -1,15 +1,14 @@
-package com.ferry.myifood.domain.model.dto.update;
+package com.ferry.myifood.domain.model.dto.input;
 
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
-import java.io.Serializable;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class FormaPagamentoUP implements Serializable {
+public class FormasPagamentoIN {
     /**
      *
      */

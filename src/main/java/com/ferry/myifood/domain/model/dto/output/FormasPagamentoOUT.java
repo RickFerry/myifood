@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class FormaPagamentoOUT {
+public class FormasPagamentoOUT {
 	private Long id;
 	private String descricao;
 }

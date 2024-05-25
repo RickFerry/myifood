@@ -58,6 +58,14 @@ public class Restaurante {
         setAtivo(false);
     }
 
+    public void adicionaFormaPagamento(FormaPagamento formaPagamento) {
+        getFormasPagamento().add(formaPagamento);
+    }
+
+    public void removeFormaPagamento(FormaPagamento formaPagamento) {
+        getFormasPagamento().remove(formaPagamento);
+    }
+
     @Override
     public final boolean equals(Object o) {
         if (this == o) return true;
