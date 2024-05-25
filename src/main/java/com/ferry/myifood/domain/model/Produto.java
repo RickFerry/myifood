@@ -22,11 +22,7 @@ public class Produto {
     private String nome;
     private String descricao;
     private BigDecimal preco;
-    private Boolean ativo;
-
-    @ManyToOne
-    @JsonIgnore
-    private Restaurante restaurante;
+    private Boolean ativo = Boolean.TRUE;
 
     @Override
     public boolean equals(Object o) {

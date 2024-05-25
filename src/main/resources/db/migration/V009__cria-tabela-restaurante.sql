@@ -22,6 +22,13 @@ CREATE TABLE restaurante_formas_pagamento
     CONSTRAINT pk_restaurante_formas_pagamento PRIMARY KEY (formas_pagamento_id, restaurante_id)
 );
 
+CREATE TABLE restaurante_produto
+(
+    produto_id     BIGINT NOT NULL,
+    restaurante_id BIGINT NOT NULL,
+    CONSTRAINT pk_restaurante_produto PRIMARY KEY (produto_id, restaurante_id)
+);
+
 ALTER TABLE restaurante
     ADD CONSTRAINT FK_RESTAURANTE_ON_CIDADE FOREIGN KEY (cidade_id) REFERENCES cidade (id);
 
@@ -33,3 +40,9 @@ ALTER TABLE restaurante_formas_pagamento
 
 ALTER TABLE restaurante_formas_pagamento
     ADD CONSTRAINT fk_resforpag_on_restaurante FOREIGN KEY (restaurante_id) REFERENCES restaurante (id);
+
+ALTER TABLE restaurante_produto
+    ADD CONSTRAINT fk_respro_on_produto FOREIGN KEY (produto_id) REFERENCES produto (id);
+
+ALTER TABLE restaurante_produto
+    ADD CONSTRAINT fk_respro_on_restaurante FOREIGN KEY (restaurante_id) REFERENCES restaurante (id);

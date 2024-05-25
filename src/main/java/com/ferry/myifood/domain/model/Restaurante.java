@@ -41,7 +41,10 @@ public class Restaurante {
     @ManyToOne
     private Cozinha cozinha;
 
-    @OneToMany(mappedBy = "restaurante", orphanRemoval = true)
+    @ManyToMany
+    @JoinTable(name = "restaurante_produto",
+            joinColumns = @JoinColumn(name = "restaurante_id"),
+            inverseJoinColumns = @JoinColumn(name = "produto_id"))
     private Set<Produto> produtos = new LinkedHashSet<>();
 
     @ManyToMany
@@ -64,6 +67,14 @@ public class Restaurante {
 
     public void removeFormaPagamento(FormaPagamento formaPagamento) {
         getFormasPagamento().remove(formaPagamento);
+    }
+
+    public void adicionaProduto(Produto produto) {
+        getProdutos().add(produto);
+    }
+
+    public void removeProduto(Produto produto) {
+        getProdutos().remove(produto);
     }
 
     @Override
