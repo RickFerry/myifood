@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.stream.Collectors;
 
 @Service
@@ -56,7 +57,7 @@ public class UsuarioService {
     public UsuarioOUT save(UsuarioIN in) {
         Usuario usuario = usuarioINMapper.toEntity(in);
         usuario.setGrupos(in.getGrupos().stream().map(grupo -> grupoRepository.findById(grupo.getId()).orElseThrow(
-                () -> new RuntimeException("Grupo não encontrado"))).collect(Collectors.toSet()));
+                () -> new EntityNotFoundException("Grupo não encontrado"))).collect(Collectors.toSet()));
         return usuarioOUTMapper.toDto(usuarioRepository.save(usuario));
     }
 

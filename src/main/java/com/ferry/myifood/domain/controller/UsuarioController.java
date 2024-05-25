@@ -5,12 +5,14 @@ import com.ferry.myifood.domain.model.dto.output.UsuarioOUT;
 import com.ferry.myifood.domain.model.dto.update.UsuarioUP;
 import com.ferry.myifood.domain.service.UsuarioService;
 import lombok.AllArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 
 @RestController
@@ -38,8 +40,8 @@ public class UsuarioController {
             UsuarioOUT usuario = usuarioService.save(in);
             return ResponseEntity.created(
                     uriBuilder.path("/{id}").buildAndExpand(usuario.getId()).toUri()).body(usuario);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
         }
     }
 

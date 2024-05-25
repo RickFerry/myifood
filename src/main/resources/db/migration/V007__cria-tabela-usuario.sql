@@ -15,6 +15,9 @@ CREATE TABLE usuario_grupos
     CONSTRAINT pk_usuario_grupos PRIMARY KEY (grupos_id, usuario_id)
 );
 
+ALTER TABLE usuario
+    ADD CONSTRAINT uc_usuario_email UNIQUE (email);
+
 ALTER TABLE usuario_grupos
     ADD CONSTRAINT fk_usugru_on_grupo FOREIGN KEY (grupos_id) REFERENCES grupo (id);
 

@@ -3,9 +3,9 @@ package com.ferry.myifood.domain.exception;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -15,12 +15,15 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.apache.commons.lang3.exception.ExceptionUtils.getRootCause;
+import static org.apache.commons.lang3.exception.ExceptionUtils.getRootCauseMessage;
+
 @ControllerAdvice
 public class ErrorsHandler {
     /**
      *
      */
-    private MessageSource messageSource;
+    private final MessageSource messageSource;
 
     /**
      * @param messageSource
@@ -33,13 +36,24 @@ public class ErrorsHandler {
      * @param e
      * @return ResponseEntity<Throwable>
      */
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public final ResponseEntity<List<Error>> handleDataIntegrityViolationException(
+            final DataIntegrityViolationException e) {
+        return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(List.of(new Error("constraint", getRootCauseMessage(e))));
+    }
+
+    /**
+     * @param e
+     * @return ResponseEntity<Throwable>
+     */
     @ExceptionHandler(EstadoNaoEncontradoException.class)
     public final ResponseEntity<Throwable> handleEstadoNaoEncontradoException(
             final EstadoNaoEncontradoException e) {
         return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
-                    .body(ExceptionUtils
-                    .getRootCause(e));
+                    .body(getRootCause(e));
     }
 
     /**
@@ -51,7 +65,7 @@ public class ErrorsHandler {
             final CidadeNaoEncontradaException e) {
         return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
-                    .body(ExceptionUtils.getRootCause(e));
+                    .body(getRootCause(e));
     }
 
     /**

@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -13,6 +14,11 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
+@Table(name = "Usuario", indexes = {
+        @Index(name = "idx_usuario_email", columnList = "email")
+}, uniqueConstraints = {
+        @UniqueConstraint(name = "uc_usuario_email", columnNames = {"email"})
+})
 @Getter
 @Setter
 @AllArgsConstructor
@@ -22,7 +28,10 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
+
+    @Column(unique = true)
     private String email;
+
     private String senha;
 
     @CreationTimestamp
