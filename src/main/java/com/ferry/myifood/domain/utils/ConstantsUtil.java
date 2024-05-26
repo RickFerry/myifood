@@ -33,6 +33,14 @@ public final class ConstantsUtil {
      *
      */
     public static final String USUARIO_COM_ID_INFORMADO_NAO_EXISTE = "Usuário com id informado não existe.";
+    /**
+     *
+     */
+    public static final String PEDIDO_COM_ID_INFORMADO_NAO_EXISTE = "Pedido com id informado não existe.";
+    /**
+     *
+     */
+    public static final String PERMISSAO_COM_ID_INFORMADO_NAO_EXISTE = "Permissão com id informado não existe.";
 
     private ConstantsUtil() {
     }

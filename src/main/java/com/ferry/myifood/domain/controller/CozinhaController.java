@@ -25,7 +25,7 @@ public class CozinhaController {
 
     /**
      * @param page
-     * @return ResponseEntity<Page<CozinhaOUT>>
+     * @return ResponseEntity<Page < CozinhaOUT>>
      */
     @GetMapping
     public final ResponseEntity<Page<CozinhaOUT>> listar(final Pageable page) {
@@ -38,11 +38,7 @@ public class CozinhaController {
      */
     @GetMapping("/{id}")
     public final ResponseEntity<CozinhaOUT> pegar(@PathVariable final Long id) {
-        try {
             return ResponseEntity.ok(cozinhaService.pegar(id));
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
     }
 
     /**
@@ -51,14 +47,9 @@ public class CozinhaController {
      * @return ResponseEntity<CozinhaOUT>
      */
     @PostMapping
-    public final ResponseEntity<CozinhaOUT> salvar(
-        @RequestBody @Valid final CozinhaIN cozinhaIN,
-        final UriComponentsBuilder uriComponentsBuilder) {
+    public final ResponseEntity<CozinhaOUT> salvar(@RequestBody @Valid final CozinhaIN cozinhaIN, final UriComponentsBuilder uriComponentsBuilder) {
         CozinhaOUT nova = cozinhaService.salvar(cozinhaIN);
-        var uri = uriComponentsBuilder
-            .path("/cozinhas/{id}")
-            .buildAndExpand(nova.getId())
-            .toUri();
+        var uri = uriComponentsBuilder.path("/cozinhas/{id}").buildAndExpand(nova.getId()).toUri();
         return ResponseEntity.created(uri).body(nova);
     }
 
@@ -68,14 +59,8 @@ public class CozinhaController {
      * @return ResponseEntity<CozinhaOUT>
      */
     @PutMapping("/{id}")
-    public final ResponseEntity<CozinhaOUT> atualizar(
-        @PathVariable final Long id,
-            @RequestBody @Valid final CozinhaUP up) {
-        try {
-            return ResponseEntity.ok(cozinhaService.atualizar(id, up));
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
+    public final ResponseEntity<CozinhaOUT> atualizar(@PathVariable final Long id, @RequestBody @Valid final CozinhaUP up) {
+        return ResponseEntity.ok(cozinhaService.atualizar(id, up));
     }
 
     /**
@@ -84,11 +69,7 @@ public class CozinhaController {
      */
     @DeleteMapping("/{id}")
     public final ResponseEntity<Void> remover(@PathVariable final Long id) {
-        try {
-            cozinhaService.remover(id);
-            return ResponseEntity.noContent().build();
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+        cozinhaService.remover(id);
+        return ResponseEntity.noContent().build();
     }
 }

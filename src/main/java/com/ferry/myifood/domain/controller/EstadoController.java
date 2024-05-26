@@ -22,7 +22,7 @@ public class EstadoController {
 
     /**
      * @param page
-     * @return ResponseEntity<Page<EstadoOUT>>
+     * @return ResponseEntity<Page < EstadoOUT>>
      */
     @GetMapping
     public final ResponseEntity<Page<EstadoOUT>> listar(final Pageable page) {
@@ -35,11 +35,7 @@ public class EstadoController {
      */
     @GetMapping("/{id}")
     public final ResponseEntity<EstadoOUT> buscar(@PathVariable final Long id) {
-        try {
-            return ResponseEntity.ok(estadoService.buscar(id));
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
+        return ResponseEntity.ok(estadoService.buscar(id));
     }
 
     /**
@@ -48,14 +44,9 @@ public class EstadoController {
      * @return ResponseEntity<EstadoOUT>
      */
     @PostMapping
-    public final ResponseEntity<EstadoOUT> salvar(
-            @RequestBody final EstadoIN in,
-            final UriComponentsBuilder uriComponentsBuilder) {
+    public final ResponseEntity<EstadoOUT> salvar(@RequestBody final EstadoIN in, final UriComponentsBuilder uriComponentsBuilder) {
         EstadoOUT novo = estadoService.salvar(in);
-        var uri = uriComponentsBuilder
-            .path("/estados/{id}")
-            .buildAndExpand(novo.getId())
-            .toUri();
+        var uri = uriComponentsBuilder.path("/estados/{id}").buildAndExpand(novo.getId()).toUri();
         return ResponseEntity.created(uri).body(novo);
     }
 
@@ -65,13 +56,8 @@ public class EstadoController {
      * @return ResponseEntity<EstadoOUT>
      */
     @PutMapping("/{id}")
-    public final ResponseEntity<EstadoOUT> atualizar(
-        @PathVariable final Long id, @RequestBody final EstadoUP up) {
-        try {
+    public final ResponseEntity<EstadoOUT> atualizar(@PathVariable final Long id, @RequestBody final EstadoUP up) {
             return ResponseEntity.ok(estadoService.atualizar(id, up));
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
     }
 
     /**
@@ -80,11 +66,7 @@ public class EstadoController {
      */
     @DeleteMapping("/{id}")
     public final ResponseEntity<Void> deletar(@PathVariable final Long id) {
-        try {
             estadoService.deletar(id);
             return ResponseEntity.noContent().build();
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
     }
 }

@@ -19,30 +19,18 @@ public class RestauranteFormasPagamentoController {
 
     @GetMapping
     public ResponseEntity<Set<FormasPagamentoOUT>> buscaFormasPagamento(@PathVariable Long restauranteId) {
-        try {
             return ResponseEntity.ok(restauranteFormasPagamentoService.buscaFormasPagamento(restauranteId));
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
     }
 
     @PutMapping("/{formaPagamentoId}")
     public ResponseEntity<?> adicionaFormaPagamento(@PathVariable Long restauranteId, @PathVariable Long formaPagamentoId) {
-        try {
             restauranteFormasPagamentoService.adicionaFormaPagamento(restauranteId, formaPagamentoId);
             return ResponseEntity.noContent().build();
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
     }
 
     @DeleteMapping("/{formaPagamentoId}")
     public ResponseEntity<?> removeFormaPagamento(@PathVariable Long restauranteId, @PathVariable Long formaPagamentoId) {
-        try {
             restauranteFormasPagamentoService.removeFormaPagamento(restauranteId, formaPagamentoId);
             return ResponseEntity.noContent().build();
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
     }
 }

@@ -43,15 +43,15 @@ INSERT INTO cidade (NOME, ESTADO_ID) VALUES ('São Paulo', 1);
 INSERT INTO cidade (NOME, ESTADO_ID) VALUES ('Rio de Janeiro', 2);
 INSERT INTO cidade (NOME, ESTADO_ID) VALUES ('Campinas', 1);
 
-INSERT INTO restaurante (NOME, TAXA_FRETE, ATIVO, DATA_CADASTRO, DATA_ATUALIZACAO, COZINHA_ID, CIDADE_ID, ENDERECO_CEP,
+INSERT INTO restaurante (NOME, TAXA_FRETE, ATIVO, ABERTO, DATA_CADASTRO, DATA_ATUALIZACAO, COZINHA_ID, CIDADE_ID, ENDERECO_CEP,
                          ENDERECO_COMPLEMENTO, ENDERECO_LOGRADOURO, ENDERECO_NUMERO, ENDERECO_BAIRRO)
-VALUES ('Burger Top', 10, 1, systimestamp, systimestamp, 3, 1, '00000-000', 'Comercio', 'Rua Xyz', '123', 'Centro');
-INSERT INTO restaurante (NOME, TAXA_FRETE, ATIVO, DATA_CADASTRO, DATA_ATUALIZACAO, COZINHA_ID, CIDADE_ID, ENDERECO_CEP,
+VALUES ('Burger Top', 10, 1, 1, systimestamp, systimestamp, 3, 1, '00000-000', 'Comercio', 'Rua Xyz', '123', 'Centro');
+INSERT INTO restaurante (NOME, TAXA_FRETE, ATIVO, ABERTO, DATA_CADASTRO, DATA_ATUALIZACAO, COZINHA_ID, CIDADE_ID, ENDERECO_CEP,
                          ENDERECO_COMPLEMENTO, ENDERECO_LOGRADOURO, ENDERECO_NUMERO, ENDERECO_BAIRRO)
-VALUES ('Burger King', 15, 1, systimestamp, systimestamp, 1, 1, '11111-111', 'Comercio', 'Rua Xyz', '123', 'Centro');
-INSERT INTO restaurante (NOME, TAXA_FRETE, ATIVO, DATA_CADASTRO, DATA_ATUALIZACAO, COZINHA_ID, CIDADE_ID, ENDERECO_CEP,
+VALUES ('Burger King', 15, 1, 1, systimestamp, systimestamp, 1, 1, '11111-111', 'Comercio', 'Rua Xyz', '123', 'Centro');
+INSERT INTO restaurante (NOME, TAXA_FRETE, ATIVO, ABERTO, DATA_CADASTRO, DATA_ATUALIZACAO, COZINHA_ID, CIDADE_ID, ENDERECO_CEP,
                          ENDERECO_COMPLEMENTO, ENDERECO_LOGRADOURO, ENDERECO_NUMERO, ENDERECO_BAIRRO)
-VALUES ('Burger Queen', 20, 1, systimestamp, systimestamp, 4, 1, '22222-222', 'Comercio', 'Rua Xyz', '123', 'Centro');
+VALUES ('Burger Queen', 20, 1, 1, systimestamp, systimestamp, 4, 1, '22222-222', 'Comercio', 'Rua Xyz', '123', 'Centro');
 
 
 INSERT INTO FORMA_PAGAMENTO (ID, DESCRICAO) VALUES (1, 'Dinheiro');

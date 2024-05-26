@@ -31,6 +31,10 @@ public class RestauranteOUT{
 	/**
 	 *
 	 */
+	private Boolean aberto;
+	/**
+	 *
+	 */
 	private EnderecoOUT endereco;
 	/**
 	 *

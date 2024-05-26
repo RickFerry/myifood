@@ -2,6 +2,7 @@ package com.ferry.myifood.domain.service;
 
 import com.ferry.myifood.domain.exception.CidadeNaoEncontradaException;
 import com.ferry.myifood.domain.exception.CozinhaNaoEncontradaException;
+import com.ferry.myifood.domain.exception.EstadoNaoEncontradoException;
 import com.ferry.myifood.domain.exception.RestauranteNaoEncontradoException;
 import com.ferry.myifood.domain.mapper.restaurante.RestauranteINMapper;
 import com.ferry.myifood.domain.mapper.restaurante.RestauranteOUTMapper;
@@ -85,13 +86,13 @@ public class RestauranteService {
         Restaurante restaurante = restauranteINMapper.toEntity(in);
 
         restaurante.setCozinha(cozinhaRepository.findById(in.getCozinha().getId()).orElseThrow(
-                () -> new EntityNotFoundException("Não existe cozinha com o id informado")));
+                () -> new CozinhaNaoEncontradaException(in.getCozinha().getId(), COZINHA_COM_ID_INFORMADO_NAO_EXISTE)));
 
         restaurante.getEndereco().setCidade(cidadeRepository.findById(restaurante.getEndereco().getCidade().getId()).orElseThrow(
-                () -> new EntityNotFoundException("Não existe cidade com o id informado")));
+                () -> new CidadeNaoEncontradaException(restaurante.getEndereco().getCidade().getId(), CIDADE_COM_ID_INFORMADO_NAO_EXISTE)));
 
         restaurante.getEndereco().getCidade().setEstado(estadoRepository.findById(restaurante.getEndereco().getCidade().getEstado().getId()).orElseThrow(
-                () -> new EntityNotFoundException("Não existe estado com o id informado")));
+                () -> new EstadoNaoEncontradoException(restaurante.getEndereco().getCidade().getEstado().getId(), ESTADO_COM_ID_INFORMADO_NAO_EXISTE)));
 
         return restauranteOUTMapper.toDto(restauranteRepository.save(restaurante));
     }
@@ -144,6 +145,26 @@ public class RestauranteService {
     @Transactional
     public void inativar(final Long id) {
         restauranteRepository.findById(id).ifPresentOrElse(Restaurante::inativar, () -> {
+            throw new RestauranteNaoEncontradoException(id, RESTAURANTE_COM_ID_INFORMADO_NAO_EXISTE);
+        });
+    }
+
+    /**
+     * @param id
+     */
+    @Transactional
+    public void abrir(Long id) {
+        restauranteRepository.findById(id).ifPresentOrElse(Restaurante::abrir, () -> {
+            throw new RestauranteNaoEncontradoException(id, RESTAURANTE_COM_ID_INFORMADO_NAO_EXISTE);
+        });
+    }
+
+    /**
+     * @param id
+     */
+    @Transactional
+    public void fechar(Long id) {
+        restauranteRepository.findById(id).ifPresentOrElse(Restaurante::fechar, () -> {
             throw new RestauranteNaoEncontradoException(id, RESTAURANTE_COM_ID_INFORMADO_NAO_EXISTE);
         });
     }

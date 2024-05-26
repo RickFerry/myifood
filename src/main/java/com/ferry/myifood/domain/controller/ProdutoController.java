@@ -34,10 +34,6 @@ public class ProdutoController {
      */
     @GetMapping("/{id}")
     public final ResponseEntity<Produto> buscar(@PathVariable final Long id) {
-        try {
             return ResponseEntity.ok(produtoService.buscar(id));
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
     }
 }

@@ -6,6 +6,7 @@ import com.ferry.myifood.domain.mapper.grupo.GrupoINMapper;
 import com.ferry.myifood.domain.mapper.grupo.GrupoOUTMapper;
 import com.ferry.myifood.domain.mapper.grupo.GrupoUPMapper;
 import com.ferry.myifood.domain.model.Grupo;
+import com.ferry.myifood.domain.model.Permissao;
 import com.ferry.myifood.domain.model.dto.input.GrupoIN;
 import com.ferry.myifood.domain.model.dto.output.GrupoOUT;
 import com.ferry.myifood.domain.model.dto.update.GrupoUP;
@@ -17,16 +18,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.ferry.myifood.domain.utils.ConstantsUtil.GRUPO_COM_ID_INFORMADO_NAO_EXISTE;
+import static com.ferry.myifood.domain.utils.ConstantsUtil.PERMISSAO_COM_ID_INFORMADO_NAO_EXISTE;
 
 @Service
 @AllArgsConstructor
 public class GruposService {
-    public static final String PERMISSAO_COM_ID_INFORMADO_NAO_EXISTE = "Permissão com id informado não existe.";
     /**
      *
      */
@@ -82,5 +83,29 @@ public class GruposService {
                 () -> {
                     throw new GrupoNaoEncontradoException(id, GRUPO_COM_ID_INFORMADO_NAO_EXISTE);
                 });
+    }
+
+    @Transactional
+    public void adicionarPermissao(Long id, Long permissaoId) {
+        Grupo grupo = gruposRepository.findById(id).orElseThrow(
+                () -> new GrupoNaoEncontradoException(id, GRUPO_COM_ID_INFORMADO_NAO_EXISTE));
+        Permissao permissao = permissaoRepository.findById(permissaoId).orElseThrow(
+                () -> new PermissaoNaoEncontradaException(permissaoId, PERMISSAO_COM_ID_INFORMADO_NAO_EXISTE));
+        grupo.adicionarPermissao(permissao);
+    }
+
+    @Transactional
+    public void deletarPermissao(Long id, Long permissaoId) {
+        Grupo grupo = gruposRepository.findById(id).orElseThrow(
+                () -> new GrupoNaoEncontradoException(id, GRUPO_COM_ID_INFORMADO_NAO_EXISTE));
+        Permissao permissao = permissaoRepository.findById(permissaoId).orElseThrow(
+                () -> new PermissaoNaoEncontradaException(permissaoId, PERMISSAO_COM_ID_INFORMADO_NAO_EXISTE));
+        grupo.removePermissao(permissao);
+    }
+
+    @Transactional(readOnly = true)
+    public Set<Permissao> listarPermissoes(Long id) {
+        return gruposRepository.findById(id).orElseThrow(
+                () -> new GrupoNaoEncontradoException(id, GRUPO_COM_ID_INFORMADO_NAO_EXISTE)).getPermissoes();
     }
 }

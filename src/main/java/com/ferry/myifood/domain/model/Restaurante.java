@@ -27,6 +27,7 @@ public class Restaurante {
     private String nome;
     private BigDecimal taxaFrete;
     private Boolean ativo = Boolean.TRUE;
+    private Boolean aberto = Boolean.TRUE;
 
     @CreationTimestamp
     @Column(nullable = false, columnDefinition = "datetime")
@@ -53,14 +54,6 @@ public class Restaurante {
             inverseJoinColumns = @JoinColumn(name = "formas_pagamento_id"))
     private Set<FormaPagamento> formasPagamento = new LinkedHashSet<>();
 
-    public void ativar() {
-        setAtivo(true);
-    }
-
-    public void inativar() {
-        setAtivo(false);
-    }
-
     public void adicionaFormaPagamento(FormaPagamento formaPagamento) {
         getFormasPagamento().add(formaPagamento);
     }
@@ -75,6 +68,22 @@ public class Restaurante {
 
     public void removeProduto(Produto produto) {
         getProdutos().remove(produto);
+    }
+
+    public void ativar() {
+        setAtivo(true);
+    }
+
+    public void inativar() {
+        setAtivo(false);
+    }
+
+    public void abrir() {
+        setAberto(true);
+    }
+
+    public void fechar() {
+        setAberto(false);
     }
 
     @Override

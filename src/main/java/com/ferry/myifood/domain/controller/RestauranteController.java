@@ -38,11 +38,7 @@ public class RestauranteController {
      */
     @GetMapping("/{id}")
     public final ResponseEntity<RestauranteOUT> buscar(@PathVariable final Long id) {
-        try {
             return ResponseEntity.ok(restauranteService.buscar(id));
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
     }
 
     /**
@@ -52,13 +48,9 @@ public class RestauranteController {
      */
     @PostMapping
     public final ResponseEntity<?> salvar(@RequestBody @Valid final RestauranteIN in, final UriComponentsBuilder uriComponentsBuilder) {
-        try {
             RestauranteOUT novo = restauranteService.salvar(in);
             var uri = uriComponentsBuilder.path("/restaurantes/{id}").buildAndExpand(novo.getId()).toUri();
             return ResponseEntity.created(uri).body(novo);
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
     }
 
     /**
@@ -68,13 +60,7 @@ public class RestauranteController {
      */
     @PutMapping("/{id}")
     public final ResponseEntity<?> atualizar(@PathVariable final Long id, @RequestBody @Valid final RestauranteUP up) {
-        try {
             return ResponseEntity.ok(restauranteService.atualizar(id, up));
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
     }
 
     /**
@@ -83,12 +69,8 @@ public class RestauranteController {
      */
     @DeleteMapping("/{id}")
     public final ResponseEntity<?> deletar(@PathVariable final Long id) {
-        try {
             restauranteService.deletar(id);
             return ResponseEntity.noContent().build();
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
     }
 
     /**
@@ -97,12 +79,8 @@ public class RestauranteController {
      */
     @PutMapping("/{id}/ativar")
     public final ResponseEntity<?> ativar(@PathVariable final Long id) {
-        try {
             restauranteService.ativar(id);
             return ResponseEntity.noContent().build();
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
     }
 
     /**
@@ -111,11 +89,27 @@ public class RestauranteController {
      */
     @DeleteMapping("/{id}/inativar")
     public final ResponseEntity<?> inativar(@PathVariable final Long id) {
-        try {
             restauranteService.inativar(id);
             return ResponseEntity.noContent().build();
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+    }
+
+    /**
+     * @param id
+     * @return ResponseEntity<?>
+     */
+    @PutMapping("/{id}/abertura")
+    public final ResponseEntity<?> abrir(@PathVariable final Long id) {
+            restauranteService.abrir(id);
+            return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * @param id
+     * @return ResponseEntity<?>
+     */
+    @PutMapping("/{id}/fechamento")
+    public final ResponseEntity<?> fechar(@PathVariable final Long id) {
+            restauranteService.fechar(id);
+            return ResponseEntity.noContent().build();
     }
 }

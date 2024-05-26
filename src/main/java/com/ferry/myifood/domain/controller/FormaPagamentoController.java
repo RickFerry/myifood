@@ -25,11 +25,7 @@ public class FormaPagamentoController {
 
     @GetMapping("/{id}")
     public ResponseEntity<FormasPagamentoOUT> findById(@PathVariable Long id) {
-        try {
             return ResponseEntity.ok(formaPagamentoService.findById(id));
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
     }
 
     @PostMapping
@@ -39,20 +35,12 @@ public class FormaPagamentoController {
 
     @PutMapping("/{id}")
     public ResponseEntity<FormasPagamentoOUT> update(@PathVariable Long id, @RequestBody @Valid FormasPagamentoUP up) {
-        try {
             return ResponseEntity.ok(formaPagamentoService.update(id, up));
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        try {
             formaPagamentoService.delete(id);
             return ResponseEntity.noContent().build();
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
     }
 }

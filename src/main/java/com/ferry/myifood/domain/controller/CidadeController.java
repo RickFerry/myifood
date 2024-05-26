@@ -25,7 +25,7 @@ public class CidadeController {
 
     /**
      * @param page
-     * @return ResponseEntity<Page<CidadeOUT>>
+     * @return ResponseEntity<Page < CidadeOUT>>
      */
     @GetMapping
     public final ResponseEntity<Page<CidadeOUT>> listar(final Pageable page) {
@@ -38,11 +38,7 @@ public class CidadeController {
      */
     @GetMapping("/{id}")
     public final ResponseEntity<CidadeOUT> buscar(@PathVariable final Long id) {
-        try {
             return ResponseEntity.ok(cidadeService.buscar(id));
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
     }
 
     /**
@@ -51,18 +47,10 @@ public class CidadeController {
      * @return ResponseEntity<CidadeOUT>
      */
     @PostMapping
-    public final ResponseEntity<?> salvar(@RequestBody @Valid final CidadeIN in,
-            final UriComponentsBuilder uriComponentsBuilder) {
-        try {
+    public final ResponseEntity<?> salvar(@RequestBody @Valid final CidadeIN in, final UriComponentsBuilder uriComponentsBuilder) {
             CidadeOUT nova = cidadeService.salvar(in);
-            var uri = uriComponentsBuilder
-                .path("/cidades/{id}")
-                .buildAndExpand(nova.getId())
-                .toUri();
+            var uri = uriComponentsBuilder.path("/cidades/{id}").buildAndExpand(nova.getId()).toUri();
             return ResponseEntity.created(uri).body(nova);
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
     }
 
     /**
@@ -71,15 +59,8 @@ public class CidadeController {
      * @return ResponseEntity<CidadeOUT>
      */
     @PutMapping("/{id}")
-    public final ResponseEntity<?> atualizar(
-            @PathVariable final Long id, @RequestBody final CidadeUP up) {
-        try {
+    public final ResponseEntity<?> atualizar(@PathVariable final Long id, @RequestBody final CidadeUP up) {
             return ResponseEntity.ok(cidadeService.atualizar(id, up));
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
     }
 
     /**
@@ -88,11 +69,7 @@ public class CidadeController {
      */
     @DeleteMapping("/{id}")
     public final ResponseEntity<Void> remover(@PathVariable final Long id) {
-        try {
             cidadeService.remover(id);
             return ResponseEntity.noContent().build();
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
     }
 }

@@ -37,6 +37,11 @@ public class RestauranteIN{
 	/**
 	 *
 	 */
+	@NotNull
+	private Boolean aberto;
+	/**
+	 *
+	 */
 	@Valid
 	@NotNull
 	private EnderecoComp endereco;

@@ -1,5 +1,6 @@
 package com.ferry.myifood.domain.controller;
 
+import com.ferry.myifood.domain.model.Permissao;
 import com.ferry.myifood.domain.model.dto.input.GrupoIN;
 import com.ferry.myifood.domain.model.dto.output.GrupoOUT;
 import com.ferry.myifood.domain.model.dto.update.GrupoUP;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.util.Set;
 
 @RestController
 @AllArgsConstructor
@@ -34,32 +36,37 @@ public class GrupoController {
 
     @PostMapping
     public final ResponseEntity<?> salvar(@RequestBody @Valid final GrupoIN in, final UriComponentsBuilder uriComponentsBuilder) {
-        try {
             GrupoOUT novo = gruposService.salvar(in);
             var uri = uriComponentsBuilder.path("/grupos/{id}").buildAndExpand(novo.getId()).toUri();
             return ResponseEntity.created(uri).body(novo);
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
     }
 
     @PutMapping("/{id}")
     public final ResponseEntity<?> atualizar(@PathVariable final Long id, @RequestBody @Valid final GrupoUP in) {
-        try {
             GrupoOUT novo = gruposService.atualizar(id, in);
             return ResponseEntity.ok(novo);
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
     }
 
     @DeleteMapping("/{id}")
     public final ResponseEntity<?> deletar(@PathVariable final Long id) {
-        try {
             gruposService.deletar(id);
             return ResponseEntity.noContent().build();
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
+    }
+
+    @PutMapping("/{id}/permissoes/{permissaoId}")
+    public final ResponseEntity<?> adicionarPermissao(@PathVariable final Long id, @PathVariable final Long permissaoId) {
+            gruposService.adicionarPermissao(id, permissaoId);
+            return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{id}/permissoes/{permissaoId}")
+    public final ResponseEntity<?> deletarPermissao(@PathVariable final Long id, @PathVariable final Long permissaoId) {
+            gruposService.deletarPermissao(id, permissaoId);
+            return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{id}/permissoes")
+    public final ResponseEntity<Set<Permissao>> listarPermissoes(@PathVariable final Long id) {
+            return ResponseEntity.ok(gruposService.listarPermissoes(id));
     }
 }

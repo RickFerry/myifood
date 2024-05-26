@@ -28,39 +28,23 @@ public class RestauranteProdutoController {
 
     @GetMapping
     public ResponseEntity<Set<ProdutoOUT>> buscaProdutos(@PathVariable Long restauranteId) {
-        try {
             return ResponseEntity.ok(restauranteService.buscaProdutos(restauranteId));
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
     }
 
     @GetMapping("/{produtoId}")
     public ResponseEntity<ProdutoOUT> buscaProduto(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
-        try {
             return ResponseEntity.ok(restauranteService.buscaProduto(restauranteId, produtoId));
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
     }
 
     @PutMapping("/{produtoId}")
     public ResponseEntity<?> adicionaProduto(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
-        try {
             restauranteService.adicionaProduto(restauranteId, produtoId);
             return ResponseEntity.noContent().build();
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
     }
 
     @DeleteMapping("/{produtoId}")
     public ResponseEntity<?> removeProduto(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
-        try {
             restauranteService.removeProduto(restauranteId, produtoId);
             return ResponseEntity.noContent().build();
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
     }
 }

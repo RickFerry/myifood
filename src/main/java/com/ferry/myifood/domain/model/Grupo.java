@@ -22,11 +22,19 @@ public class Grupo {
     private Long id;
     private String nome;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "Grupo_permissoes",
             joinColumns = @JoinColumn(name = "grupo_id"),
             inverseJoinColumns = @JoinColumn(name = "permissoes_id"))
     private Set<Permissao> permissoes = new LinkedHashSet<>();
+
+    public void adicionarPermissao(Permissao permissao) {
+        this.permissoes.add(permissao);
+    }
+
+    public void removePermissao(Permissao permissao) {
+        this.permissoes.remove(permissao);
+    }
 
     @Override
     public boolean equals(Object o) {
