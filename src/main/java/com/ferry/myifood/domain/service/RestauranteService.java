@@ -1,5 +1,8 @@
 package com.ferry.myifood.domain.service;
 
+import com.ferry.myifood.domain.exception.CidadeNaoEncontradaException;
+import com.ferry.myifood.domain.exception.CozinhaNaoEncontradaException;
+import com.ferry.myifood.domain.exception.RestauranteNaoEncontradoException;
 import com.ferry.myifood.domain.mapper.restaurante.RestauranteINMapper;
 import com.ferry.myifood.domain.mapper.restaurante.RestauranteOUTMapper;
 import com.ferry.myifood.domain.mapper.restaurante.RestauranteUPMapper;
@@ -20,13 +23,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 
+import static com.ferry.myifood.domain.utils.ConstantsUtil.*;
+
 @Service
 @AllArgsConstructor
 public class RestauranteService {
-    /**
-     *
-     */
-    public static final String NAO_EXISTE_RESTAURANTE_COM_O_ID_INFORMADO = "Não existe restaurante com o id informado";
     /**
      *
      */
@@ -72,7 +73,7 @@ public class RestauranteService {
     @Transactional(readOnly = true)
     public RestauranteOUT buscar(final Long id) {
         return restauranteRepository.findById(id).map(restauranteOUTMapper::toDto).orElseThrow(
-                () -> new RuntimeException("Restaurante não encontrado"));
+                () -> new RestauranteNaoEncontradoException(id, RESTAURANTE_COM_ID_INFORMADO_NAO_EXISTE));
     }
 
     /**
@@ -103,13 +104,13 @@ public class RestauranteService {
     @Transactional
     public RestauranteOUT atualizar(final Long id, final RestauranteUP up) {
         Restaurante restauranteAtual = restauranteRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Restaurante com id informado não encontrado"));
+                .orElseThrow(() -> new RestauranteNaoEncontradoException(id, RESTAURANTE_COM_ID_INFORMADO_NAO_EXISTE));
 
         restauranteAtual.setCozinha(cozinhaRepository.findById(up.getCozinha().getId())
-                .orElseThrow(() -> new EntityNotFoundException("Cozinha com id informado não encontrada")));
+                .orElseThrow(() -> new CozinhaNaoEncontradaException(id, COZINHA_COM_ID_INFORMADO_NAO_EXISTE)));
 
         Cidade novaCidade = cidadeRepository.findById(up.getEndereco().getCidade().getId())
-                .orElseThrow(() -> new EntityNotFoundException("Não existe cidade com o id informado"));
+                .orElseThrow(() -> new CidadeNaoEncontradaException(id, CIDADE_COM_ID_INFORMADO_NAO_EXISTE));
 
         restauranteAtual.getEndereco().setCidade(novaCidade);
         restauranteUPMapper.partialUpdate(up, restauranteAtual);
@@ -123,7 +124,7 @@ public class RestauranteService {
     @Transactional
     public void deletar(final Long id) {
         restauranteRepository.findById(id).ifPresentOrElse(restauranteRepository::delete, () -> {
-            throw new EntityNotFoundException(NAO_EXISTE_RESTAURANTE_COM_O_ID_INFORMADO);
+            throw new RestauranteNaoEncontradoException(id, RESTAURANTE_COM_ID_INFORMADO_NAO_EXISTE);
         });
     }
 
@@ -133,7 +134,7 @@ public class RestauranteService {
     @Transactional
     public void ativar(final Long id) {
         restauranteRepository.findById(id).ifPresentOrElse(Restaurante::ativar, () -> {
-            throw new EntityNotFoundException(NAO_EXISTE_RESTAURANTE_COM_O_ID_INFORMADO);
+            throw new RestauranteNaoEncontradoException(id, RESTAURANTE_COM_ID_INFORMADO_NAO_EXISTE);
         });
     }
 
@@ -143,7 +144,7 @@ public class RestauranteService {
     @Transactional
     public void inativar(final Long id) {
         restauranteRepository.findById(id).ifPresentOrElse(Restaurante::inativar, () -> {
-            throw new EntityNotFoundException(NAO_EXISTE_RESTAURANTE_COM_O_ID_INFORMADO);
+            throw new RestauranteNaoEncontradoException(id, RESTAURANTE_COM_ID_INFORMADO_NAO_EXISTE);
         });
     }
 }

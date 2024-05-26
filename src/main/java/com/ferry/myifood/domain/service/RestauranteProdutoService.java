@@ -41,6 +41,14 @@ public class RestauranteProdutoService {
                 () -> new EntityNotFoundException(RESTAURANTE_COM_ID_INFORMADO_NAO_ENCONTRADO)).getProdutos());
     }
 
+    @Transactional(readOnly = true)
+    public ProdutoOUT buscaProduto(Long restauranteId, Long produtoId) {
+        return produtoOUTMapper.toDto(restauranteRepository.findById(restauranteId).orElseThrow(
+                        () -> new EntityNotFoundException(RESTAURANTE_COM_ID_INFORMADO_NAO_ENCONTRADO)).getProdutos().stream()
+                .filter(produto -> produto.getId().equals(produtoId)).findFirst().orElseThrow(
+                        () -> new EntityNotFoundException(PRODUTO_COM_ID_INFORMADO_NAO_ENCONTRADO)));
+    }
+
     @Transactional
     public void adicionaProduto(Long restauranteId, Long produtoId) {
         var restaurante = restauranteRepository.findById(restauranteId).orElseThrow(

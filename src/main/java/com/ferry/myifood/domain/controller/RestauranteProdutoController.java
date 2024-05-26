@@ -35,6 +35,15 @@ public class RestauranteProdutoController {
         }
     }
 
+    @GetMapping("/{produtoId}")
+    public ResponseEntity<ProdutoOUT> buscaProduto(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
+        try {
+            return ResponseEntity.ok(restauranteService.buscaProduto(restauranteId, produtoId));
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @PutMapping("/{produtoId}")
     public ResponseEntity<?> adicionaProduto(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
         try {

@@ -17,10 +17,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityNotFoundException;
-
-import static com.ferry.myifood.domain.utils.ConstantsUtil.NAO_EXISTE_CIDADE_COM_O_ID_INFORMADO;
-import static com.ferry.myifood.domain.utils.ConstantsUtil.NAO_EXISTE_ESTADO_COM_O_ID_INFORMADO;
+import static com.ferry.myifood.domain.utils.ConstantsUtil.CIDADE_COM_ID_INFORMADO_NAO_EXISTE;
+import static com.ferry.myifood.domain.utils.ConstantsUtil.ESTADO_COM_ID_INFORMADO_NAO_EXISTE;
 
 @Service
 @AllArgsConstructor
@@ -61,10 +59,8 @@ public class CidadeService {
      */
     @Transactional(readOnly = true)
     public CidadeOUT buscar(final Long id) {
-        return cidadeRepository
-                    .findById(id).map(cidadeOUTMapper::toDto).orElseThrow(
-                        () -> new CidadeNaoEncontradaException(
-                            NAO_EXISTE_CIDADE_COM_O_ID_INFORMADO));
+        return cidadeRepository.findById(id).map(cidadeOUTMapper::toDto).orElseThrow(
+                () -> new CidadeNaoEncontradaException(id, CIDADE_COM_ID_INFORMADO_NAO_EXISTE));
     }
 
     /**
@@ -74,10 +70,8 @@ public class CidadeService {
     @Transactional
     public CidadeOUT salvar(final CidadeIN in) {
         Cidade cidade = cidadeINMapper.toEntity(in);
-        cidade.setEstado(estadoRepository.findById(in.getEstado().getId())
-                .orElseThrow(
-                        () -> new EstadoNaoEncontradoException(
-                            NAO_EXISTE_ESTADO_COM_O_ID_INFORMADO)));
+        cidade.setEstado(estadoRepository.findById(in.getEstado().getId()).orElseThrow(
+                () -> new EstadoNaoEncontradoException(in.getEstado().getId(), ESTADO_COM_ID_INFORMADO_NAO_EXISTE)));
         return cidadeOUTMapper.toDto(cidadeRepository.save(cidade));
     }
 
@@ -88,11 +82,8 @@ public class CidadeService {
      */
     @Transactional
     public CidadeOUT atualizar(final Long id, final CidadeUP up) {
-        return cidadeOUTMapper
-                    .toDto(cidadeUPMapper
-                    .partialUpdate(up, cidadeRepository.findById(id)
-                    .orElseThrow(() -> new EntityNotFoundException(
-                        NAO_EXISTE_CIDADE_COM_O_ID_INFORMADO))));
+        return cidadeOUTMapper.toDto(cidadeUPMapper.partialUpdate(up, cidadeRepository.findById(id).orElseThrow(
+                () -> new CidadeNaoEncontradaException(id, CIDADE_COM_ID_INFORMADO_NAO_EXISTE))));
     }
 
     /**
@@ -100,11 +91,8 @@ public class CidadeService {
      */
     @Transactional
     public void remover(final Long id) {
-        cidadeRepository.findById(id)
-                .ifPresentOrElse(cidadeRepository::delete,
-                        () -> {
-                            throw new EntityNotFoundException(
-                                NAO_EXISTE_CIDADE_COM_O_ID_INFORMADO);
-                        });
+        cidadeRepository.findById(id).ifPresentOrElse(cidadeRepository::delete, () -> {
+            throw new CidadeNaoEncontradaException(id, CIDADE_COM_ID_INFORMADO_NAO_EXISTE);
+        });
     }
 }

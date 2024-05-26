@@ -1,5 +1,6 @@
 package com.ferry.myifood.domain.service;
 
+import com.ferry.myifood.domain.exception.EstadoNaoEncontradoException;
 import com.ferry.myifood.domain.mapper.estado.EstadoINMapper;
 import com.ferry.myifood.domain.mapper.estado.EstadoOUTMapper;
 import com.ferry.myifood.domain.mapper.estado.EstadoUPMapper;
@@ -7,6 +8,7 @@ import com.ferry.myifood.domain.model.dto.input.EstadoIN;
 import com.ferry.myifood.domain.model.dto.output.EstadoOUT;
 import com.ferry.myifood.domain.model.dto.update.EstadoUP;
 import com.ferry.myifood.domain.repository.EstadoRepository;
+import com.ferry.myifood.domain.utils.ConstantsUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+
+import static com.ferry.myifood.domain.utils.ConstantsUtil.ESTADO_COM_ID_INFORMADO_NAO_EXISTE;
 
 @Service
 @AllArgsConstructor
@@ -52,7 +56,7 @@ public class EstadoService {
     public EstadoOUT buscar(final Long id) {
         return estadoRepository.findById(id).map(estadoOUTMapper::toDto)
                 .orElseThrow(() ->
-                new RuntimeException("Estado não encontrado"));
+                new EstadoNaoEncontradoException(id, ESTADO_COM_ID_INFORMADO_NAO_EXISTE));
     }
 
     /**
@@ -75,8 +79,7 @@ public class EstadoService {
         return estadoOUTMapper
                 .toDto(estadoUPMapper
                 .partialUpdate(up, estadoRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(
-                    "Não existe um estado com o id informado"))));
+                .orElseThrow(() -> new EstadoNaoEncontradoException(id, ESTADO_COM_ID_INFORMADO_NAO_EXISTE))));
     }
 
     /**
@@ -87,8 +90,7 @@ public class EstadoService {
         estadoRepository.findById(id)
                 .ifPresentOrElse(estadoRepository::delete,
                         () -> {
-                            throw new EntityNotFoundException(
-                                "Não existe um estado com o id informado");
+                            throw new EstadoNaoEncontradoException(id, ESTADO_COM_ID_INFORMADO_NAO_EXISTE);
                         });
     }
 }

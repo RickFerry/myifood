@@ -1,5 +1,7 @@
 package com.ferry.myifood.domain.service;
 
+import com.ferry.myifood.domain.exception.GrupoNaoEncontradoException;
+import com.ferry.myifood.domain.exception.PermissaoNaoEncontradaException;
 import com.ferry.myifood.domain.mapper.grupo.GrupoINMapper;
 import com.ferry.myifood.domain.mapper.grupo.GrupoOUTMapper;
 import com.ferry.myifood.domain.mapper.grupo.GrupoUPMapper;
@@ -19,10 +21,12 @@ import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.util.stream.Collectors;
 
+import static com.ferry.myifood.domain.utils.ConstantsUtil.GRUPO_COM_ID_INFORMADO_NAO_EXISTE;
+
 @Service
 @AllArgsConstructor
 public class GruposService {
-    public static final String GRUPO_COM_ID_INFORMADO_NAO_EXISTE = "Grupo com id informado não existe";
+    public static final String PERMISSAO_COM_ID_INFORMADO_NAO_EXISTE = "Permissão com id informado não existe.";
     /**
      *
      */
@@ -52,7 +56,7 @@ public class GruposService {
     @Transactional(readOnly = true)
     public GrupoOUT buscar(Long id) {
         return grupoOUTMapper.toDto(gruposRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException(GRUPO_COM_ID_INFORMADO_NAO_EXISTE)));
+                () -> new GrupoNaoEncontradoException(id, GRUPO_COM_ID_INFORMADO_NAO_EXISTE)));
     }
 
     @Transactional
@@ -60,7 +64,8 @@ public class GruposService {
         Grupo novoGrupo = grupoINMapper.toEntity(in);
         novoGrupo.setPermissoes(in.getPermissoes().stream()
                 .map(permissaoComp -> permissaoRepository.findById(permissaoComp.getId())
-                        .orElseThrow(() -> new EntityNotFoundException("Permissão não encontrada")))
+                        .orElseThrow(() -> new PermissaoNaoEncontradaException(
+                                permissaoComp.getId(), PERMISSAO_COM_ID_INFORMADO_NAO_EXISTE)))
                 .collect(Collectors.toSet()));
         return grupoOUTMapper.toDto(gruposRepository.save(novoGrupo));
     }
@@ -68,14 +73,14 @@ public class GruposService {
     @Transactional
     public GrupoOUT atualizar(Long id, @Valid GrupoUP in) {
         return grupoOUTMapper.toDto(gruposRepository.save(grupoUPMapper.partialUpdate(in, gruposRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(GRUPO_COM_ID_INFORMADO_NAO_EXISTE)))));
+                .orElseThrow(() -> new GrupoNaoEncontradoException(id, GRUPO_COM_ID_INFORMADO_NAO_EXISTE)))));
     }
 
     @Transactional
     public void deletar(Long id) {
         gruposRepository.findById(id).ifPresentOrElse(gruposRepository::delete,
                 () -> {
-                    throw new EntityNotFoundException(GRUPO_COM_ID_INFORMADO_NAO_EXISTE);
+                    throw new GrupoNaoEncontradoException(id, GRUPO_COM_ID_INFORMADO_NAO_EXISTE);
                 });
     }
 }

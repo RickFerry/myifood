@@ -1,6 +1,8 @@
 package com.ferry.myifood.domain.service;
 
+import com.ferry.myifood.domain.exception.GrupoNaoEncontradoException;
 import com.ferry.myifood.domain.exception.UniqueConstraintViolationException;
+import com.ferry.myifood.domain.exception.UsuarioNaoEncontradoException;
 import com.ferry.myifood.domain.mapper.usuario.UsuarioINMapper;
 import com.ferry.myifood.domain.mapper.usuario.UsuarioOUTMapper;
 import com.ferry.myifood.domain.mapper.usuario.UsuarioUPMapper;
@@ -17,8 +19,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.stream.Collectors;
+
+import static com.ferry.myifood.domain.utils.ConstantsUtil.GRUPO_COM_ID_INFORMADO_NAO_EXISTE;
+import static com.ferry.myifood.domain.utils.ConstantsUtil.USUARIO_COM_ID_INFORMADO_NAO_EXISTE;
 
 @Service
 @AllArgsConstructor
@@ -52,14 +56,15 @@ public class UsuarioService {
     @Transactional(readOnly = true)
     public UsuarioOUT findById(Long id) {
         return usuarioRepository.findById(id).map(usuarioOUTMapper::toDto).orElseThrow(
-                () -> new RuntimeException("Usuário não encontrado"));
+                () -> new UsuarioNaoEncontradoException(id, USUARIO_COM_ID_INFORMADO_NAO_EXISTE));
     }
 
     @Transactional
     public UsuarioOUT save(UsuarioIN in) {
         Usuario usuario = usuarioINMapper.toEntity(in);
         usuario.setGrupos(in.getGrupos().stream().map(grupo -> grupoRepository.findById(grupo.getId()).orElseThrow(
-                () -> new EntityNotFoundException("Grupo não encontrado"))).collect(Collectors.toSet()));
+                () -> new GrupoNaoEncontradoException(
+                        grupo.getId(), GRUPO_COM_ID_INFORMADO_NAO_EXISTE))).collect(Collectors.toSet()));
         try {
             return usuarioOUTMapper.toDto(usuarioRepository.save(usuario));
         } catch (DataIntegrityViolationException e) {
@@ -69,9 +74,11 @@ public class UsuarioService {
 
     @Transactional
     public UsuarioOUT update(Long id, UsuarioUP up) {
-        Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+        Usuario usuario = usuarioRepository.findById(id).orElseThrow(
+                () -> new UsuarioNaoEncontradoException(id, USUARIO_COM_ID_INFORMADO_NAO_EXISTE));
         usuario.setGrupos(up.getGrupos().stream().map(grupo -> grupoRepository.findById(grupo.getId()).orElseThrow(
-                () -> new RuntimeException("Grupo não encontrado"))).collect(Collectors.toSet()));
+                () -> new GrupoNaoEncontradoException(
+                        grupo.getId(), GRUPO_COM_ID_INFORMADO_NAO_EXISTE))).collect(Collectors.toSet()));
         usuarioUPMapper.partialUpdate(up, usuario);
         return usuarioOUTMapper.toDto(usuarioRepository.save(usuario));
     }
@@ -79,7 +86,7 @@ public class UsuarioService {
     @Transactional
     public void delete(Long id) {
         usuarioRepository.findById(id).ifPresentOrElse(usuarioRepository::delete, () -> {
-            throw new RuntimeException("Usuário não encontrado");
+            throw new UsuarioNaoEncontradoException(id, USUARIO_COM_ID_INFORMADO_NAO_EXISTE);
         });
     }
 }

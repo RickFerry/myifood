@@ -1,5 +1,6 @@
 package com.ferry.myifood.domain.service;
 
+import com.ferry.myifood.domain.exception.FormasPagamentoNaoEncontradaException;
 import com.ferry.myifood.domain.mapper.formapagamento.FormasPagamentoINMapper;
 import com.ferry.myifood.domain.mapper.formapagamento.FormasPagamentoOUTMapper;
 import com.ferry.myifood.domain.mapper.formapagamento.FormasPagamentoUPMapper;
@@ -14,11 +15,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityNotFoundException;
+import static com.ferry.myifood.domain.utils.ConstantsUtil.FORMA_DE_PAGAMENTO_COM_ID_INFORMADO_NAO_EXISTE;
 
 @Service
 @AllArgsConstructor
-public class FormaPagamentoService {
+public class FormasPagamentoService {
     /**
      *
      */
@@ -45,7 +46,8 @@ public class FormaPagamentoService {
     public FormasPagamentoOUT findById(Long id) {
         return formaPagamentoRepository.findById(id)
                 .map(formaPagamentoOUTMapper::toDto)
-                .orElseThrow(() -> new EntityNotFoundException("Forma de pagamento não encontrada"));
+                .orElseThrow(
+                        () -> new FormasPagamentoNaoEncontradaException(id, FORMA_DE_PAGAMENTO_COM_ID_INFORMADO_NAO_EXISTE));
     }
 
     @Transactional
@@ -57,7 +59,8 @@ public class FormaPagamentoService {
     public FormasPagamentoOUT update(Long id, FormasPagamentoUP up) {
         FormaPagamento formaPagamento = formaPagamentoRepository.findById(id)
                 .map(formaPagamentoSalva -> formaPagamentoUPMapper.partialUpdate(up, formaPagamentoSalva))
-                .orElseThrow(() -> new EntityNotFoundException("Forma de pagamento não encontrada"));
+                .orElseThrow(
+                        () -> new FormasPagamentoNaoEncontradaException(id, FORMA_DE_PAGAMENTO_COM_ID_INFORMADO_NAO_EXISTE));
         return formaPagamentoOUTMapper.toDto(formaPagamentoRepository.save(formaPagamento));
     }
 
@@ -65,7 +68,7 @@ public class FormaPagamentoService {
     public void delete(Long id) {
         formaPagamentoRepository.findById(id)
                 .ifPresentOrElse(formaPagamentoRepository::delete, () -> {
-                    throw new EntityNotFoundException("Forma de pagamento não encontrada");
+                    throw new FormasPagamentoNaoEncontradaException(id, FORMA_DE_PAGAMENTO_COM_ID_INFORMADO_NAO_EXISTE);
                 });
     }
 }

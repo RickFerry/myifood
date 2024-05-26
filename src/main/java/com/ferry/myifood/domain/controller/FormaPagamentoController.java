@@ -3,7 +3,7 @@ package com.ferry.myifood.domain.controller;
 import com.ferry.myifood.domain.model.dto.input.FormasPagamentoIN;
 import com.ferry.myifood.domain.model.dto.output.FormasPagamentoOUT;
 import com.ferry.myifood.domain.model.dto.update.FormasPagamentoUP;
-import com.ferry.myifood.domain.service.FormaPagamentoService;
+import com.ferry.myifood.domain.service.FormasPagamentoService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,7 +16,7 @@ import javax.validation.Valid;
 @AllArgsConstructor
 @RequestMapping("/formas-pagamento")
 public class FormaPagamentoController {
-    private final FormaPagamentoService formaPagamentoService;
+    private final FormasPagamentoService formaPagamentoService;
 
     @GetMapping
     public ResponseEntity<Page<FormasPagamentoOUT>> findAll(Pageable pageable) {

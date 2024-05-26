@@ -1,5 +1,6 @@
 package com.ferry.myifood.domain.service;
 
+import com.ferry.myifood.domain.exception.CozinhaNaoEncontradaException;
 import com.ferry.myifood.domain.mapper.cozinha.CozinhaINMapper;
 import com.ferry.myifood.domain.mapper.cozinha.CozinhaOUTMapper;
 import com.ferry.myifood.domain.mapper.cozinha.CozinhaUPMapper;
@@ -13,15 +14,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityNotFoundException;
+import static com.ferry.myifood.domain.utils.ConstantsUtil.COZINHA_COM_ID_INFORMADO_NAO_EXISTE;
 
 @Service
 @AllArgsConstructor
 public class CozinhaService {
-    /**
-     *
-     */
-    private static final String NOT_FOUND = "Cozinha não encontrada";
     /**
      *
      */
@@ -54,8 +51,8 @@ public class CozinhaService {
      */
     @Transactional(readOnly = true)
     public CozinhaOUT pegar(final Long id) {
-        return cozinhaRepository.findById(id).map(cozinhaOUTMapper::toDto)
-                .orElseThrow(() -> new RuntimeException(NOT_FOUND));
+        return cozinhaRepository.findById(id).map(cozinhaOUTMapper::toDto).orElseThrow(
+                () -> new CozinhaNaoEncontradaException(id, COZINHA_COM_ID_INFORMADO_NAO_EXISTE));
     }
 
     /**
@@ -64,8 +61,7 @@ public class CozinhaService {
      */
     @Transactional
     public CozinhaOUT salvar(final CozinhaIN in) {
-        return cozinhaOUTMapper
-                .toDto(cozinhaRepository.save(cozinhaINMapper.toEntity(in)));
+        return cozinhaOUTMapper.toDto(cozinhaRepository.save(cozinhaINMapper.toEntity(in)));
     }
 
     /**
@@ -75,10 +71,8 @@ public class CozinhaService {
      */
     @Transactional
     public CozinhaOUT atualizar(final Long id, final CozinhaUP up) {
-        return cozinhaOUTMapper
-                .toDto(cozinhaUPMapper
-                .partialUpdate(up, cozinhaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException(NOT_FOUND))));
+        return cozinhaOUTMapper.toDto(cozinhaUPMapper.partialUpdate(up, cozinhaRepository.findById(id).orElseThrow(
+                () -> new CozinhaNaoEncontradaException(id, COZINHA_COM_ID_INFORMADO_NAO_EXISTE))));
     }
 
     /**
@@ -86,10 +80,8 @@ public class CozinhaService {
      */
     @Transactional
     public void remover(final Long id) {
-        cozinhaRepository.findById(id)
-                .ifPresentOrElse(cozinhaRepository::delete,
-                        () -> {
-                            throw new EntityNotFoundException(NOT_FOUND);
-                        });
+        cozinhaRepository.findById(id).ifPresentOrElse(cozinhaRepository::delete, () -> {
+            throw new CozinhaNaoEncontradaException(id, COZINHA_COM_ID_INFORMADO_NAO_EXISTE);
+        });
     }
 }
