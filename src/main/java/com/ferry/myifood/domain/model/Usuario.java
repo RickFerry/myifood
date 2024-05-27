@@ -44,6 +44,14 @@ public class Usuario {
             inverseJoinColumns = @JoinColumn(name = "grupos_id"))
     private Set<Grupo> grupos = new LinkedHashSet<>();
 
+    public void adicionaGrupo(Grupo grupo) {
+        this.grupos.add(grupo);
+    }
+
+    public void removeGrupo(Grupo grupo) {
+        this.grupos.remove(grupo);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

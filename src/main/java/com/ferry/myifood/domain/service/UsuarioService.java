@@ -3,11 +3,14 @@ package com.ferry.myifood.domain.service;
 import com.ferry.myifood.domain.exception.GrupoNaoEncontradoException;
 import com.ferry.myifood.domain.exception.UniqueConstraintViolationException;
 import com.ferry.myifood.domain.exception.UsuarioNaoEncontradoException;
+import com.ferry.myifood.domain.mapper.grupo.GrupoOUTMapper;
 import com.ferry.myifood.domain.mapper.usuario.UsuarioINMapper;
 import com.ferry.myifood.domain.mapper.usuario.UsuarioOUTMapper;
 import com.ferry.myifood.domain.mapper.usuario.UsuarioUPMapper;
+import com.ferry.myifood.domain.model.Grupo;
 import com.ferry.myifood.domain.model.Usuario;
 import com.ferry.myifood.domain.model.dto.input.UsuarioIN;
+import com.ferry.myifood.domain.model.dto.output.GrupoOUT;
 import com.ferry.myifood.domain.model.dto.output.UsuarioOUT;
 import com.ferry.myifood.domain.model.dto.update.UsuarioUP;
 import com.ferry.myifood.domain.repository.GrupoRepository;
@@ -19,6 +22,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.ferry.myifood.domain.utils.ConstantsUtil.GRUPO_COM_ID_INFORMADO_NAO_EXISTE;
@@ -47,6 +51,10 @@ public class UsuarioService {
      *
      */
     private final UsuarioUPMapper usuarioUPMapper;
+    /**
+     *
+     */
+    private final GrupoOUTMapper grupoOUTMapper;
 
     @Transactional(readOnly = true)
     public Page<UsuarioOUT> findAll(Pageable page) {
@@ -88,5 +96,29 @@ public class UsuarioService {
         usuarioRepository.findById(id).ifPresentOrElse(usuarioRepository::delete, () -> {
             throw new UsuarioNaoEncontradoException(id, USUARIO_COM_ID_INFORMADO_NAO_EXISTE);
         });
+    }
+
+    @Transactional(readOnly = true)
+    public Set<GrupoOUT> buscaGrupos(Long usuarioId) {
+        return grupoOUTMapper.toDto(usuarioRepository.findById(usuarioId).orElseThrow(
+                () -> new UsuarioNaoEncontradoException(usuarioId, USUARIO_COM_ID_INFORMADO_NAO_EXISTE)).getGrupos());
+    }
+
+    @Transactional
+    public void adicionaGrupo(Long usuarioId, Long grupoId) {
+        Usuario usuario = usuarioRepository.findById(usuarioId).orElseThrow(() -> new UsuarioNaoEncontradoException(
+                usuarioId, USUARIO_COM_ID_INFORMADO_NAO_EXISTE));
+        Grupo grupo = grupoRepository.findById(grupoId).orElseThrow(
+                () -> new GrupoNaoEncontradoException(grupoId, GRUPO_COM_ID_INFORMADO_NAO_EXISTE));
+        usuario.adicionaGrupo(grupo);
+    }
+
+    @Transactional
+    public void removeGrupo(Long usuarioId, Long grupoId) {
+        Usuario usuario = usuarioRepository.findById(usuarioId).orElseThrow(() -> new UsuarioNaoEncontradoException(
+                usuarioId, USUARIO_COM_ID_INFORMADO_NAO_EXISTE));
+        Grupo grupo = grupoRepository.findById(grupoId).orElseThrow(
+                () -> new GrupoNaoEncontradoException(grupoId, GRUPO_COM_ID_INFORMADO_NAO_EXISTE));
+        usuario.removeGrupo(grupo);
     }
 }
