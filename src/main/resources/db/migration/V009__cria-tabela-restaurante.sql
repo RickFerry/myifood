@@ -29,6 +29,13 @@ CREATE TABLE restaurante_produto
     CONSTRAINT pk_restaurante_produto PRIMARY KEY (produto_id, restaurante_id)
 );
 
+CREATE TABLE restaurante_responsaveis
+(
+    responsavel_id BIGINT NOT NULL,
+    restaurante_id BIGINT NOT NULL,
+    CONSTRAINT pk_restaurante_responsaveis PRIMARY KEY (responsavel_id, restaurante_id)
+);
+
 ALTER TABLE restaurante
     ADD CONSTRAINT FK_RESTAURANTE_ON_CIDADE FOREIGN KEY (cidade_id) REFERENCES cidade (id);
 
@@ -46,3 +53,9 @@ ALTER TABLE restaurante_produto
 
 ALTER TABLE restaurante_produto
     ADD CONSTRAINT fk_respro_on_restaurante FOREIGN KEY (restaurante_id) REFERENCES restaurante (id);
+
+ALTER TABLE restaurante_responsaveis
+    ADD CONSTRAINT fk_resres_on_restaurante FOREIGN KEY (restaurante_id) REFERENCES restaurante (id);
+
+ALTER TABLE restaurante_responsaveis
+    ADD CONSTRAINT fk_resres_on_usuario FOREIGN KEY (responsavel_id) REFERENCES usuario (id);

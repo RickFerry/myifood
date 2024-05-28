@@ -1,7 +1,10 @@
 package com.ferry.myifood.domain.controller;
 
+import com.ferry.myifood.domain.model.Usuario;
 import com.ferry.myifood.domain.model.dto.input.RestauranteIN;
 import com.ferry.myifood.domain.model.dto.output.RestauranteOUT;
+import com.ferry.myifood.domain.model.dto.output.UsuarioDetalhe;
+import com.ferry.myifood.domain.model.dto.output.UsuarioOUT;
 import com.ferry.myifood.domain.model.dto.update.RestauranteUP;
 import com.ferry.myifood.domain.service.RestauranteService;
 import lombok.AllArgsConstructor;
@@ -11,8 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
+import java.util.Set;
 
 @RestController
 @AllArgsConstructor
@@ -84,6 +87,26 @@ public class RestauranteController {
     }
 
     /**
+     * @param ids
+     * @return ResponseEntity<?>
+     */
+    @PutMapping("/ativacoes")
+    public final ResponseEntity<?> ativacoes(@RequestBody final Set<Long> ids) {
+            restauranteService.ativacoes(ids);
+            return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * @param ids
+     * @return ResponseEntity<?>
+     */
+    @DeleteMapping("/inativacoes")
+    public final ResponseEntity<?> inativacoes(@RequestBody final Set<Long> ids) {
+            restauranteService.inativacoes(ids);
+            return ResponseEntity.noContent().build();
+    }
+
+    /**
      * @param id
      * @return ResponseEntity<?>
      */
@@ -110,6 +133,37 @@ public class RestauranteController {
     @PutMapping("/{id}/fechamento")
     public final ResponseEntity<?> fechar(@PathVariable final Long id) {
             restauranteService.fechar(id);
+            return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * @param idRestaurante
+     * @return ResponseEntity<?>
+     */
+    @GetMapping("/{idRestaurante}/responsaveis")
+    public final ResponseEntity<Set<UsuarioDetalhe>> listarResponsaveis(@PathVariable final Long idRestaurante) {
+            return ResponseEntity.ok(restauranteService.listarResponsaveis(idRestaurante));
+    }
+
+    /**
+     * @param idRestaurante
+     * @param idResponsavel
+     * @return ResponseEntity<?>
+     */
+    @PutMapping("/{idRestaurante}/responsaveis/{idResponsavel}")
+    public final ResponseEntity<?> adicionarResponsavel(@PathVariable final Long idRestaurante, @PathVariable final Long idResponsavel) {
+            restauranteService.adicionarResponsavel(idRestaurante, idResponsavel);
+            return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * @param idRestaurante
+     * @param idResponsavel
+     * @return ResponseEntity<?>
+     */
+    @DeleteMapping("/{idRestaurante}/responsaveis/{idResponsavel}")
+    public final ResponseEntity<?> removerResponsavel(@PathVariable final Long idRestaurante, @PathVariable final Long idResponsavel) {
+            restauranteService.removerResponsavel(idRestaurante, idResponsavel);
             return ResponseEntity.noContent().build();
     }
 }

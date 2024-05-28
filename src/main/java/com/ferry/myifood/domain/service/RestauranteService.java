@@ -7,26 +7,34 @@ import com.ferry.myifood.domain.exception.RestauranteNaoEncontradoException;
 import com.ferry.myifood.domain.mapper.restaurante.RestauranteINMapper;
 import com.ferry.myifood.domain.mapper.restaurante.RestauranteOUTMapper;
 import com.ferry.myifood.domain.mapper.restaurante.RestauranteUPMapper;
+import com.ferry.myifood.domain.mapper.usuario.UsuarioDetalheMapper;
+import com.ferry.myifood.domain.mapper.usuario.UsuarioOUTMapper;
 import com.ferry.myifood.domain.model.Cidade;
 import com.ferry.myifood.domain.model.Restaurante;
+import com.ferry.myifood.domain.model.Usuario;
 import com.ferry.myifood.domain.model.dto.input.RestauranteIN;
 import com.ferry.myifood.domain.model.dto.output.RestauranteOUT;
+import com.ferry.myifood.domain.model.dto.output.UsuarioDetalhe;
+import com.ferry.myifood.domain.model.dto.output.UsuarioOUT;
 import com.ferry.myifood.domain.model.dto.update.RestauranteUP;
-import com.ferry.myifood.domain.repository.CidadeRepository;
-import com.ferry.myifood.domain.repository.CozinhaRepository;
-import com.ferry.myifood.domain.repository.EstadoRepository;
-import com.ferry.myifood.domain.repository.RestauranteRepository;
+import com.ferry.myifood.domain.repository.*;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Set;
+
 import static com.ferry.myifood.domain.utils.ConstantsUtil.*;
 
 @Service
 @AllArgsConstructor
 public class RestauranteService {
+    /**
+     *
+     */
+    private final UsuarioRepository usuarioRepository;
     /**
      *
      */
@@ -55,6 +63,10 @@ public class RestauranteService {
      *
      */
     private final RestauranteUPMapper restauranteUPMapper;
+    /**
+     *
+     */
+    private final UsuarioDetalheMapper usuarioDetalheMapper;
 
     /**
      * @param page
@@ -148,6 +160,22 @@ public class RestauranteService {
     }
 
     /**
+     * @param ids
+     */
+    @Transactional
+    public void ativacoes(Set<Long> ids) {
+        ids.forEach(this::ativar);
+    }
+
+    /**
+     * @param ids
+     */
+    @Transactional
+    public void inativacoes(Set<Long> ids) {
+        ids.forEach(this::inativar);
+    }
+
+    /**
      * @param id
      */
     @Transactional
@@ -165,5 +193,46 @@ public class RestauranteService {
         restauranteRepository.findById(id).ifPresentOrElse(Restaurante::fechar, () -> {
             throw new RestauranteNaoEncontradoException(id, RESTAURANTE_COM_ID_INFORMADO_NAO_EXISTE);
         });
+    }
+
+    /**
+     * @param idRestaurante
+     * @return Set<UsuarioDto>
+     */
+    @Transactional(readOnly = true)
+    public Set<UsuarioDetalhe> listarResponsaveis(Long idRestaurante) {
+        return usuarioDetalheMapper.toDto(restauranteRepository.findById(idRestaurante).orElseThrow(
+                () -> new RestauranteNaoEncontradoException(idRestaurante, RESTAURANTE_COM_ID_INFORMADO_NAO_EXISTE)
+        ).getResponsaveis());
+    }
+
+    /**
+     * @param idRestaurante
+     * @param idResponsavel
+     */
+    @Transactional
+    public void adicionarResponsavel(Long idRestaurante, Long idResponsavel) {
+        Restaurante restaurante = restauranteRepository.findById(idRestaurante).orElseThrow(
+                () -> new RestauranteNaoEncontradoException(idRestaurante, RESTAURANTE_COM_ID_INFORMADO_NAO_EXISTE));
+
+        Usuario usuario = usuarioRepository.findById(idResponsavel).orElseThrow(
+                () -> new RestauranteNaoEncontradoException(idResponsavel, USUARIO_COM_ID_INFORMADO_NAO_EXISTE));
+
+        restaurante.adicionaUsuario(usuario);
+    }
+
+    /**
+     * @param idRestaurante
+     * @param idResponsavel
+     */
+    @Transactional
+    public void removerResponsavel(Long idRestaurante, Long idResponsavel) {
+        Restaurante restaurante = restauranteRepository.findById(idRestaurante).orElseThrow(
+                () -> new RestauranteNaoEncontradoException(idRestaurante, RESTAURANTE_COM_ID_INFORMADO_NAO_EXISTE));
+
+        Usuario usuario = usuarioRepository.findById(idResponsavel).orElseThrow(
+                () -> new RestauranteNaoEncontradoException(idResponsavel, USUARIO_COM_ID_INFORMADO_NAO_EXISTE));
+
+        restaurante.removeUsuario(usuario);
     }
 }

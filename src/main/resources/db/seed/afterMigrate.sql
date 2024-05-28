@@ -11,6 +11,7 @@ delete from PRODUTO;
 delete from RESTAURANTE;
 delete from RESTAURANTE_FORMAS_PAGAMENTO;
 delete from RESTAURANTE_PRODUTO;
+delete from RESTAURANTE_RESPONSAVEIS;
 delete from USUARIO;
 delete from USUARIO_GRUPOS;
 delete from PEDIDO;
@@ -53,7 +54,6 @@ INSERT INTO restaurante (NOME, TAXA_FRETE, ATIVO, ABERTO, DATA_CADASTRO, DATA_AT
                          ENDERECO_COMPLEMENTO, ENDERECO_LOGRADOURO, ENDERECO_NUMERO, ENDERECO_BAIRRO)
 VALUES ('Burger Queen', 20, 1, 1, systimestamp, systimestamp, 4, 1, '22222-222', 'Comercio', 'Rua Xyz', '123', 'Centro');
 
-
 INSERT INTO FORMA_PAGAMENTO (ID, DESCRICAO) VALUES (1, 'Dinheiro');
 INSERT INTO FORMA_PAGAMENTO (ID, DESCRICAO) VALUES (2, 'Cartão de crédito');
 INSERT INTO FORMA_PAGAMENTO (ID, DESCRICAO) VALUES (3, 'Cartão de débito');
@@ -82,7 +82,12 @@ INSERT INTO GRUPO (NOME) VALUES ('USUARIO');
 insert into grupo_permissoes (grupo_id, PERMISSOES_ID) values (1, 1), (1, 2), (1, 3);
 insert into grupo_permissoes (grupo_id, PERMISSOES_ID) values (2, 1);
 
-INSERT INTO USUARIO (NOME, EMAIL, SENHA, DATA_CADASTRO) VALUES ('Admin', 'eder@admin.com', '$2a$10$3', systimestamp);
-INSERT INTO USUARIO (NOME, EMAIL, SENHA, DATA_CADASTRO) VALUES ('Usuario', 'ghy@user.com', '$2a$10$3', systimestamp);
+INSERT INTO USUARIO (NOME, EMAIL, SENHA, DATA_CADASTRO) VALUES ('Kael Martins', 'kael@admin.com', '$2a$10$3', systimestamp);
+INSERT INTO USUARIO (NOME, EMAIL, SENHA, DATA_CADASTRO) VALUES ('Kyra Martins', 'kyra@user.com', '$2a$10$3', systimestamp);
+INSERT INTO USUARIO (NOME, EMAIL, SENHA, DATA_CADASTRO) VALUES ('Adam Martins', 'adam@admin.com', '$2a$10$3', systimestamp);
 
 INSERT INTO USUARIO_GRUPOS (USUARIO_ID, GRUPOS_ID) VALUES (1, 1), (2, 2);
+INSERT INTO USUARIO_GRUPOS (USUARIO_ID, GRUPOS_ID) VALUES (1, 2), (3, 1);
+
+INSERT INTO RESTAURANTE_RESPONSAVEIS (RESPONSAVEL_ID, RESTAURANTE_ID) VALUES (1, 1), (2, 2), (1, 3);
+INSERT INTO RESTAURANTE_RESPONSAVEIS (RESPONSAVEL_ID, RESTAURANTE_ID) VALUES (2, 1), (1, 2), (2, 3);
