@@ -87,6 +87,16 @@ public class RestauranteController {
     }
 
     /**
+     * @param id
+     * @return ResponseEntity<?>
+     */
+    @DeleteMapping("/{id}/inativar")
+    public final ResponseEntity<?> inativar(@PathVariable final Long id) {
+        restauranteService.inativar(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    /**
      * @param ids
      * @return ResponseEntity<?>
      */
@@ -103,16 +113,6 @@ public class RestauranteController {
     @DeleteMapping("/inativacoes")
     public final ResponseEntity<?> inativacoes(@RequestBody final Set<Long> ids) {
             restauranteService.inativacoes(ids);
-            return ResponseEntity.noContent().build();
-    }
-
-    /**
-     * @param id
-     * @return ResponseEntity<?>
-     */
-    @DeleteMapping("/{id}/inativar")
-    public final ResponseEntity<?> inativar(@PathVariable final Long id) {
-            restauranteService.inativar(id);
             return ResponseEntity.noContent().build();
     }
 

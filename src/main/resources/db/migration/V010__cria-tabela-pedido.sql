@@ -4,7 +4,7 @@ CREATE TABLE pedido
     subtotal             DECIMAL,
     taxa_frete           DECIMAL,
     valor_total          DECIMAL,
-    status               SMALLINT,
+    status               VARCHAR(255),
     data_criacao         TIMESTAMP,
     data_confirmacao     TIMESTAMP,
     data_cancelamento    TIMESTAMP,

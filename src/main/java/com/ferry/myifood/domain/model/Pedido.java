@@ -10,8 +10,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -31,7 +31,8 @@ public class Pedido {
     @Embedded
     private Endereco enderecoEntrega;
 
-    private StatusPedido status;
+    @Enumerated(EnumType.STRING)
+    private StatusPedido status = StatusPedido.CRIADO;
 
     @CreationTimestamp
     private LocalDateTime dataCriacao;
@@ -53,7 +54,5 @@ public class Pedido {
     private Usuario cliente;
 
     @OneToMany(mappedBy = "pedido")
-    private List<ItemPedido> itens = new ArrayList<>();
-
+    private Set<ItemPedido> itens = new LinkedHashSet<>();
 }
-
