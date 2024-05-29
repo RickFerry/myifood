@@ -8,8 +8,7 @@ import com.ferry.myifood.domain.model.Restaurante;
 import com.ferry.myifood.domain.model.dto.output.RestauranteOUT;
 import org.mapstruct.*;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING,
-        uses = {EnderecoOUTMapper.class, CozinhaOUTMapper.class})
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING, uses = {EnderecoOUTMapper.class, CozinhaOUTMapper.class})
 public interface RestauranteOUTMapper extends EntityMapper<RestauranteOUT, Restaurante> {
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     Restaurante partialUpdate(RestauranteOUT restauranteOUT, @MappingTarget Restaurante restaurante);

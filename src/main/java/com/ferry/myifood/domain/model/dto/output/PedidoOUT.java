@@ -12,7 +12,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PedidoOUT implements Serializable{
+public class PedidoOUT {
     Long id;
     BigDecimal subtotal;
     BigDecimal taxaFrete;

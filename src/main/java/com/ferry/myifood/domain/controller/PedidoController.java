@@ -6,9 +6,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
@@ -27,5 +25,10 @@ public class PedidoController {
     @GetMapping
     public ResponseEntity<Page<PedidoOUT>> buscarTodos(Pageable page) {
         return ResponseEntity.ok(pedidoService.buscarTodos(page));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<PedidoOUT> buscarPorId(@PathVariable Long id) {
+        return ResponseEntity.ok(pedidoService.buscarPorId(id));
     }
 }

@@ -1,10 +1,8 @@
 package com.ferry.myifood.domain.controller;
 
-import com.ferry.myifood.domain.model.Usuario;
 import com.ferry.myifood.domain.model.dto.input.RestauranteIN;
 import com.ferry.myifood.domain.model.dto.output.RestauranteOUT;
 import com.ferry.myifood.domain.model.dto.output.UsuarioDetalhe;
-import com.ferry.myifood.domain.model.dto.output.UsuarioOUT;
 import com.ferry.myifood.domain.model.dto.update.RestauranteUP;
 import com.ferry.myifood.domain.service.RestauranteService;
 import lombok.AllArgsConstructor;
