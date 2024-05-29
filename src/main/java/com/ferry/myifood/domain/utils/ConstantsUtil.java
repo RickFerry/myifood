@@ -41,6 +41,14 @@ public final class ConstantsUtil {
      *
      */
     public static final String PERMISSAO_COM_ID_INFORMADO_NAO_EXISTE = "Permissão com id informado não existe.";
+    /**
+     *
+     */
+    public static final String FORMA_PAGAMENTO_COM_ID_INFORMADO_NAO_EXISTE = "Forma de pagamento com id informado não existe.";
+    /**
+     *
+     */
+    public static final String ITEM_PEDIDO_COM_ID_INFORMADO_NAO_EXISTE = "Item de pedido com id informado não existe.";
 
     private ConstantsUtil() {
     }
