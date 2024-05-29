@@ -8,7 +8,6 @@ import com.ferry.myifood.domain.model.Pedido;
 import com.ferry.myifood.domain.model.dto.input.PedidoIN;
 import com.ferry.myifood.domain.model.dto.output.PedidoOUT;
 import com.ferry.myifood.domain.repository.*;
-import com.ferry.myifood.domain.utils.ConstantsUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.stream.Collectors;
 
 import static com.ferry.myifood.domain.utils.ConstantsUtil.*;
-import static com.ferry.myifood.domain.utils.ConstantsUtil.FORMA_PAGAMENTO_COM_ID_INFORMADO_NAO_EXISTE;
 
 @Service
 @AllArgsConstructor
