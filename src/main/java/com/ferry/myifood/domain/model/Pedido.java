@@ -53,6 +53,6 @@ public class Pedido {
     @JoinColumn(nullable = false)
     private Usuario cliente;
 
-    @OneToMany(mappedBy = "pedido")
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
     private Set<ItemPedido> itens = new LinkedHashSet<>();
 }

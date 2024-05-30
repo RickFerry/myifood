@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ItemPedidoOUT implements Serializable {
+public class ItemPedidoOUT {
     Long id;
     BigDecimal precoUnitario;
     BigDecimal precoTotal;
