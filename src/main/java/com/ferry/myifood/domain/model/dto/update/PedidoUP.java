@@ -1,30 +1,32 @@
-package com.ferry.myifood.domain.model.dto.input;
+package com.ferry.myifood.domain.model.dto.update;
 
-import com.ferry.myifood.domain.model.dto.complemento.*;
+import com.ferry.myifood.domain.model.dto.complemento.EnderecoComp;
+import com.ferry.myifood.domain.model.dto.complemento.FormasPagamentoComp;
 import com.ferry.myifood.domain.model.enums.StatusPedido;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Set;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PedidoIN{
+public class PedidoUP{
 	@NotNull
-	@Positive
-	private BigDecimal subtotal;
-	@NotNull
-	@Positive
+	@PositiveOrZero
 	private BigDecimal taxaFrete;
 	@NotNull
-	@Positive
+	@PositiveOrZero
+	private BigDecimal subtotal;
+	@NotNull
+	@PositiveOrZero
 	private BigDecimal valorTotal;
 	@NotNull
 	private LocalDateTime dataCriacao;
@@ -33,23 +35,14 @@ public class PedidoIN{
 	@NotNull
 	private LocalDateTime dataACaminho;
 	@NotNull
+	private LocalDateTime dataEntrega;
+	@NotNull
 	private LocalDateTime dataCancelamento;
 	@NotNull
-	private LocalDateTime dataEntrega;
-	@NotBlank
 	private StatusPedido status;
 	@Valid
 	@NotNull
 	private EnderecoComp enderecoEntrega;
-	@Valid
-	@NotNull
-	private Set<ItemPedidoComp> itensPedido;
-	@Valid
-	@NotNull
-	private UsuarioComp cliente;
-	@Valid
-	@NotNull
-	private RestauranteComp restaurante;
 	@Valid
 	@NotNull
 	private FormasPagamentoComp formaPagamento;

@@ -31,6 +31,11 @@ public class RestauranteProdutoController {
             return ResponseEntity.ok(restauranteService.buscaProdutos(restauranteId));
     }
 
+    @GetMapping("/ativos")
+    public ResponseEntity<Set<ProdutoOUT>> buscaProdutosAtivos(@PathVariable Long restauranteId) {
+        return ResponseEntity.ok(restauranteService.buscaProdutosAtivos(restauranteId));
+    }
+
     @GetMapping("/{produtoId}")
     public ResponseEntity<ProdutoOUT> buscaProduto(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
             return ResponseEntity.ok(restauranteService.buscaProduto(restauranteId, produtoId));

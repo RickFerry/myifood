@@ -118,6 +118,15 @@ public class ErrorsHandler {
      * @param e
      * @return ResponseEntity<Throwable>
      */
+    @ExceptionHandler(StatusInvalidoException.class)
+    public final ResponseEntity<Error> handlehandleStatusInvalidoException(final StatusInvalidoException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Error(e.getName(), e.getMessage()));
+    }
+
+    /**
+     * @param e
+     * @return ResponseEntity<Throwable>
+     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public final ResponseEntity<List<Error>> handleMethodArgumentNotValidException(final MethodArgumentNotValidException e) {
         return ResponseEntity.badRequest().body(e.getBindingResult().getFieldErrors().stream().map(

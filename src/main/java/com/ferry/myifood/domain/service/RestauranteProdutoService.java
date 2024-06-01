@@ -38,6 +38,11 @@ public class RestauranteProdutoService {
     }
 
     @Transactional(readOnly = true)
+    public Set<ProdutoOUT> buscaProdutosAtivos(Long restauranteId) {
+        return produtoOUTMapper.toDto(restauranteRepository.buscaProdutosAtivosPorId(restauranteId));
+    }
+
+    @Transactional(readOnly = true)
     public ProdutoOUT buscaProduto(Long restauranteId, Long produtoId) {
         return produtoOUTMapper.toDto(restauranteRepository.findById(restauranteId).orElseThrow(
                         () -> new RestauranteNaoEncontradoException(restauranteId, RESTAURANTE_COM_ID_INFORMADO_NAO_EXISTE))

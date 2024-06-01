@@ -7,6 +7,7 @@ CREATE TABLE pedido
     status               VARCHAR(255),
     data_criacao         TIMESTAMP,
     data_confirmacao     TIMESTAMP,
+    data_a_caminho         TIMESTAMP,
     data_cancelamento    TIMESTAMP,
     data_entrega         TIMESTAMP,
     forma_pagamento_id   BIGINT                                  NOT NULL,

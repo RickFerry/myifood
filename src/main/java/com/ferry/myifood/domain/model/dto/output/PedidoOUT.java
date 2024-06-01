@@ -13,18 +13,19 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PedidoOUT {
-    Long id;
-    BigDecimal subtotal;
-    BigDecimal taxaFrete;
-    BigDecimal valorTotal;
-    EnderecoOUT enderecoEntrega;
-    StatusPedido status;
-    LocalDateTime dataCriacao;
-    LocalDateTime dataConfirmacao;
-    LocalDateTime dataCancelamento;
-    LocalDateTime dataEntrega;
-    FormasPagamentoOUT formaPagamento;
-    RestauranteOUT restaurante;
-    UsuarioOUT cliente;
-    Set<ItemPedidoOUT> itens;
+    private Long id;
+    private BigDecimal subtotal;
+    private BigDecimal taxaFrete;
+    private BigDecimal valorTotal;
+    private EnderecoOUT enderecoEntrega;
+    private StatusPedido status;
+    private LocalDateTime dataCriacao;
+    private LocalDateTime dataConfirmacao;
+    private LocalDateTime dataACaminho;
+    private LocalDateTime dataCancelamento;
+    private LocalDateTime dataEntrega;
+    private FormasPagamentoOUT formaPagamento;
+    private RestauranteOUT restaurante;
+    private UsuarioOUT cliente;
+    private Set<ItemPedidoOUT> itens;
 }

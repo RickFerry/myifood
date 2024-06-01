@@ -12,6 +12,10 @@ public enum StatusPedido {
     /**
      *
      */
+    A_CAMINHO,
+    /**
+     *
+     */
     ENTREGUE,
     /**
      *

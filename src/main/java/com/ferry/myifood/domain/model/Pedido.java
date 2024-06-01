@@ -38,6 +38,8 @@ public class Pedido {
     private LocalDateTime dataCriacao;
 
     private LocalDateTime dataConfirmacao;
+    @Column(name = "data_a_caminho")
+    private LocalDateTime dataACaminho;
     private LocalDateTime dataCancelamento;
     private LocalDateTime dataEntrega;
 

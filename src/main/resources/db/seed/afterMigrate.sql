@@ -66,7 +66,7 @@ VALUES (1, 'Hamburguer de carne suína, queijo, alface, tomate, cebola, picles e
 INSERT INTO PRODUTO (ATIVO, DESCRICAO, NOME, PRECO)
 VALUES (1, 'Hamburguer de carne aviaria, queijo, alface, tomate, cebola, e maionese', 'Hamburguer', 11.00);
 INSERT INTO PRODUTO (ATIVO, DESCRICAO, NOME, PRECO)
-VALUES (1, 'Hamburguer de carne bovina, queijo, alface, tomate, cebola e maionese', 'Hamburguer', 15.00);
+VALUES (0, 'Hamburguer de carne bovina, queijo, alface, tomate, cebola e maionese', 'Hamburguer', 15.00);
 
 INSERT INTO RESTAURANTE_PRODUTO (PRODUTO_ID, RESTAURANTE_ID) VALUES (1, 1), (2, 1), (3, 1);
 INSERT INTO RESTAURANTE_PRODUTO (PRODUTO_ID, RESTAURANTE_ID) VALUES (1, 2), (2, 2), (3, 2);
@@ -92,15 +92,15 @@ INSERT INTO USUARIO_GRUPOS (USUARIO_ID, GRUPOS_ID) VALUES (1, 2), (3, 1);
 INSERT INTO RESTAURANTE_RESPONSAVEIS (RESPONSAVEL_ID, RESTAURANTE_ID) VALUES (1, 1), (2, 2), (1, 3);
 INSERT INTO RESTAURANTE_RESPONSAVEIS (RESPONSAVEL_ID, RESTAURANTE_ID) VALUES (2, 1), (1, 2), (2, 3);
 
-insert into PEDIDO (SUBTOTAL, TAXA_FRETE, VALOR_TOTAL, STATUS, DATA_CRIACAO, DATA_CONFIRMACAO, DATA_CANCELAMENTO,
+insert into PEDIDO (SUBTOTAL, TAXA_FRETE, VALOR_TOTAL, STATUS, DATA_CRIACAO, DATA_CONFIRMACAO, DATA_A_CAMINHO, DATA_CANCELAMENTO,
                     DATA_ENTREGA, FORMA_PAGAMENTO_ID, RESTAURANTE_ID, CLIENTE_ID, ENDERECO_CEP, ENDERECO_LOGRADOURO,
                     ENDERECO_NUMERO, ENDERECO_COMPLEMENTO, ENDERECO_BAIRRO, CIDADE_ID)
-values (50, 10, 60, 'CRIADO', systimestamp, systimestamp, systimestamp, systimestamp, 1, 1, 1, '00000-000', 'Rua Xyz', '123', 'Comercio', 'Centro', 1);
+values (50, 10, 60, 'CRIADO', systimestamp, systimestamp, systimestamp, systimestamp, systimestamp, 1, 1, 1, '00000-000', 'Rua Xyz', '123', 'Comercio', 'Centro', 1);
 
-insert into PEDIDO (SUBTOTAL, TAXA_FRETE, VALOR_TOTAL, STATUS, DATA_CRIACAO, DATA_CONFIRMACAO, DATA_CANCELAMENTO,
+insert into PEDIDO (SUBTOTAL, TAXA_FRETE, VALOR_TOTAL, STATUS, DATA_CRIACAO, DATA_CONFIRMACAO, DATA_A_CAMINHO, DATA_CANCELAMENTO,
                     DATA_ENTREGA, FORMA_PAGAMENTO_ID, RESTAURANTE_ID, CLIENTE_ID, ENDERECO_CEP, ENDERECO_LOGRADOURO,
                     ENDERECO_NUMERO, ENDERECO_COMPLEMENTO, ENDERECO_BAIRRO, CIDADE_ID)
-values (50, 10, 60, 'CRIADO', systimestamp, systimestamp, systimestamp, systimestamp, 2, 2, 2, '11111-111', 'Rua Xyz', '123', 'Comercio', 'Centro', 1);
+values (50, 10, 60, 'CRIADO', systimestamp, systimestamp, systimestamp, systimestamp, systimestamp, 2, 2, 2, '11111-111', 'Rua Xyz', '123', 'Comercio', 'Centro', 1);
 
 INSERT INTO ITEM_PEDIDO (QUANTIDADE, PRECO_UNITARIO, PRECO_TOTAL, OBSERVACAO, PEDIDO_ID, PRODUTO_ID)
 VALUES (2, 12, 24, 'Sem cebola', 1, 1), (1, 11, 11, 'Sem tomate', 1, 2), (3, 15, 45, 'Sem maionese', 1, 3);
