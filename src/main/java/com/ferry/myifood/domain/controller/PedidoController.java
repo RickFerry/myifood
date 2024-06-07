@@ -1,5 +1,6 @@
 package com.ferry.myifood.domain.controller;
 
+import com.ferry.myifood.domain.model.dto.VendaDiaria;
 import com.ferry.myifood.domain.model.dto.input.PedidoIN;
 import com.ferry.myifood.domain.model.dto.output.PedidoOUT;
 import com.ferry.myifood.domain.model.dto.update.PedidoUP;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -76,5 +78,10 @@ public class PedidoController {
     public ResponseEntity<?> cancelado(@PathVariable Long id) {
         pedidoService.cancelado(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/total-vendido-por-data")
+    public ResponseEntity<List<VendaDiaria>> totalVendidoPorData() {
+        return ResponseEntity.ok(pedidoService.totalVendidoPorData());
     }
 }

@@ -10,6 +10,7 @@ import com.ferry.myifood.domain.model.Cidade;
 import com.ferry.myifood.domain.model.ItemPedido;
 import com.ferry.myifood.domain.model.Pedido;
 import com.ferry.myifood.domain.model.Produto;
+import com.ferry.myifood.domain.model.dto.VendaDiaria;
 import com.ferry.myifood.domain.model.dto.input.PedidoIN;
 import com.ferry.myifood.domain.model.dto.output.PedidoOUT;
 import com.ferry.myifood.domain.model.dto.output.ProdutoCompOut;
@@ -24,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.ferry.myifood.domain.utils.ConstantsUtil.*;
@@ -180,5 +182,10 @@ public class PedidoService {
             itemPedido.setPedido(pedido);
             return itemPedido;
         }).collect(Collectors.toSet()));
+    }
+
+    @Transactional(readOnly = true)
+    public List<VendaDiaria> totalVendidoPorData() {
+        return pedidoRepository.totalVendidoPorData();
     }
 }

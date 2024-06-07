@@ -11,5 +11,5 @@ import java.util.Set;
 
 public interface RestauranteRepository extends JpaRepository<Restaurante, Long> {
     @Query("select produtos from Restaurante r inner join r.produtos produtos where produtos.ativo = true and r.id = :id")
-    Set<Produto> buscaProdutosAtivosPorId(@Param("id") Long id);
+    Set<Produto>  buscaProdutosAtivosPorId(@Param("id") Long id);
 }
