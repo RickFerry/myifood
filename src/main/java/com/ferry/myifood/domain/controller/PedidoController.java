@@ -56,6 +56,11 @@ public class PedidoController {
         return ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/total-vendido-por-data")
+    public ResponseEntity<List<VendaDiaria>> totalVendidoPorData(@RequestParam String dataInicio, @RequestParam String dataFim) {
+        return ResponseEntity.ok(pedidoService.totalVendidoPorData(dataInicio, dataFim));
+    }
+
     @PutMapping("/{id}/confirmacao")
     public ResponseEntity<?> confirmar(@PathVariable Long id) {
         pedidoService.confirmar(id);
@@ -78,10 +83,5 @@ public class PedidoController {
     public ResponseEntity<?> cancelado(@PathVariable Long id) {
         pedidoService.cancelado(id);
         return ResponseEntity.noContent().build();
-    }
-
-    @GetMapping("/total-vendido-por-data")
-    public ResponseEntity<List<VendaDiaria>> totalVendidoPorData() {
-        return ResponseEntity.ok(pedidoService.totalVendidoPorData());
     }
 }

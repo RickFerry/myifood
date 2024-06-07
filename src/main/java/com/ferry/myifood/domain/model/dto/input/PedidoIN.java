@@ -36,7 +36,7 @@ public class PedidoIN{
 	private LocalDateTime dataCancelamento;
 	@NotNull
 	private LocalDateTime dataEntrega;
-	@NotBlank
+	@NotNull
 	private StatusPedido status;
 	@Valid
 	@NotNull

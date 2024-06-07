@@ -108,6 +108,13 @@ public class PedidoService {
         );
     }
 
+    @Transactional(readOnly = true)
+    public List<VendaDiaria> totalVendidoPorData(String dataInicio, String dataFim) {
+        LocalDateTime inicio = LocalDateTime.parse(dataInicio);
+        LocalDateTime fim = LocalDateTime.parse(dataFim);
+        return pedidoRepository.totalVendidoPorData(inicio, fim);
+    }
+
     @Transactional
     public void confirmar(Long id) {
         Pedido pedido = getPedido(id);
@@ -182,10 +189,5 @@ public class PedidoService {
             itemPedido.setPedido(pedido);
             return itemPedido;
         }).collect(Collectors.toSet()));
-    }
-
-    @Transactional(readOnly = true)
-    public List<VendaDiaria> totalVendidoPorData() {
-        return pedidoRepository.totalVendidoPorData();
     }
 }
