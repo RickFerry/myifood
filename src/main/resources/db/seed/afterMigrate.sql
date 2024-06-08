@@ -8,6 +8,7 @@ delete from GRUPO;
 delete from GRUPO_PERMISSOES;
 delete from PERMISSAO;
 delete from PRODUTO;
+delete from FOTO_PRODUTO;
 delete from RESTAURANTE;
 delete from RESTAURANTE_FORMAS_PAGAMENTO;
 delete from RESTAURANTE_PRODUTO;

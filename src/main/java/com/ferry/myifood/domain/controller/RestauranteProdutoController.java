@@ -1,17 +1,12 @@
 package com.ferry.myifood.domain.controller;
 
-import com.ferry.myifood.domain.model.dto.input.RestauranteIN;
+import com.ferry.myifood.domain.model.dto.input.FotoProdutoIN;
 import com.ferry.myifood.domain.model.dto.output.ProdutoOUT;
-import com.ferry.myifood.domain.model.dto.output.RestauranteOUT;
-import com.ferry.myifood.domain.model.dto.update.RestauranteUP;
 import com.ferry.myifood.domain.service.RestauranteProdutoService;
-import com.ferry.myifood.domain.service.RestauranteService;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
@@ -51,5 +46,16 @@ public class RestauranteProdutoController {
     public ResponseEntity<?> removeProduto(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
             restauranteService.removeProduto(restauranteId, produtoId);
             return ResponseEntity.noContent().build();
+    }
+
+@PutMapping(path = "/{produtoId}/foto", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> atualizaFotoProduto(
+            @PathVariable Long restauranteId, @PathVariable Long produtoId, @Valid FotoProdutoIN fotoProdutoIN) {
+        try {
+            restauranteService.atualizaFotoProduto(restauranteId, produtoId, fotoProdutoIN);
+            return ResponseEntity.noContent().build();
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
