@@ -8,6 +8,8 @@ import com.ferry.myifood.domain.service.PedidoService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -56,7 +58,17 @@ public class PedidoController {
         return ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/total-vendido-por-data")
+    @GetMapping(path = "/total-vendido-por-data", produces = MediaType.APPLICATION_PDF_VALUE)
+    public ResponseEntity<byte[]> totalVendidoPorDataPdf(@RequestParam String dataInicio, @RequestParam String dataFim) {
+        byte[] dataPdf = pedidoService.totalVendidoPorDataPdf(dataInicio, dataFim);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=total-vendido-por-data.pdf");
+
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF).headers(headers).body(dataPdf);
+    }
+
+    @GetMapping(path = "/total-vendido-por-data", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<VendaDiaria>> totalVendidoPorData(@RequestParam String dataInicio, @RequestParam String dataFim) {
         return ResponseEntity.ok(pedidoService.totalVendidoPorData(dataInicio, dataFim));
     }

@@ -18,14 +18,20 @@ import com.ferry.myifood.domain.model.dto.update.PedidoUP;
 import com.ferry.myifood.domain.model.enums.StatusPedido;
 import com.ferry.myifood.domain.repository.*;
 import lombok.AllArgsConstructor;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 import static com.ferry.myifood.domain.utils.ConstantsUtil.*;
@@ -110,9 +116,21 @@ public class PedidoService {
 
     @Transactional(readOnly = true)
     public List<VendaDiaria> totalVendidoPorData(String dataInicio, String dataFim) {
-        LocalDateTime inicio = LocalDateTime.parse(dataInicio);
-        LocalDateTime fim = LocalDateTime.parse(dataFim);
-        return pedidoRepository.totalVendidoPorData(inicio, fim);
+        return pedidoRepository.totalVendidoPorData(LocalDateTime.parse(dataInicio), LocalDateTime.parse(dataFim));
+    }
+
+    @Transactional(readOnly = true)
+    public byte[] totalVendidoPorDataPdf(String dataInicio, String dataFim) {
+        try {
+            InputStream stream = this.getClass().getResourceAsStream("/relatorios/vendas-diarias.jasper");
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("REPORT_LOCALE", new Locale("pt", "BR"));
+            JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(
+                    pedidoRepository.totalVendidoPorData(LocalDateTime.parse(dataInicio), LocalDateTime.parse(dataFim)));
+            return JasperExportManager.exportReportToPdf(JasperFillManager.fillReport(stream, map, dataSource));
+        } catch (Exception e) {
+            throw new RelatorioException("Erro ao gerar relatório.", e);
+        }
     }
 
     @Transactional
