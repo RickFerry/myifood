@@ -2,18 +2,21 @@ package com.ferry.myifood.domain.service;
 
 import com.ferry.myifood.domain.exception.ProdutoNaoEncontradoException;
 import com.ferry.myifood.domain.exception.RestauranteNaoEncontradoException;
+import com.ferry.myifood.domain.mapper.fotoproduto.FotoProdutoOUTMapper;
 import com.ferry.myifood.domain.mapper.produto.ProdutoOUTMapper;
+import com.ferry.myifood.domain.model.FotoProduto;
+import com.ferry.myifood.domain.model.Produto;
 import com.ferry.myifood.domain.model.dto.input.FotoProdutoIN;
+import com.ferry.myifood.domain.model.dto.output.FotoProdutoOUT;
 import com.ferry.myifood.domain.model.dto.output.ProdutoOUT;
 import com.ferry.myifood.domain.repository.ProdutoRepository;
 import com.ferry.myifood.domain.repository.RestauranteRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.nio.file.Path;
 import java.util.Set;
-import java.util.UUID;
 
 import static com.ferry.myifood.domain.utils.ConstantsUtil.PRODUTO_COM_ID_INFORMADO_NAO_EXISTE;
 import static com.ferry.myifood.domain.utils.ConstantsUtil.RESTAURANTE_COM_ID_INFORMADO_NAO_EXISTE;
@@ -33,6 +36,10 @@ public class RestauranteProdutoService {
      *
      */
     private final ProdutoOUTMapper produtoOUTMapper;
+    /**
+     *
+     */
+    private final FotoProdutoOUTMapper fotoProdutoOUTMapper;
 
     @Transactional(readOnly = true)
     public Set<ProdutoOUT> buscaProdutos(Long restauranteId) {
@@ -71,13 +78,19 @@ public class RestauranteProdutoService {
         restaurante.removeProduto(produto);
     }
 
-    public void atualizaFotoProduto(Long restauranteId, Long produtoId, FotoProdutoIN fotoProdutoIN) {
-        String nomeArquivo = UUID.randomUUID() + "_" + fotoProdutoIN.getArquivo().getOriginalFilename();
-        Path path = Path.of("C:\\DataBases\\catalogo", nomeArquivo);
-        try {
-            fotoProdutoIN.getArquivo().transferTo(path);
-        } catch (Exception e) {
-            throw new RuntimeException("Erro ao salvar arquivo");
-        }
+    @Transactional
+    public FotoProdutoOUT atualizaFotoProduto(Long restauranteId, Long produtoId, FotoProdutoIN fotoProdutoIN) {
+        Produto produto = produtoRepository.findById(produtoId).orElseThrow(
+                () -> new ProdutoNaoEncontradoException(produtoId, PRODUTO_COM_ID_INFORMADO_NAO_EXISTE));
+
+        MultipartFile arquivo = fotoProdutoIN.getArquivo();
+        FotoProduto fotoProduto = new FotoProduto();
+        fotoProduto.setDescricao(fotoProdutoIN.getDescricao());
+        fotoProduto.setProduto(produto);
+        fotoProduto.setNomeArquivo(arquivo.getOriginalFilename());
+        fotoProduto.setTamanho(arquivo.getSize());
+        fotoProduto.setContentType(arquivo.getContentType());
+
+        return fotoProdutoOUTMapper.toDto(produtoRepository.save(fotoProduto));
     }
 }
