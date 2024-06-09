@@ -80,7 +80,7 @@ public class RestauranteProdutoService {
 
     @Transactional
     public FotoProdutoOUT atualizaFotoProduto(Long restauranteId, Long produtoId, FotoProdutoIN fotoProdutoIN) {
-        Produto produto = produtoRepository.findById(produtoId).orElseThrow(
+        Produto produto = restauranteRepository.findProdutoByRestauranteIdAndProdutoId(restauranteId, produtoId).orElseThrow(
                 () -> new ProdutoNaoEncontradoException(produtoId, PRODUTO_COM_ID_INFORMADO_NAO_EXISTE));
 
         MultipartFile arquivo = fotoProdutoIN.getArquivo();

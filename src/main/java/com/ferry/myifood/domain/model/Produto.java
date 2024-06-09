@@ -23,6 +23,9 @@ public class Produto {
     private BigDecimal preco;
     private Boolean ativo = Boolean.TRUE;
 
+    @OneToOne(mappedBy = "produto")
+    private FotoProduto fotoProduto;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
