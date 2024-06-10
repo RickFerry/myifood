@@ -11,13 +11,18 @@ import com.ferry.myifood.domain.model.dto.output.FotoProdutoOUT;
 import com.ferry.myifood.domain.model.dto.output.ProdutoOUT;
 import com.ferry.myifood.domain.repository.ProdutoRepository;
 import com.ferry.myifood.domain.repository.RestauranteRepository;
+import com.ferry.myifood.domain.repository.custom.FotoStorageService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
+import static com.ferry.myifood.domain.repository.custom.FotoStorageService.*;
 import static com.ferry.myifood.domain.utils.ConstantsUtil.PRODUTO_COM_ID_INFORMADO_NAO_EXISTE;
 import static com.ferry.myifood.domain.utils.ConstantsUtil.RESTAURANTE_COM_ID_INFORMADO_NAO_EXISTE;
 
@@ -28,6 +33,10 @@ public class RestauranteProdutoService {
      *
      */
     private final RestauranteRepository restauranteRepository;
+    /**
+     *
+     */
+    private final FotoStorageService fotoStorageService;
     /**
      *
      */
@@ -80,6 +89,8 @@ public class RestauranteProdutoService {
 
     @Transactional
     public FotoProdutoOUT atualizaFotoProduto(Long restauranteId, Long produtoId, FotoProdutoIN fotoProdutoIN) {
+        String nomeAntigoArquivo = null;
+
         Produto produto = restauranteRepository.findProdutoByRestauranteIdAndProdutoId(restauranteId, produtoId).orElseThrow(
                 () -> new ProdutoNaoEncontradoException(produtoId, PRODUTO_COM_ID_INFORMADO_NAO_EXISTE));
 
@@ -87,10 +98,30 @@ public class RestauranteProdutoService {
         FotoProduto fotoProduto = new FotoProduto();
         fotoProduto.setDescricao(fotoProdutoIN.getDescricao());
         fotoProduto.setProduto(produto);
-        fotoProduto.setNomeArquivo(arquivo.getOriginalFilename());
+        fotoProduto.setNomeArquivo(fotoStorageService.gerarNomeArquivo(arquivo.getOriginalFilename()));
         fotoProduto.setTamanho(arquivo.getSize());
         fotoProduto.setContentType(arquivo.getContentType());
 
-        return fotoProdutoOUTMapper.toDto(produtoRepository.save(fotoProduto));
+        Optional<FotoProduto> fotoOpcional = restauranteRepository.findFotoById(restauranteId, produtoId);
+        if (fotoOpcional.isPresent()) {
+            produtoRepository.delete(fotoOpcional.get());
+            nomeAntigoArquivo = fotoOpcional.get().getNomeArquivo();
+        }
+
+        fotoProduto = produtoRepository.save(fotoProduto);
+        produtoRepository.flush();
+
+        NovaFoto novaFoto;
+        try {
+            novaFoto = NovaFoto.builder()
+                    .nomeArquivo(fotoProduto.getNomeArquivo())
+                    .inputStream(arquivo.getInputStream())
+                    .build();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        fotoStorageService.substituir(novaFoto, nomeAntigoArquivo);
+        return fotoProdutoOUTMapper.toDto(fotoProduto);
     }
 }
