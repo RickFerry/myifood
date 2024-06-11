@@ -15,15 +15,19 @@ import com.ferry.myifood.domain.repository.RestauranteRepository;
 import com.ferry.myifood.domain.repository.custom.FotoStorageService;
 import lombok.AllArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import static com.ferry.myifood.domain.repository.custom.FotoStorageService.*;
+import static com.ferry.myifood.domain.repository.custom.FotoStorageService.NovaFoto;
 import static com.ferry.myifood.domain.utils.ConstantsUtil.*;
 
 @Service
@@ -113,11 +117,28 @@ public class RestauranteProdutoService {
     }
 
     @Transactional(readOnly = true)
-    public InputStreamResource servirFoto(Long restauranteId, Long produtoId) {
-        return new InputStreamResource(fotoStorageService.recuperar(
-                restauranteRepository.findFotoById(restauranteId, produtoId).orElseThrow(
-                        () -> new FotoNaoEncontradaException(
-                                produtoId, NAO_EXISTE_FOTO_PARA_O_PRODUTO_COM_ESTE_ID)).getNomeArquivo()));
+    public ResponseEntity<InputStreamResource> servirFoto(Long restauranteId, Long produtoId, String acceptHeader) {
+        FotoProduto fotoProduto = restauranteRepository.findFotoById(restauranteId, produtoId).orElseThrow(
+                () -> new FotoNaoEncontradaException(
+                        produtoId, NAO_EXISTE_FOTO_PARA_O_PRODUTO_COM_ESTE_ID));
+
+        try {
+            MediaType mediaType = MediaType.parseMediaType(fotoProduto.getContentType());
+            List<MediaType> acceptsMediaTypes = MediaType.parseMediaTypes(acceptHeader);
+            verificaCompatibilidadeMediaType(mediaType, acceptsMediaTypes);
+        } catch (HttpMediaTypeNotAcceptableException e) {
+            throw new RuntimeException(e);
+        }
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.valueOf(fotoProduto.getContentType()))
+                .body(new InputStreamResource(fotoStorageService.recuperar(fotoProduto.getNomeArquivo())));
+    }
+
+    private void verificaCompatibilidadeMediaType(MediaType mediaType, List<MediaType> acceptsMediaTypes) throws HttpMediaTypeNotAcceptableException {
+        if (!acceptsMediaTypes.stream().anyMatch(mediaType::isCompatibleWith)) {
+            throw new HttpMediaTypeNotAcceptableException(acceptsMediaTypes);
+        }
     }
 
     private static NovaFoto getNovaFoto(FotoProduto fotoProduto, MultipartFile arquivo) {

@@ -63,8 +63,9 @@ public class RestauranteProdutoController {
         return ResponseEntity.ok(restauranteService.buscaFotoProduto(restauranteId, produtoId));
     }
 
-    @GetMapping(path = "/{produtoId}/foto", produces = MediaType.IMAGE_JPEG_VALUE)
-    public ResponseEntity<InputStreamResource> servirFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
-        return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(restauranteService.servirFoto(restauranteId, produtoId));
+    @GetMapping(path = "/{produtoId}/foto")
+    public ResponseEntity<InputStreamResource> servirFoto(
+            @PathVariable Long restauranteId, @PathVariable Long produtoId, @RequestHeader("accept") String acceptHeader) {
+        return restauranteService.servirFoto(restauranteId, produtoId, acceptHeader);
     }
 }
