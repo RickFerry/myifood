@@ -135,6 +135,14 @@ public class RestauranteProdutoService {
                 .body(new InputStreamResource(fotoStorageService.recuperar(fotoProduto.getNomeArquivo())));
     }
 
+    @Transactional
+    public void removeFotoProduto(Long restauranteId, Long produtoId) {
+        FotoProduto fotoProduto = restauranteRepository.findFotoById(restauranteId, produtoId).orElseThrow(
+                () -> new FotoNaoEncontradaException(produtoId, NAO_EXISTE_FOTO_PARA_O_PRODUTO_COM_ESTE_ID));
+        produtoRepository.delete(fotoProduto);
+        fotoStorageService.remover(fotoProduto.getNomeArquivo());
+    }
+
     private void verificaCompatibilidadeMediaType(MediaType mediaType, List<MediaType> acceptsMediaTypes) throws HttpMediaTypeNotAcceptableException {
         if (!acceptsMediaTypes.stream().anyMatch(mediaType::isCompatibleWith)) {
             throw new HttpMediaTypeNotAcceptableException(acceptsMediaTypes);

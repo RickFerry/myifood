@@ -68,4 +68,10 @@ public class RestauranteProdutoController {
             @PathVariable Long restauranteId, @PathVariable Long produtoId, @RequestHeader("accept") String acceptHeader) {
         return restauranteService.servirFoto(restauranteId, produtoId, acceptHeader);
     }
+
+    @DeleteMapping("/{produtoId}/foto")
+    public ResponseEntity<?> removeFotoProduto(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
+        restauranteService.removeFotoProduto(restauranteId, produtoId);
+        return ResponseEntity.noContent().build();
+    }
 }
