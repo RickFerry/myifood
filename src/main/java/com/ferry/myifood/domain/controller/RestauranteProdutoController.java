@@ -5,6 +5,7 @@ import com.ferry.myifood.domain.model.dto.output.FotoProdutoOUT;
 import com.ferry.myifood.domain.model.dto.output.ProdutoOUT;
 import com.ferry.myifood.domain.service.RestauranteProdutoService;
 import lombok.AllArgsConstructor;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -55,5 +56,15 @@ public class RestauranteProdutoController {
         FotoProdutoOUT produtoOUT = restauranteService.atualizaFotoProduto(restauranteId, produtoId, fotoProdutoIN);
         return ResponseEntity.created(uriComponentsBuilder.path("/restaurantes/{restauranteId}/produtos/{produtoId}/foto")
                 .buildAndExpand(restauranteId, produtoId).toUri()).body(produtoOUT);
+    }
+
+    @GetMapping(path = "/{produtoId}/foto", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<FotoProdutoOUT> buscaFotoProduto(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
+        return ResponseEntity.ok(restauranteService.buscaFotoProduto(restauranteId, produtoId));
+    }
+
+    @GetMapping(path = "/{produtoId}/foto", produces = MediaType.IMAGE_JPEG_VALUE)
+    public ResponseEntity<InputStreamResource> servirFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
+        return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(restauranteService.servirFoto(restauranteId, produtoId));
     }
 }

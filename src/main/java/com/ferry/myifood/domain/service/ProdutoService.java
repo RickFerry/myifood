@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.ferry.myifood.domain.utils.ConstantsUtil.PRODUTO_COM_ID_INFORMADO_NAO_EXISTE;
+import static com.ferry.myifood.domain.utils.ConstantsUtil.NAO_EXISTE_PRODUTO_COM_ESTE_ID_VINCULADO_A_ESTE_RESTAURANTE;
 
 @Service
 @AllArgsConstructor
@@ -34,6 +34,6 @@ public class ProdutoService {
     @Transactional(readOnly = true)
     public Produto buscar(final Long id) {
         return produtoRepository.findById(id).orElseThrow(
-                () -> new ProdutoNaoEncontradoException(id, PRODUTO_COM_ID_INFORMADO_NAO_EXISTE));
+                () -> new ProdutoNaoEncontradoException(id, NAO_EXISTE_PRODUTO_COM_ESTE_ID_VINCULADO_A_ESTE_RESTAURANTE));
     }
 }

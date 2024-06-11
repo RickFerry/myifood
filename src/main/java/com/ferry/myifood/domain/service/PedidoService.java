@@ -198,7 +198,7 @@ public class PedidoService {
     private void validaItensPedido(PedidoIN in, Pedido pedido) {
         pedido.setItens(in.getItensPedido().stream().map(item -> {
             Produto produto = produtoRepository.findById(item.getProduto().getId()).orElseThrow(
-                    () -> new ProdutoNaoEncontradoException(item.getProduto().getId(), PRODUTO_COM_ID_INFORMADO_NAO_EXISTE));
+                    () -> new ProdutoNaoEncontradoException(item.getProduto().getId(), NAO_EXISTE_PRODUTO_COM_ESTE_ID_VINCULADO_A_ESTE_RESTAURANTE));
             ProdutoCompOut produtoCompOut = produtoCompOutMapper.toDto(produto);
             item.setProduto(produtoCompOut);
             ItemPedido itemPedido = itemPedidoCompMapper.toEntity(item);

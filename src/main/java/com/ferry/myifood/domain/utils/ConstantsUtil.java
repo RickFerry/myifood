@@ -28,7 +28,11 @@ public final class ConstantsUtil {
     /**
      *
      */
-    public static final String PRODUTO_COM_ID_INFORMADO_NAO_EXISTE = "Produto com id informado não existe.";
+    public static final String NAO_EXISTE_PRODUTO_COM_ESTE_ID_VINCULADO_A_ESTE_RESTAURANTE = "Não existe produto com este id vinculado a este restaurante.";
+    /**
+     *
+     */
+    public static final String NAO_EXISTE_PRODUTO_COM_ID_INFORMADO = "Não existe produto com id informado.";
     /**
      *
      */
@@ -49,6 +53,10 @@ public final class ConstantsUtil {
      *
      */
     public static final String ITEM_PEDIDO_COM_ID_INFORMADO_NAO_EXISTE = "Item de pedido com id informado não existe.";
+    /**
+     *
+     */
+    public static final String NAO_EXISTE_FOTO_PARA_O_PRODUTO_COM_ESTE_ID = "Não existe foto para o produto com este id.";
 
     private ConstantsUtil() {
     }

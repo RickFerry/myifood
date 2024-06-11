@@ -1,5 +1,6 @@
 package com.ferry.myifood.domain.service;
 
+import com.ferry.myifood.domain.exception.FotoNaoEncontradaException;
 import com.ferry.myifood.domain.exception.ProdutoNaoEncontradoException;
 import com.ferry.myifood.domain.exception.RestauranteNaoEncontradoException;
 import com.ferry.myifood.domain.mapper.fotoproduto.FotoProdutoOUTMapper;
@@ -13,6 +14,7 @@ import com.ferry.myifood.domain.repository.ProdutoRepository;
 import com.ferry.myifood.domain.repository.RestauranteRepository;
 import com.ferry.myifood.domain.repository.custom.FotoStorageService;
 import lombok.AllArgsConstructor;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,8 +24,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import static com.ferry.myifood.domain.repository.custom.FotoStorageService.*;
-import static com.ferry.myifood.domain.utils.ConstantsUtil.PRODUTO_COM_ID_INFORMADO_NAO_EXISTE;
-import static com.ferry.myifood.domain.utils.ConstantsUtil.RESTAURANTE_COM_ID_INFORMADO_NAO_EXISTE;
+import static com.ferry.myifood.domain.utils.ConstantsUtil.*;
 
 @Service
 @AllArgsConstructor
@@ -65,7 +66,7 @@ public class RestauranteProdutoService {
         return produtoOUTMapper.toDto(restauranteRepository.findById(restauranteId).orElseThrow(
                         () -> new RestauranteNaoEncontradoException(restauranteId, RESTAURANTE_COM_ID_INFORMADO_NAO_EXISTE))
                 .getProdutos().stream().filter(produto -> produto.getId().equals(produtoId)).findFirst().orElseThrow(
-                        () -> new ProdutoNaoEncontradoException(produtoId, PRODUTO_COM_ID_INFORMADO_NAO_EXISTE)));
+                        () -> new ProdutoNaoEncontradoException(produtoId, NAO_EXISTE_PRODUTO_COM_ESTE_ID_VINCULADO_A_ESTE_RESTAURANTE)));
     }
 
     @Transactional
@@ -73,7 +74,7 @@ public class RestauranteProdutoService {
         var restaurante = restauranteRepository.findById(restauranteId).orElseThrow(
                 () -> new RestauranteNaoEncontradoException(restauranteId, RESTAURANTE_COM_ID_INFORMADO_NAO_EXISTE));
         var produto = produtoRepository.findById(produtoId).orElseThrow(
-                () -> new ProdutoNaoEncontradoException(produtoId, PRODUTO_COM_ID_INFORMADO_NAO_EXISTE));
+                () -> new ProdutoNaoEncontradoException(produtoId, NAO_EXISTE_PRODUTO_COM_ESTE_ID_VINCULADO_A_ESTE_RESTAURANTE));
         restaurante.adicionaProduto(produto);
     }
 
@@ -82,7 +83,7 @@ public class RestauranteProdutoService {
         var restaurante = restauranteRepository.findById(restauranteId).orElseThrow(
                 () -> new RestauranteNaoEncontradoException(restauranteId, RESTAURANTE_COM_ID_INFORMADO_NAO_EXISTE));
         var produto = produtoRepository.findById(produtoId).orElseThrow(
-                () -> new ProdutoNaoEncontradoException(produtoId, PRODUTO_COM_ID_INFORMADO_NAO_EXISTE));
+                () -> new ProdutoNaoEncontradoException(produtoId, NAO_EXISTE_PRODUTO_COM_ID_INFORMADO));
         restaurante.removeProduto(produto);
     }
 
@@ -91,18 +92,32 @@ public class RestauranteProdutoService {
         String nomeAntigoArquivo = null;
 
         Produto produto = restauranteRepository.findProdutoByRestauranteIdAndProdutoId(restauranteId, produtoId).orElseThrow(
-                () -> new ProdutoNaoEncontradoException(produtoId, PRODUTO_COM_ID_INFORMADO_NAO_EXISTE));
+                () -> new ProdutoNaoEncontradoException(produtoId, NAO_EXISTE_PRODUTO_COM_ESTE_ID_VINCULADO_A_ESTE_RESTAURANTE));
 
         MultipartFile arquivo = fotoProdutoIN.getArquivo();
         FotoProduto fotoProduto = getFotoProduto(fotoProdutoIN, produto, arquivo);
 
-        nomeAntigoArquivo = deletaFotoAntogaSeExisteGetNomeAntigoDoArquivo(restauranteId, produtoId, nomeAntigoArquivo);
+        nomeAntigoArquivo = deletaFotoAntIgaSeExistirPegaNomeAntigoDoArquivo(restauranteId, produtoId, nomeAntigoArquivo);
 
         fotoProduto = produtoRepository.save(fotoProduto);
         produtoRepository.flush();
 
         fotoStorageService.substituir(getNovaFoto(fotoProduto, arquivo), nomeAntigoArquivo);
         return fotoProdutoOUTMapper.toDto(fotoProduto);
+    }
+
+    @Transactional(readOnly = true)
+    public FotoProdutoOUT buscaFotoProduto(Long restauranteId, Long produtoId) {
+        return fotoProdutoOUTMapper.toDto(restauranteRepository.findFotoById(restauranteId, produtoId).orElseThrow(
+                () -> new FotoNaoEncontradaException(produtoId, NAO_EXISTE_FOTO_PARA_O_PRODUTO_COM_ESTE_ID)));
+    }
+
+    @Transactional(readOnly = true)
+    public InputStreamResource servirFoto(Long restauranteId, Long produtoId) {
+        return new InputStreamResource(fotoStorageService.recuperar(
+                restauranteRepository.findFotoById(restauranteId, produtoId).orElseThrow(
+                        () -> new FotoNaoEncontradaException(
+                                produtoId, NAO_EXISTE_FOTO_PARA_O_PRODUTO_COM_ESTE_ID)).getNomeArquivo()));
     }
 
     private static NovaFoto getNovaFoto(FotoProduto fotoProduto, MultipartFile arquivo) {
@@ -118,7 +133,7 @@ public class RestauranteProdutoService {
         return novaFoto;
     }
 
-    private String deletaFotoAntogaSeExisteGetNomeAntigoDoArquivo(Long restauranteId, Long produtoId, String nomeAntigoArquivo) {
+    private String deletaFotoAntIgaSeExistirPegaNomeAntigoDoArquivo(Long restauranteId, Long produtoId, String nomeAntigoArquivo) {
         Optional<FotoProduto> fotoOpcional = restauranteRepository.findFotoById(restauranteId, produtoId);
         if (fotoOpcional.isPresent()) {
             produtoRepository.delete(fotoOpcional.get());
