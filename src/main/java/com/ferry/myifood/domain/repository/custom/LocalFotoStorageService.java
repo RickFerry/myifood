@@ -1,21 +1,19 @@
 package com.ferry.myifood.domain.repository.custom;
 
-import org.springframework.beans.factory.annotation.Value;
+import com.ferry.myifood.domain.exception.StorageException;
+import com.ferry.myifood.domain.model.storage.StorageProperties;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
 import static java.nio.file.Files.newInputStream;
-import static org.apache.commons.lang3.StringUtils.isBlank;
 
-@Service
+@AllArgsConstructor
 public class LocalFotoStorageService implements FotoStorageService {
-
-    @Value("${myifood.storage.local.directory}")
-    private Path diretorioFotos;
+    private StorageProperties storageProperties;
 
     @Override
     public void armazenar(NovaFoto novaFoto) {
@@ -28,14 +26,15 @@ public class LocalFotoStorageService implements FotoStorageService {
     }
 
     @Override
-    public InputStream recuperar(String nomeArquivo) {
+    public FotoRecuperada recuperar(String nomeArquivo) {
         try {
-            if (isBlank(nomeArquivo)) {
-                throw new RuntimeException("Nome do arquivo não pode ser nulo");
-            }
-            return newInputStream(getArquivoPath(nomeArquivo));
+            Path path = getArquivoPath(nomeArquivo);
+            return FotoRecuperada.builder()
+                    .inputStream(newInputStream(path))
+                    .url(path.toUri().toURL().toString())
+                    .build();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new StorageException("Não foi possível recuperar o arquivo", e);
         }
     }
 
@@ -50,6 +49,6 @@ public class LocalFotoStorageService implements FotoStorageService {
     }
 
     private Path getArquivoPath(String nomeArquivo) {
-        return diretorioFotos.resolve(Path.of(nomeArquivo));
+        return storageProperties.getLocal().getLocalDirectory().resolve(Path.of(nomeArquivo));
     }
 }

@@ -15,6 +15,8 @@ import com.ferry.myifood.domain.repository.RestauranteRepository;
 import com.ferry.myifood.domain.repository.custom.FotoStorageService;
 import lombok.AllArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -117,7 +119,7 @@ public class RestauranteProdutoService {
     }
 
     @Transactional(readOnly = true)
-    public ResponseEntity<InputStreamResource> servirFoto(Long restauranteId, Long produtoId, String acceptHeader) {
+    public ResponseEntity<?> servirFoto(Long restauranteId, Long produtoId, String acceptHeader) {
         FotoProduto fotoProduto = restauranteRepository.findFotoById(restauranteId, produtoId).orElseThrow(
                 () -> new FotoNaoEncontradaException(
                         produtoId, NAO_EXISTE_FOTO_PARA_O_PRODUTO_COM_ESTE_ID));
@@ -130,9 +132,15 @@ public class RestauranteProdutoService {
             throw new RuntimeException(e);
         }
 
-        return ResponseEntity.ok()
-                .contentType(MediaType.valueOf(fotoProduto.getContentType()))
-                .body(new InputStreamResource(fotoStorageService.recuperar(fotoProduto.getNomeArquivo())));
+        FotoStorageService.FotoRecuperada fotoRecuperada = fotoStorageService.recuperar(fotoProduto.getNomeArquivo());
+
+        if (fotoRecuperada.temUrl()) {
+            return ResponseEntity.status(HttpStatus.FOUND).header(HttpHeaders.LOCATION, fotoRecuperada.getUrl()).build();
+        } else {
+            return ResponseEntity.ok()
+                    .contentType(MediaType.valueOf(fotoProduto.getContentType()))
+                    .body(new InputStreamResource(fotoRecuperada.getInputStream()));
+        }
     }
 
     @Transactional
@@ -154,6 +162,7 @@ public class RestauranteProdutoService {
         try {
             novaFoto = NovaFoto.builder()
                     .nomeArquivo(fotoProduto.getNomeArquivo())
+                    .contentType(arquivo.getContentType())
                     .inputStream(arquivo.getInputStream())
                     .build();
         } catch (IOException e) {

@@ -64,7 +64,7 @@ public class RestauranteProdutoController {
     }
 
     @GetMapping(path = "/{produtoId}/foto")
-    public ResponseEntity<InputStreamResource> servirFoto(
+    public ResponseEntity<?> servirFoto(
             @PathVariable Long restauranteId, @PathVariable Long produtoId, @RequestHeader("accept") String acceptHeader) {
         return restauranteService.servirFoto(restauranteId, produtoId, acceptHeader);
     }
