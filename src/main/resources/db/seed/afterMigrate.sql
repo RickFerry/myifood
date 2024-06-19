@@ -83,7 +83,7 @@ INSERT INTO GRUPO (NOME) VALUES ('USUARIO');
 insert into grupo_permissoes (grupo_id, PERMISSOES_ID) values (1, 1), (1, 2), (1, 3);
 insert into grupo_permissoes (grupo_id, PERMISSOES_ID) values (2, 1);
 
-INSERT INTO USUARIO (NOME, EMAIL, SENHA, DATA_CADASTRO) VALUES ('Kael Martins', 'kael@admin.com', '$2a$10$3', systimestamp);
+INSERT INTO USUARIO (NOME, EMAIL, SENHA, DATA_CADASTRO) VALUES ('Kael Martins', 'rickferry2@gmail.com', '$2a$10$3', systimestamp);
 INSERT INTO USUARIO (NOME, EMAIL, SENHA, DATA_CADASTRO) VALUES ('Kyra Martins', 'kyra@user.com', '$2a$10$3', systimestamp);
 INSERT INTO USUARIO (NOME, EMAIL, SENHA, DATA_CADASTRO) VALUES ('Adam Martins', 'adam@admin.com', '$2a$10$3', systimestamp);
 

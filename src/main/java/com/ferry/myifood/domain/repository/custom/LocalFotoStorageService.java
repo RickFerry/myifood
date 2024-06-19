@@ -3,7 +3,6 @@ package com.ferry.myifood.domain.repository.custom;
 import com.ferry.myifood.domain.exception.StorageException;
 import com.ferry.myifood.domain.model.storage.StorageProperties;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 
 import java.nio.file.Files;

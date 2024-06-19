@@ -17,6 +17,7 @@ import com.ferry.myifood.domain.model.dto.output.ProdutoCompOut;
 import com.ferry.myifood.domain.model.dto.update.PedidoUP;
 import com.ferry.myifood.domain.model.enums.StatusPedido;
 import com.ferry.myifood.domain.repository.*;
+import com.ferry.myifood.domain.repository.custom.EmailSenderService;
 import lombok.AllArgsConstructor;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -52,6 +53,7 @@ public class PedidoService {
     private final PedidoUPMapper pedidoUPMapper;
     private final ProdutoCompOutMapper produtoCompOutMapper;
     private final ItemPedidoCompMapper itemPedidoCompMapper;
+    private final EmailSenderService emailSenderService;
 
     /**
      * @param page
@@ -139,6 +141,12 @@ public class PedidoService {
         verificaStatus(pedido, StatusPedido.CRIADO);
         pedido.setStatus(StatusPedido.CONFIRMADO);
         pedido.setDataConfirmacao(LocalDateTime.now());
+
+        emailSenderService.enviar(EmailSenderService.Email.builder()
+                .to(pedido.getCliente().getEmail())
+                .subject("Pedido Confirmado")
+                .body(format("Seu pedido %d foi confirmado.", pedido.getId()))
+                .build());
     }
 
     @Transactional
