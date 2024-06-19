@@ -142,11 +142,7 @@ public class PedidoService {
         pedido.setStatus(StatusPedido.CONFIRMADO);
         pedido.setDataConfirmacao(LocalDateTime.now());
 
-        emailSenderService.enviar(EmailSenderService.Email.builder()
-                .to(pedido.getCliente().getEmail())
-                .subject("Pedido Confirmado")
-                .body(format("Seu pedido %d foi confirmado.", pedido.getId()))
-                .build());
+        emailSender(pedido);
     }
 
     @Transactional
@@ -171,6 +167,14 @@ public class PedidoService {
         verificaStatus(pedido, StatusPedido.CRIADO);
         pedido.setStatus(StatusPedido.CANCELADO);
         pedido.setDataCancelamento(LocalDateTime.now());
+    }
+
+    private void emailSender(Pedido pedido) {
+        emailSenderService.enviar(EmailSenderService.Email.builder()
+                .to(pedido.getCliente().getEmail())
+                .subject("Pedido Confirmado")
+                .body(format("Seu pedido %d foi confirmado.", pedido.getId()))
+                .build());
     }
 
     private static void verificaStatus(Pedido pedido, StatusPedido status) {
